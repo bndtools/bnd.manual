@@ -1,0 +1,11 @@
+markdown: kramdown
+collections:
+  man:
+    output: true
+
+defaults:
+  -
+    scope:
+      path: "" # empty string for all files
+    values:
+      layout: default
