@@ -1,10 +1,9 @@
-___
-title: Metatypes
+---
 order: 210
+title: Metatype
 layout: default
-___
-# Metatype
-''Version 1.42''
+---
+
 
 The OSGi Metatype specification provides a language to describe configuration information in an XML file. However, XML is cumbersome to use and eXtreMeLy error prone, and refactoring often finds it hard to change references in XML text files. Especially with DS components managing the relations can be complex, see [[Components]]
 
@@ -77,26 +76,26 @@ For example:
 ## @Meta.OCD
 The OCD annotation is necessary to know that an interface is a Metatype interface. It should be used preferably without any parameters (they all have good defaults). However, each default is possible to override. The following table discusses the fields:
 
-||`name`||String||A human readable name of the component, can be localized if it starts with a % sign. The default is a string derived from the id where _, $, or camel casing is used to provide spaces.||
-||`id`||String||The id of the OCD, this will also be used for the pid of the Designate element.||
-||`localization`||String||The localization id of the metatype. This refers to a properties file in the OSGI-INF/i10l/<localization>.properties file that can be augmented with locale information.||
-||`description`||String||A human readable description that can be localized. Default is empty.||
-||`factory`||String||Will treat this OCD as intended to be for a factory configuration. The default is `false`||
+|`name`|String|A human readable name of the component, can be localized if it starts with a % sign. The default is a string derived from the id where _, $, or camel casing is used to provide spaces.|
+|`id`|String|The id of the OCD, this will also be used for the pid of the Designate element.|
+|`localization`|String|The localization id of the metatype. This refers to a properties file in the OSGI-INF/i10l/<localization>.properties file that can be augmented with locale information.|
+|`description`|String|A human readable description that can be localized. Default is empty.|
+|`factory`|String|Will treat this OCD as intended to be for a factory configuration. The default is `false`|
 
 ## @Meta.AD
 The `AD` is an optional annotation on methods of a OCD interface. The annotation makes it possible to override the defaults and provide extra information.
 
-||`name`||String||A human readable name of the attribute, can be localized if it starts with a % sign. The default is a string derived from the method name where _, $, or camel casing is used to provide spaces.||
-||`id`||String||The id of the attribute. By default this is the name of the method||
-||`description`||String||A human readable description that can be localized. Default is empty.||
-||`type`||String||The type of the attribute. This must be one of the types defined in the Metatype specification. By default the type will be derived from the return type of the method. If no applicable type can be found then the `String` type is used as final default.||
-||`cardinality`||int||The cardinality of the attribute. If this is negative its absolute indicates maximum number of elements in a Vector. If it is positive it indicates the maximum number of values in an array. Zero indicates a scalar. If not provided, bnd will calculate the cardinality based on the return type. Collections will have a negative large value and arrays have a positive large value.||
-||`min`||String||The minimum value allowed for this attribute. There is no default.||
-||`max`||String||The maximum value allowed for this attribute. There is no default.||
-||`deflt`||String||The default initial value. The default for this is an empty String||
-||`required`||boolean||Indicates if this attribute is required. The default is that attributes are required.||
-||`optionLabels`||String[]||Labels for any values specified in `optionValues`. The default value is unset if there are no optionValues are defined. If these are defined, then the labels are calculated from the values by making _, $ into spaces and providing spaces between camel cased words in the values.||
-||`optionValues`||String[]||Optional values. If this field is not set and the return type is an enum type then the values are calculated from the enum members.||
+|`name`|String|A human readable name of the attribute, can be localized if it starts with a % sign. The default is a string derived from the method name where _, $, or camel casing is used to provide spaces.|
+|`id`|String|The id of the attribute. By default this is the name of the method|
+|`description`|String|A human readable description that can be localized. Default is empty.|
+|`type`|String|The type of the attribute. This must be one of the types defined in the Metatype specification. By default the type will be derived from the return type of the method. If no applicable type can be found then the `String` type is used as final default.|
+|`cardinality`|int|The cardinality of the attribute. If this is negative its absolute indicates maximum number of elements in a Vector. If it is positive it indicates the maximum number of values in an array. Zero indicates a scalar. If not provided, bnd will calculate the cardinality based on the return type. Collections will have a negative large value and arrays have a positive large value.|
+|`min`|String|The minimum value allowed for this attribute. There is no default.|
+|`max`|String|The maximum value allowed for this attribute. There is no default.|
+|`deflt`|String|The default initial value. The default for this is an empty String|
+|`required`|boolean|Indicates if this attribute is required. The default is that attributes are required.|
+|`optionLabels`|String[]|Labels for any values specified in `optionValues`. The default value is unset if there are no optionValues are defined. If these are defined, then the labels are calculated from the values by making _, $ into spaces and providing spaces between camel cased words in the values.|
+|`optionValues`|String[]|Optional values. If this field is not set and the return type is an enum type then the values are calculated from the enum members.|
 
 
 ## Runtime conversions

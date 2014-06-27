@@ -5,8 +5,8 @@
 <link href="/css/style.css" rel="stylesheet" />
 <title>bnd</title>
 
-	{% for man in site.man %}
-		{% if man.order == page.order %}
+	{% for chapter in site.chapters %}
+		{% if chapter.url == page.url %}
 			<style>
 				 body {
 					counter-reset: h1 {{ forloop.index }};

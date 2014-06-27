@@ -1,7 +1,12 @@
 markdown: kramdown
 collections:
-  man:
+  chapters:
     output: true
+  macros:
+    output: true
+  instructions:
+    output: true
+
 
 defaults:
   -
@@ -9,3 +14,9 @@ defaults:
       path: "" # empty string for all files
     values:
       layout: default
+
+      
+      
+      
+      
+      

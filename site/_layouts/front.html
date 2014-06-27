@@ -44,9 +44,9 @@
 		<li span=4>
 			<h1>Table of contents</h1>
 			<ol>
-				{% for man in site.man %}
+				{% for chapter in site.chapters %}
 				<li>
-				<a href="{{man.url}}">{{man.title}}</a> {% endfor %}
+				<a href="{{chapter.url}}">{{chapter.title}}</a> {% endfor %}
 			</ol>
 	</ul>
 

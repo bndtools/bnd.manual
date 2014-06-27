@@ -151,6 +151,10 @@ pre, tt, code, kbd, samp, var {
 
 pre {
 	margin-bottom: $block-separation;
+	padding: $text-separation;
+	@include rounded(3px);
+	background-color: $color-vignette;
+	border: 1px solid lightgray;
 }
 
 blockquote, q, em, cite, dfn, i, cite, var, address {
@@ -336,7 +340,7 @@ button.icon {
 
 @mixin vignette {
 	padding: $text-separation;
-	background-color:  $vignette-color;
+	background-color:  $color-vignette;
 	@include rounded(3px);
 }
 

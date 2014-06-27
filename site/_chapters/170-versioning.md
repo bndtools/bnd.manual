@@ -1,8 +1,9 @@
-___
-___
-# Versioning
+---
+title: Versioning
+layout: default
+requires: 1.15
+---
 
-Requires 1.15
 
 Versioning is probably the most painful part of developing real software. Where toys and prototypes can be developed ignoring evolution, real software requires a migration path to an unknown future.
 

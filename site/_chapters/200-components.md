@@ -1,10 +1,8 @@
-___
-title: Service Components
+---
 order: 200
+title: Service Components
 layout: default
-requires: 2.4
-___
-
+---
 
 The Service-Component header is compatible with the standard OSGi header syntax. Any element in the list that does not have attributes must have a resource in the JAR and is copied as is to the manifest. However, simple components can also be defined inline, and it is even possible to pickup annotations. 
 
