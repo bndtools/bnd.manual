@@ -1,7 +1,6 @@
 ___
-title: 	List the all source paths
+title: 	p_allsourcepath
 class: 	Project
-syntax: ${p_allsourcepath}
 summary: This reads the source and target settings from the IDE
 ----
 

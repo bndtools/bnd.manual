@@ -1,8 +1,7 @@
 ___
-title: 	Output/Target
+title: 	p_output
 class: 	Project
-syntax: ${p_output}
-summary: 
+summary: The absolute path to the project's output/target directory
 ----
 
 	public String _p_output(String args[]) throws Exception {

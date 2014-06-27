@@ -1,8 +1,7 @@
 ___
-title: 	List the boot class path (ee files)
+title: 	p_bootclasspath
 class: 	Project
-syntax: ${p_bootclasspath}
-summary: The boot class path
+summary: The project's boot class path
 ----
 
 	public String _p_bootclasspath(String args[]) throws Exception {

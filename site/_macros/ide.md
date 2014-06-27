@@ -1,7 +1,6 @@
 ___
-title: 	IDE specific project settings
+title: 	ide ';' ( 'javac.target' | 'javac.source' )
 class: 	Project
-syntax: "${ide; ( 'javac.source' | 'javac.target' ) }"
 summary: This reads the source and target settings from the IDE
 ----
 

@@ -1,8 +1,7 @@
 ___
-title: 	
+title: 	p_dependson
 class: 	Project
-syntax: ${p_dependson}
-summary: 
+summary: Provides a list of project names this project depends on 
 ----
 
 	public String _p_dependson(String args[]) throws Exception {

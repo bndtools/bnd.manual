@@ -1,8 +1,7 @@
 ___
-title: 	Source path
+title: 	p_sourcepath
 class: 	Project
-syntax: ${p_sourcepath}
-summary: This reads the source and target settings from the IDE
+summary: The path to the project's source directory.
 related: src
 ----
 

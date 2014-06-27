@@ -1,8 +1,7 @@
 ___
-title: 	The build path
+title: 	p_buildpath
 class: 	Project
-syntax: ${p_buildpath}
-summary: 
+summary: The project's buildpath
 ----
 
 	public String _p_buildpath(String args[]) throws Exception {
