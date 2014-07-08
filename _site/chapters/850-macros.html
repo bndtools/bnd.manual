@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			<style>
+				 body {
+					counter-reset: h1 20;
+				}
+			</style>
+				
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> Macro Reference</h1>
+				<p>A simple macro processor is added to the header processing. Variables allow a single definition of a value, and the use of derivations. Each header is a macro that can be expanded. Notice that headers that do not start with an upper case character will not be copied to the manifest, so they can be used as working variables. Variables are expanded by enclosing the name of the variable in <code>${&lt;name&gt;}</code> (curly braces) or <code>$(&lt;name&gt;)</code> (parenthesis). Additionally, square brackets [], angled brackets &lt;&gt;, double guillemets «», and single guillemets ‹› are also allowed for brackets. If brackets are nested, that is $[replace;acaca;a(.*)a;[$1]] will return <code>[cac]</code>.</p>
+
+<p>There are also a number of macros that perform basic functions. All these functions have the following basic syntax:</p>
+
+<pre><code> macro ::= '${' function '}' 
+     | '$\[' function '\]'
+     | '$(' function ')'
+     | '$&lt;' function '&gt;'
+
+ function ::= name ( ';' argument ) *
+</code></pre>
+
+<p>For example:</p>
+
+<pre><code>version=1.23.87.200109111023542
+Bundle-Version= ${version}
+Bundle-Description= This bundle has version ${version}
+</code></pre>
+
+<h2 id="arguments">Arguments</h2>
+<p>@Since(“2.3”) Macros can contain arguments. These arguments are available in the expansion as ${0} to ${9}. ${0} is the name of the macro, so the actual arguments start at 1. The name is also available as ${@}. The arguments as an array (without the name of the macro) is available as ${#}. The more traditional * could not be used because it clashes with wildcard keys, it means ALL values. </p>
+
+<p>For example:</p>
+
+<pre><code>foo: Hello ${1} -&gt; ${foo;Peter} -&gt; "Hello Peter"
+</code></pre>
+
+<h2 id="wildcarded-keys">Wildcarded Keys</h2>
+<p>Keys can be wildcarded. For example, if you want to set -plugin from different places, then you can set the <code>plugin.xxx</code> properties in different places and combine them with <code>-plugins= ${plugins.*}</code>.</p>
+
+<h2 id="types">Types</h2>
+<p>@TODO</p>
+
+<h2 id="reference">Reference</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code><a href="/macros/apply.html">apply ';' MACRO (';' LIST)*</a></code></td>
+      <td>Convert a list to an invoction with arguments</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/average.html">average (';' LIST )*</a></code></td>
+      <td>The average of a list, if no members exception is thrown</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/basedir.html">basedir</a></code></td>
+      <td>Get the basedirectory of this processor</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/basename.html">basename ( ';' FILEPATH ) +</a></code></td>
+      <td>A list of the basename (the final part) of a set of file paths.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/bsn.html">bsn</a></code></td>
+      <td>Provide the current bsn when a JAR is generated. This can differ from the Project’s bsn when there are sub-bundles.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/cat.html">cat ';' FILEPATH</a></code></td>
+      <td>The contents of a file</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/classes.html">classes TODO</a></code></td>
+      <td>A list of class names filtered by a query language</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/compare.html">compare NUMBER NUMBER</a></code></td>
+      <td>Compare two numbers. 0 is equal, 1 means a &gt; b, -1 is a &lt; b.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/currenttime.html">currenttime</a></code></td>
+      <td>The current epoch time in long integer format</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/def.html">def ';' KEY (';' STRING)?</a></code></td>
+      <td>The value of the given property or a default if macro is not defined. The default is an empty string if not specified.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/ee.html">ee</a></code></td>
+      <td>The name of the highest execution environment found in the current JAR</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/endswith.html">endswith ';' STRING ';' SUFFIX</a></code></td>
+      <td>Check if the given string ends with the given prefix</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/env.html">env ';' KEY</a></code></td>
+      <td>The given environment variable</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/error.html">error ( ';' STRING )*</a></code></td>
+      <td>Raise an error consisting of all concatenated strings</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/exporters.html">exporters ';' PACKAGE</a></code></td>
+      <td>The list of jars that export the given package</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/exports.html">exports</a></code></td>
+      <td>A list if exported packages</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/extension.html">extension STRING</a></code></td>
+      <td>The extension of the given string (the part after the ‘.’) or empty</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/filter.html">filter ';' LIST ';' REGEX</a></code></td>
+      <td>Filters entries in a list that matching a regular expression</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/find.html">find ';' VALUE ';' SEARCHED</a></code></td>
+      <td>The starting position ofof SEARCHED (not a regex) in VALUE</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/findfile.html">findfile ';' PATH ( ';' FILTER )</a></code></td>
+      <td>A filtered list of relative paths from a directory and its subdirectories</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/findlast.html">find ';' VALUE ';' SEARCHED</a></code></td>
+      <td>The starting position of SEARCHED (not a regex) in VALUE when searching from the end</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/findname.html">findname ';' PATH ( ';' FILTER )</a></code></td>
+      <td>A list of filtered by name resource paths with optional replacement</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/findpath.html">findpath ';' REGEX ( ';' REPLACE )?</a></code></td>
+      <td>A list of filtered by path resource paths with optional replacement</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/first.html">first (';' LIST )*</a></code></td>
+      <td>First element of a list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/fmodified.html">fmodified ( ';' RESOURCE )+</a></code></td>
+      <td>Latest modification date of a list of resources</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/foreach.html">foreach ';' MACRO (';' LIST)*</a></code></td>
+      <td>Iterator over a list, calling a macro with the value and index</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/format.html">format ';' STRING (';' ANY )*</a></code></td>
+      <td>Print a formatted string, automatically converting variables to the specified format if possible.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/frange.html">frange ';' VERSION ( ';' BOOLEAN )?</a></code></td>
+      <td>a range expression for a filter from a version. By default this is based on consumer compatibility. You can specify a third argument (true) to get provider compatibility.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/get.html">get ';' INDEX (';' LIST )*</a></code></td>
+      <td>The element from the concatenated lists at the given index</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/githead.html">githead</a></code></td>
+      <td>Get the head commit number. Look for a .git/HEAD file, going up in the file hierarchy. Then get this file, and resolve any symbolic reference.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/ide.html"></a></code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/if.html">if ';' STRING ';' STRING ( ';' STRING )?</a></code></td>
+      <td>Conditional macro that depending on a condition returns either a value for true or optionally for false.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/imports.html">imports</a></code></td>
+      <td>A list of the currently imported package names</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/indexof.html">indexof ';' STRING (';' LIST )*</a></code></td>
+      <td>The index of the given string in the list, or -1 if not found</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/is.html">is ( ';' ANY )*</a></code></td>
+      <td>Check if the given values are all equal</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/isdir.html">isdir ( ';' FILE )+</a></code></td>
+      <td>True if all given files are directories</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/isempty.html">isEmpty ( ';' STRING )*</a></code></td>
+      <td>True if all given strings are empty</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/isfile.html">isfile (';' FILE )+</a></code></td>
+      <td>Returns true if all given files actually exist and are not a directory or special file.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/isnumber.html">isnumber ( ';' STRING )*</a></code></td>
+      <td>Check if the given strings are numbers</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/join.html">join ( ';' LIST )+</a></code></td>
+      <td>Join a number of list/values into a single list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/js.html">js (';' JAVASCRIPT )*</a></code></td>
+      <td>Execute Javascript, return the value of the last expression</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/last.html">last (';' LIST )*</a></code></td>
+      <td>Last element of a list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/length.html">length STRING</a></code></td>
+      <td>The length of the given string</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/literal.html">literal ';' STRING</a></code></td>
+      <td>A literal value for the macro, i.e. it surrounds the value with the macro prefix and suffix.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/long2date.html">long2date</a></code></td>
+      <td>Turn a long time into a date</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/lsa.html">lsa ';' DIR (';' INSTRUCTION )</a></code></td>
+      <td>A list of absolute file paths from the given directory optionally filtered by a set of instructions.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/lsr.html">lsr ';' DIR (';' INSTRUCTION )</a></code></td>
+      <td>A list of relative file paths from the given directory optionally filtered by a set of instructions.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/map.html">map ';' MACRO (';' LIST)*</a></code></td>
+      <td>Map a list to a new list using a function</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/matches.html">matches STRING REGEX</a></code></td>
+      <td>Check if the given string matches the regular expression</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/maven_version.html">maven_version ';' MAVEN-VERSION</a></code></td>
+      <td>Cleanup a potential maven version to make it match an OSGi Version syntax.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/max.html">max (';' LIST )*</a></code></td>
+      <td>Maximum (string compared) element of a list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/md5.html">md5 ';' RESOURCE</a></code></td>
+      <td>The MD5 digest of an existing resource in the JAR</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/min.html">min (';' LIST )*</a></code></td>
+      <td>Minimum (string compared) element of a list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/native_capability.html">native_capability ( ';' ( 'os.name' | 'os.version' | 'os.processor' ) '=' STRING )*</a></code></td>
+      <td>Create a Require-Capability header based on the current platform or explicit values</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/ncompare.html">compare STRING STRING</a></code></td>
+      <td>Compare two strings. 0 is equal, 1 means a &gt; b, -1 is a &lt; b.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/nmax.html">nmax (';' LIST )*</a></code></td>
+      <td>Maximum (numerically compared) element of a list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/nmin.html">nmin (';' LIST )*</a></code></td>
+      <td>Minimum (numerically compared) element of a list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/now.html">now ( 'long' | DATEFORMAT )</a></code></td>
+      <td>Current date and time, default is default Date format. The format can be specified as a long or a date format.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/nsort.html">nsort (';' LIST )+</a></code></td>
+      <td>Concatenate a set of lists and sort their contents nummerically</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/osfile.html">osfile ';' DIR ';' NAME</a></code></td>
+      <td>Create a path to a file in OS dependent form.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/p_allsourcepath.html">p_allsourcepath</a></code></td>
+      <td>Path to all sources</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/p_bootclasspath.html">p_bootclasspath</a></code></td>
+      <td>The project’s boot class path</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/p_buildpath.html">p_buildpath</a></code></td>
+      <td>The project’s buildpath</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/p_dependson.html">p_dependson</a></code></td>
+      <td>Provides a list of project names this project depends on</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/p_output.html">p_output</a></code></td>
+      <td>The absolute path to the project’s output/target directory</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/p_sourcepath.html">p_sourcepath</a></code></td>
+      <td>The path to the project’s source directory.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/p_testpath.html">p_testpath</a></code></td>
+      <td>The path of JARs placed on the remote VM’s classpath for testing</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/path.html">path ( ';' FILES )+</a></code></td>
+      <td>A list of file paths separated by the platform’s path separator.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/pathseparator.html">pathseparator</a></code></td>
+      <td>The platform’s path separator</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/permissions.html">permissions (';' ( 'packages' | 'admin' | 'permissions' ) )+</a></code></td>
+      <td>A file in the format for the OSGi permissions resource.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/project.html"></a></code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/rand.html">rand (';' MIN ' (;' MAX )?)?</a></code></td>
+      <td>A random number between 0 and 100, or between the given range (inclusive).</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/random.html">random</a></code></td>
+      <td>Generate a random string, which is guaranteed to be a valid Java identifier</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/range.html">range ';' MASK ( ';' VERSION )</a></code></td>
+      <td>Create a semantic version range out of a version using a mask to control the bump</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/reject.html">reject ';' LIST ';' REGEX</a></code></td>
+      <td>Rejects a list by matching it against a regular expression</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/replace.html">replace ';' LIST ';' REGEX ';' REPLACE (';' STRING)?</a></code></td>
+      <td>Replace elements in a list when it matches a regular expression</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/repodigests.html">repodigests ( ';' NAME )*</a></code></td>
+      <td>Get the repository digests (describing their contents) for all or the specified names</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/repos.html">repos</a></code></td>
+      <td>A list of the current repositories</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/reverse.html">reverse (';' LIST )*</a></code></td>
+      <td>A reversed list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/select.html">select ';' LIST ';' REGEX</a></code></td>
+      <td>Selects entries in a list that matching a regular expression</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/separator.html">separator</a></code></td>
+      <td>The platform file separator</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/sha1.html">sha1 ';' RESOURCE</a></code></td>
+      <td>The SHA-1 digest of an existing resource in the JAR</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/size.html">size ( ';' LIST )*</a></code></td>
+      <td>Count the number of elements (of all collections combined)</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/sjoin.html">sjoin ';' SEPARATOR ( ';' LIST )+</a></code></td>
+      <td>Join a number of list/values into a single list with a given separator</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/sort.html">sort (';' LIST )+</a></code></td>
+      <td>Concatenate a set of lists and sort their contents on their string value</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/split.html">split ';' REGEX (';' STRING )*</a></code></td>
+      <td>Split a number of strings int a list using a regular expression</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/startswith.html">startswith ';' STRING ';' PREFIX</a></code></td>
+      <td>Check if the given string starts with the given prefix</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/sublist.html">sublist ';' START ';' END (';' LIST )*</a></code></td>
+      <td>Return a sublist of the list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/subst.html">trim ';' STRING</a></code></td>
+      <td>Remove whitespace around the given string</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/substring.html">substring ';' STRING ';' START ( ';' END )?</a></code></td>
+      <td>Return a substring of a given string, negative indexes allowed</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/sum.html">sum (';' LIST )*</a></code></td>
+      <td>The sum of a list</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/system.html">system ';' STRING ( ';' STRING )?</a></code></td>
+      <td>Execute a system command</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/toclassname.html">toclassname ';' FILES</a></code></td>
+      <td>Translate a list of relative file paths to class names. The files can either end with .class or .java</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/tolower.html">tolower STRING</a></code></td>
+      <td>Turn a string into an lower case string</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/toupper.html">toupper STRING</a></code></td>
+      <td>Turn a string into an uppercase string</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/trim.html">subst STRING ';' REGEX ';' STRING (';' NUMBER )?</a></code></td>
+      <td>Substitute all the regex matches in the target for the given value; if a count is specified, limit the number of replacements to that count.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/tstamp.html">tstamp ( ';' DATEFORMAT ( ';' TIMEZONE ( ';' LONG )? )? )?</a></code></td>
+      <td>Create a timestamp based on a date format. Default format is “yyyyMMddHHmm”</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/unescape.html">unescape ( ';' STRING )*</a></code></td>
+      <td>The concatenated input will have all \n, \r, \b, \f, and \t replaced with their control code.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/uniq.html">uniq (';' LIST )*</a></code></td>
+      <td>Concatenate the lists and then remove any duplicates.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/user.html">user ';' KEY ( ';' DEFAULT )?</a></code></td>
+      <td>A current user setting from the ~/.bnd/settings.json file</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/version.html">version ';' MASK (';' VERSION )</a></code></td>
+      <td>Modify a version to set a version policy. The policy is a mask that is mapped to a version.</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/warning.html">warning ( ';' STRING )*</a></code></td>
+      <td>Raise an error consisting of all concatenated strings</td>
+    </tr>
+    <tr>
+      <td><code><a href="/macros/workspace.html">workspace</a></code></td>
+      <td>The absolute file path to the current workspace</td>
+    </tr>
+  </tbody>
+</table>
+
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

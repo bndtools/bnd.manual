@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: isfile (';' FILE )+
 summary: Returns true if all given files actually exist and are not a directory or special file.
---- 
+---
+layout: default 
 
 
 

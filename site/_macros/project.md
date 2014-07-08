@@ -2,7 +2,8 @@ ___
 title: 	repo ';' BSN ( ';' VERSION ( ';' ('HIGHEST' | 'LOWEST' | 'EXACT )? )?
 class: 	Project
 summary: Provides the file path to a bundle in one of the repositories
-----
+---
+layout: default-
 
 
 	public String _repo(String args[]) throws Exception {

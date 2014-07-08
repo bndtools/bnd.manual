@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> -sub FILE-SPEC ( ',' FILE-SPEC )*</h1>
+				<pre><code>/**
+ * Answer a list of builders that represent this file or a list of files
+ * specified in -sub. This list can be empty. These builders represents to
+ * be created artifacts and are each scoped to such an artifacts. The
+ * builders can be used to build the bundles or they can be used to find out
+ * information about the to be generated bundles.
+ *
+ * @return List of 0..n builders representing artifacts.
+ * @throws Exception
+ */
+public List&lt;Builder&gt; getSubBuilders() throws Exception {
+	String sub = getProperty(SUB);
+	if (sub == null || sub.trim().length() == 0 || EMPTY_HEADER.equals(sub))
+		return Arrays.asList(this);
+
+	List&lt;Builder&gt; builders = new ArrayList&lt;Builder&gt;();
+	if (isTrue(getProperty(NOBUNDLES)))
+		return builders;
+
+	Parameters subsMap = parseHeader(sub);
+	for (Iterator&lt;String&gt; i = subsMap.keySet().iterator(); i.hasNext();) {
+		File file = getFile(i.next());
+		if (file.isFile() &amp;&amp; !file.getName().startsWith(".")) {
+			builders.add(getSubBuilder(file));
+			i.remove();
+		}
+	}
+
+	Instructions instructions = new Instructions(subsMap);
+
+	List&lt;File&gt; members = new ArrayList&lt;File&gt;(Arrays.asList(getBase().listFiles()));
+
+	nextFile: while (members.size() &gt; 0) {
+
+		File file = members.remove(0);
+
+		// Check if the file is one of our parents
+		@SuppressWarnings("resource")
+		Processor p = this;
+		while (p != null) {
+			if (file.equals(p.getPropertiesFile()))
+				continue nextFile;
+			p = p.getParent();
+		}
+
+		for (Iterator&lt;Instruction&gt; i = instructions.keySet().iterator(); i.hasNext();) {
+
+			Instruction instruction = i.next();
+			if (instruction.matches(file.getName())) {
+
+				if (!instruction.isNegated()) {
+					builders.add(getSubBuilder(file));
+				}
+
+				// Because we matched (even though we could be negated)
+				// we skip any remaining searches
+				continue nextFile;
+			}
+		}
+	}
+	return builders;
+}
+
+public Builder getSubBuilder(File file) throws Exception {
+	Builder builder = getSubBuilder();
+	if (builder != null) {
+		builder.setProperties(file);
+		addClose(builder);
+	}
+	return builder;
+}
+
+public Builder getSubBuilder() throws Exception {
+	Builder builder = new Builder(this);
+	builder.setBase(getBase());
+
+	for (Jar file : getClasspath()) {
+		builder.addClasspath(file);
+	}
+
+	return builder;
+}
+</code></pre>
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

@@ -1,9 +1,11 @@
 ---
+layout: default
 title: user ';' KEY ( ';' DEFAULT )?
 summary: A current user setting from the ~/.bnd/settings.json file
 class: Workspace
 layout: default
-----
+---
+layout: default-
 
 
 	public String _user(String[] args) throws Exception {

@@ -1,8 +1,12 @@
 ---
+layout: default
 class: Macro
 title: replace ';' LIST ';' REGEX ';' REPLACE (';' STRING)?
 summary: Replace elements in a list when it matches a regular expression
 ---
+
+Replace all elements of the list that match the regular expression regex with the replacement. The replacement can use the `$[0-9]` back references defined in the regular expressions. The macro uses `item.replaceAll(regex,replacement)` method to do the replacement.For example, to add a `.jar` extension to all files listed, use the following: \\</td>
+`List = ${replace;${impls};$;.jar}`
 
 	/**
 	 * replace ; <list> ; regex ; replace

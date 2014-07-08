@@ -1,8 +1,9 @@
-___
-title: 	p_output
+---
+layout: default
 class: 	Project
+title:  p_output
 summary: The absolute path to the project's output/target directory
-----
+---
 
 	public String _p_output(String args[]) throws Exception {
 		if (args.length != 1)

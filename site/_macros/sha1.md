@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Analyzer
 title: sha1 ';' RESOURCE
 summary: The SHA-1 digest of an existing resource in the JAR
 ---
+layout: default
 
 
 	/**

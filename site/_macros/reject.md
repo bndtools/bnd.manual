@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: reject ';' LIST ';' REGEX
 summary: Rejects a list by matching it against a regular expression
 ---
+layout: default
 
 	public String _filter(String args[]) {
 		return filter(args, false);
@@ -13,7 +15,7 @@ summary: Rejects a list by matching it against a regular expression
 
 	}
 
-	static String	_filterHelp	= "${%s;<list>;<regex>}";
+	static String	_filterHelp	= "${ % s;<list>;<regex>}";
 
 	String filter(String[] args, boolean include) {
 		verifyCommand(args, String.format(_filterHelp, args[0]), null, 3, 3);

@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: def ';' KEY (';' STRING)?
 summary: The value of the given property or a default if macro is not defined. The default is an empty string if not specified.
 ---
+layout: default
 
 
 	public String _def(String args[]) {

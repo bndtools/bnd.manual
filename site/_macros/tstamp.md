@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: tstamp ( ';' DATEFORMAT ( ';' TIMEZONE ( ';' LONG )? )? )?
 summary: Create a timestamp based on a date format. Default format is "yyyyMMddHHmm" 
 ---
+layout: default
 
 
 

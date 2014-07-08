@@ -4,6 +4,96 @@ title: From the command line
 layout: default
 ---
 
+
+MAIN OPTIONS
+
+   [ -o, --output <string> ]  - Specify the output file path. The default is
+                                output.jar in the current directory
+
+
+MAIN OPTIONS
+
+   [ -f, --full ]             - Do full
+   [ -p, --project <string> ] - Identify another project
+   [ -t, --test ]             - Build for test
+
+Available sub-commands: 
+
+	  action                      - Execute an action on a repo, or if no name is
+	                                give, list the actions 
+	  baseline                    - Compare a newer bundle to a baselined bundle and
+	                                provide versioning advice 
+	  bnd                         - The swiss army tool for OSGi 
+	  bootstrap                   -  
+	  bsn2url                     -  
+	  build                       - Build a project. This will create the jars
+	                                defined in the bnd.bnd and sub-builders. 
+	  buildx                      - Build project, is deprecated but here for
+	                                backward compatibility 
+	  bump                        - Bumps the version of a project 
+	  changes                     -  
+	  clean                       - Clean a project 
+	  convert                     - Converter to different formats 
+	  create                      - Create jar, used to support backward compatible
+	                                java jar commands 
+	  debug                       - Show a lot of info about the project you're in 
+	  defaults                    -  
+	  deliverables                - Show all deliverables from this workspace. with
+	                                their current version and path. 
+	  diff                        - Diff jars 
+	  digest                      - Digests a number of files 
+	  do                          - Execute a file based on its extension. Supported
+	                                extensions are: bnd (build), bndrun (run), and
+	                                jar (print) 
+	  eclipse                     - Show info about the current directory's eclipse
+	                                project 
+	  ees                         -  
+	  enroute                     - OSGi enRoute commands to maintain bnd workspaces
+	                                (create workspace, add project, etc) 
+	  extract                     - Extract files from a JAR file, equivalent jar
+	                                command x[vf] (syntax supported) 
+	  find                        -  
+	  generate                    - Generate autocompletion file for bash 
+	  grep                        - Grep the manifest of bundles/jar files. 
+	  identity                    -  
+	  info                        - Show key project variables 
+	  junit                       - Test a project with plain JUnit 
+	  macro                       - Show macro value 
+	  maven                       - Maven bundle command 
+	  package                     - Package a bnd or bndrun file into a single jar
+	                                that executes with java -jar <>.jar 
+	  plugins                     -  
+	  print                       - Printout the JAR 
+	  project                     - Execute a Project action, or if no parms given,
+	                                show information about the project 
+	  release                     - Release this project 
+	  repo                        - Manage the repositories 
+	  run                         - Run a project in the OSGi launcher 
+	  runtests                    - Run OSGi tests and create report 
+	  schema                      - Highly specialized function to create an
+	                                overview of package deltas in ees 
+	  select                      - Helps finding information in a set of JARs by
+	                                filtering on manifest data and printing out
+	                                selected information. 
+	  settings                    - Set bnd/jpm global variables 
+	  source                      - Merge a binary jar with its sources. It is
+	                                possible to specify source path 
+	  sync                        -  
+	  syntax                      - Access the internal bnd database of keywords and
+	                                options 
+	  test                        - Test a project according to an OSGi test 
+	  type                        - List files int a JAR file, equivalent jar
+	                                command t[vf] (syntax supported) 
+	  verify                      - Verify jars 
+	  version                     - Show version information about bnd 
+	  view                        - View a resource from a JAR file. 
+	  wrap                        - Wrap a jar 
+	  xref                        - Show a cross references for all classes in a set
+	                                of jars. 
+
+
+
+
 The command line tool can be invoked in several different ways:
 
 * bnd ''general-options'' ''cmd'' ''cmd-options''

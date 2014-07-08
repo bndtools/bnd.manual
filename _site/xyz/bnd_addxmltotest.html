@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> Bnd-AddXmlToTest RESOURCE ( ',' RESOURCE )</h1>
+				<pre><code>public void setup(Bundle fw, Bundle targetBundle) {
+	startTime = System.currentTimeMillis();
+
+	testsuite.addAttribute("hostname", hostname);
+	if (targetBundle != null) {
+		testsuite.addAttribute("name", "test." + targetBundle.getSymbolicName());
+		testsuite.addAttribute("target", targetBundle.getLocation());
+	} else {
+		testsuite.addAttribute("name", "test.run");
+
+	}
+	testsuite.addAttribute("timestamp", df.format(new Date()));
+	testsuite.addAttribute("framework", fw);
+	testsuite.addAttribute("framework-version", fw.getVersion());
+
+	Tag properties = new Tag("properties");
+	testsuite.addContent(properties);
+
+	for (Map.Entry&lt;Object,Object&gt; entry : System.getProperties().entrySet()) {
+		Tag property = new Tag(properties, "property");
+		property.addAttribute("name", entry.getKey());
+		property.addAttribute("value", entry.getValue());
+	}
+
+	Tag bundles = new Tag(testsuite, "bundles");
+	Bundle bs[] = fw.getBundleContext().getBundles();
+
+	for (int i = 0; i &lt; bs.length; i++) {
+		Tag bundle = new Tag("bundle");
+		bundle.addAttribute("location", bs[i].getLocation());
+		bundle.addAttribute("modified", df.format(new Date(bs[i].getLastModified())));
+		bundle.addAttribute("state", bs[i].getState());
+		bundle.addAttribute("id", bs[i].getBundleId() + "");
+		if ( bs[i].getSymbolicName() != null)
+			bundle.addAttribute("bsn", bs[i].getSymbolicName());
+		if ( bs[i].getVersion() != null)
+			bundle.addAttribute("version", bs[i].getVersion());
+
+		if (bs[i].equals(targetBundle))
+			bundle.addAttribute("target", "true");
+
+		bundles.addContent(bundle);
+	}
+	if (targetBundle != null) {
+		String header = (String) targetBundle.getHeaders().get(aQute.bnd.osgi.Constants.BND_ADDXMLTOTEST);
+		if (header != null) {
+			StringTokenizer st = new StringTokenizer(header, " ,");
+
+			while (st.hasMoreTokens()) {
+				String resource = st.nextToken();
+				URL url = targetBundle.getEntry(resource);
+
+				if (url != null) {
+					String name = url.getFile();
+					int n = name.lastIndexOf('/');
+					if (n &lt; 0)
+						n = 0;
+					else
+						n = n + 1;
+
+					if (name.endsWith(".xml"))
+						name = name.substring(n, name.length() - 4);
+					else
+						name = name.substring(n, name.length()).replace('.', '_');
+
+					testsuite.addContent(url);
+
+				} else {
+					Tag addxml = new Tag(testsuite, "error");
+					addxml.addAttribute("reason", "no such resource: " + resource);
+				}
+			}
+		}
+	}
+}
+</code></pre>
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

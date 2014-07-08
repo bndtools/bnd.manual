@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: range ';' MASK ( ';' VERSION )
 summary: Create a semantic version range out of a version using a mask to control the bump
 ---
+layout: default
  
 
 	/**

@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Analyzer
 title: md5 ';' RESOURCE
 summary: The MD5 digest of an existing resource in the JAR
 ---
+layout: default
 
 
 	/**

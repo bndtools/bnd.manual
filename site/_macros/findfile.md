@@ -1,6 +1,7 @@
-___
+---
+layout: default
+class: Project
 title:	findfile ';' PATH ( ';' FILTER )
-class: 	Project
 summary: A filtered list of relative paths from a directory and its subdirectories
 ---
 

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> -wab FILE ( ',' FILE )*</h1>
+				<p>In OSGi Enterprise 4.2 the concept of Web Archive Bundles were introduced. Web Archive Bundles are 100% normal bundles following all the rules of OSGi. Their speciality is that they can be mapped to a web server following several of the rules of Java Enterprise Edition’s Servlet model. The big difference is that the WARs of the servlet model have a rather strict layout of their archive because the servlet container also handles class loading. In OSGi, the class loading is very well specified and it would therefore be wrong to create special rules.</p>
+
+<p>However, the OSGi supports the Bundle-Classpath header. This header allows the organization of the internal layout. It turns out that it is possible to create a valid Web Application Bundle (WAB) that is also a valid Web ARchive (WAR). Being deploy an archive both to OSGi and an application server obviously has advantages. bnd therefore supports a number of instructions that make it easy to create these dual mode archives.</p>
+
+<p>The <code>-wab</code> instruction instructs bnd to move the root of the created archive to WEB-INF/classes. That is, you build your bundle in the normal way,not using the <code>Bundle-ClassPath</code>. The <code>-wab</code> command then moves the root of the archive so the complete class path for the bundle is no inside the WEB-INF/classes directory. It then adjusts the <code>Bundle-ClassPath</code> header to reflect this new location of the classes and resources.</p>
+
+<p>The new root now only contains WEB-INF. In the Servlet specification, the root of the archive is mapped to the server’s context URL. It is therefore often necessary to place static files in the root. For this reason, the <code>-wab</code> instruction has the same form as [Include-Resource][#include-resource] header, and performs the same function. However, it performs this function of copying resources from the file system after the classes and resources of the original bundle have been moved to WEB-INF.</p>
+
+<p>For example, the following code creates a simple WAB/WAR:</p>
+
+<p>Private-Package:   com.example.impl.*
+  Export-Package:    com.example.service.myapi
+  Include-Resource:  resources/
+  -wab:              static-pages/</p>
+
+<p>The layout of the resulting archive is:</p>
+
+<p>WEB-INF/classes/com/example/impl/
+  WEB-INF/classes/com/example/service/myapi/
+  WEB-INF/classes/resources/
+  index.html // from static-pages</p>
+
+<p>The <code>Bundle-ClassPath</code> is <code>WEB-INF/classes</code>.</p>
+
+<p>WARs can carry a WEB-INF/lib directory. Any archive in this directory is mapped to the class path of the WAR. The OSGi specifications do not recognize directories with archives it is therefore necessary to list these archives also on the <code>Bundle-ClassPath</code> header. This is cumbersome to do by hand so the <code>-wablib</code> command will take a list of paths. </p>
+
+<p>Private-Package:   com.example.impl.*
+  Export-Package:    com.example.service.myapi
+  Include-Resource:  resources/
+  -wab:              static-pages/
+  -wablib:			 lib/a.jar, lib/b.jar</p>
+
+<p>This results in a layout of:</p>
+
+<p>WEB-INF/classes/com/example/impl/
+  WEB-INF/classes/com/example/service/myapi/
+  WEB-INF/classes/resources/
+  WEB-INF/lib/
+    a.jar
+    b.jar
+  index.html ( from static-pages)</p>
+
+<p>The <code>Bundle-ClassPath</code> is now set to <code>WEB-INF/classes,WEB-INF/lib/a.jar,WEB-INF/lib/a.jar</code></p>
+
+<pre><code>/**
+ * Turn this normal bundle in a web and add any resources.
+ *
+ * @throws Exception
+ */
+private Jar doWab(Jar dot) throws Exception {
+	String wab = getProperty(WAB);
+	String wablib = getProperty(WABLIB);
+	if (wab == null &amp;&amp; wablib == null)
+		return dot;
+
+	trace("wab %s %s", wab, wablib);
+	setBundleClasspath(append("WEB-INF/classes", getProperty(BUNDLE_CLASSPATH)));
+
+	Set&lt;String&gt; paths = new HashSet&lt;String&gt;(dot.getResources().keySet());
+
+	for (String path : paths) {
+		if (path.indexOf('/') &gt; 0 &amp;&amp; !Character.isUpperCase(path.charAt(0))) {
+			trace("wab: moving: %s", path);
+			dot.rename(path, "WEB-INF/classes/" + path);
+		}
+	}
+
+	Parameters clauses = parseHeader(getProperty(WABLIB));
+	for (String key : clauses.keySet()) {
+		File f = getFile(key);
+		addWabLib(dot, f);
+	}
+	doIncludeResource(dot, wab);
+	return dot;
+}
+</code></pre>
+
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

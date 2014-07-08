@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: warning ( ';' STRING )*
 summary: Raise an error consisting of all concatenated strings
 ---
+layout: default
 
 
 	public String _warning(String args[]) {

@@ -1,8 +1,9 @@
-___
-title:	findpath ';' REGEX ( ';' REPLACE )
-class: 	Project
+---
+layout: default
+class: Project
+title: findpath ';' REGEX ( ';' REPLACE )?
 summary: A list of filtered by path resource paths with optional replacement
-----
+---
 
 	public String _findname(String args[]) {
 		return findPath("findname", args, false);

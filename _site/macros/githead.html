@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> githead</h1>
+				<p>layout: default</p>
+
+<pre><code>/**
+ * #388 Manifest header to get GIT head Get the head commit number. Look
+ * for a .git/HEAD file, going up in the file hierarchy. Then get this file,
+ * and resolve any symbolic reference.
+ *
+ * @throws IOException
+ */
+static Pattern	GITREF	= Pattern.compile("ref:\\s*(refs/(heads|tags|remotes)/([^\\s]+))\\s*");
+
+static String	_githeadHelp	= "${githead}, provide the SHA for the current git head";
+
+public String _githead(String[] args) throws IOException {
+	Macro.verifyCommand(args, _githeadHelp, null, 1, 1);
+
+	//
+	// Locate the .git directory
+	//
+
+	File rover = getBase();
+	while (rover !=null &amp;&amp; rover.isDirectory()) {
+		File headFile = IO.getFile(rover, ".git/HEAD");
+		if (headFile.isFile()) {
+			//
+			// The head is either a symref (ref: refs/(heads|tags|remotes)/&lt;name&gt;)
+			//
+			String head = IO.collect(headFile).trim();
+			if (!Hex.isHex(head)) {
+				//
+				// Should be a symref
+				//
+				Matcher m = GITREF.matcher(head);
+				if (m.matches()) {
+
+					// so the commit is in the following path
+
+					head = IO.collect(IO.getFile(rover, ".git/" + m.group(1)));
+				}
+				else {
+					error("Git repo seems corrupt. It exists, find the HEAD but the content is neither hex nor a sym-ref: %s",
+							head);
+				}
+			}
+			return head.trim().toUpperCase();
+		}
+		rover = rover.getParentFile();
+	}
+	// Cannot find git directory
+	return "";
+}
+</code></pre>
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

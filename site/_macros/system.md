@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: system ';' STRING ( ';' STRING )?
 summary: Execute a system command
 ---
+layout: default
 
 
 

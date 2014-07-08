@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> -eeprofile 'auto' | PROFILE +</h1>
+				<pre><code>	/**
+ * Added for 1.8 profiles. A 1.8 profile is a set of packages so the VM can
+ * be delivered in smaller versions. This method will look at the
+ * {@link Constants#EEPROFILE} option. If it is set, it can be "auto" or it
+ * can contain a list of profiles specified as name="a,b,c" values. If we
+ * find a package outside the profiles, no profile is set. Otherwise the
+ * highest found profile is added. This only works for java packages.
+ */
+private String doEEProfiles(JAVA highest) throws IOException {
+	String ee = getProperty(EEPROFILE);
+	if (ee == null)
+		return highest.getFilter();
+
+	ee = ee.trim();
+
+	Map&lt;String,Set&lt;String&gt;&gt; profiles;
+
+	if (ee.equals(EEPROFILE_AUTO_ATTRIBUTE)) {
+		profiles = highest.getProfiles();
+		if (profiles == null)
+			return highest.getFilter();
+	} else {
+		Attrs t = OSGiHeader.parseProperties(ee);
+		profiles = new HashMap&lt;String,Set&lt;String&gt;&gt;();
+
+		for (Map.Entry&lt;String,String&gt; e : t.entrySet()) {
+			String profile = e.getKey();
+			String l = e.getValue();
+			SortedList&lt;String&gt; sl = new SortedList&lt;String&gt;(l.split("\\s*,\\s*"));
+			profiles.put(profile, sl);
+		}
+	}
+	SortedSet&lt;String&gt; found = new TreeSet&lt;String&gt;();
+	nextPackage: for (PackageRef p : referred.keySet()) {
+		if (p.isJava()) {
+			String fqn = p.getFQN();
+			for (Entry&lt;String,Set&lt;String&gt;&gt; entry : profiles.entrySet()) {
+				if (entry.getValue().contains(fqn)) {
+
+					found.add(entry.getKey());
+
+					//
+					// Check if we found all the possible profiles
+					// that means we're finished
+					//
+
+					if (found.size() == profiles.size())
+						break nextPackage;
+
+					//
+					// Profiles should be exclusive
+					// so we can break if we found one
+					//
+					continue nextPackage;
+				}
+			}
+
+			//
+			// Ouch, outside any profile
+			//
+			return highest.getFilter();
+		}
+	}
+
+	String filter = highest.getFilter();
+	if (!found.isEmpty())
+		filter = filter.replaceAll("JavaSE", "JavaSE/" + found.last());
+	// TODO a more elegant way to build the filter, we now assume JavaSE
+	return filter;
+
+}
+</code></pre>
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

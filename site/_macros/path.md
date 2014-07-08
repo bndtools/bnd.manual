@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: path ( ';' FILES )+
 summary: A list of file paths separated by the platform's path separator.
 ---
+layout: default
 
 
 	public String _path(String args[]) {

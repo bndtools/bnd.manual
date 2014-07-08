@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: basename ( ';' FILEPATH ) +
 summary: A list of the basename (the final part) of a set of file paths.
 ---
+layout: default
 
 	public String _basename(String args[]) {
 		if (args.length < 2) {

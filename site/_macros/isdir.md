@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: isdir ( ';' FILE )+
 summary: True if all given files are directories
 ---
+layout: default
 
 	public String _isdir(String args[]) {
 		if (args.length < 2) {

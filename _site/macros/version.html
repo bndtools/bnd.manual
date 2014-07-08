@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> version ';' MASK (';' VERSION )</h1>
+				<p>layout: default</p>
+
+<pre><code>/**
+ * Modify a version to set a version policy. The policy is a mask that is
+ * mapped to a version.
+ * 
+ * &lt;pre&gt;
+ * +           increment
+ * -           decrement
+ * =           maintain
+ * s			only pos=3 (qualifier). If qualifer == SNAPSHOT, return m.m.m-SNAPSHOT else m.m.m.q
+ * s			only pos=3 (qualifier). If qualifer == SNAPSHOT, return m.m.m-SNAPSHOT else m.m.m
+ * &amp;tilde;           discard
+ * 
+ * ==+      = maintain major, minor, increment micro, discard qualifier
+ * &amp;tilde;&amp;tilde;&amp;tilde;=     = just get the qualifier
+ * version=&amp;quot;[${version;==;${@}},${version;=+;${@}})&amp;quot;
+ * &lt;/pre&gt;
+ * 
+ * @param args
+ * @return
+ */
+final static String		MASK_STRING			= "[\\-+=~0123456789]{0,3}[=~]?";
+final static Pattern	MASK				= Pattern.compile(MASK_STRING);
+final static String		_versionHelp		= "${version;&lt;mask&gt;;&lt;version&gt;}, modify a version\n"
+													+ "&lt;mask&gt; ::= [ M [ M [ M [ MQ ]]]\n"
+													+ "M ::= '+' | '-' | MQ\n" + "MQ ::= '~' | '='";
+final static Pattern	_versionPattern[]	= new Pattern[] {
+		null, null, MASK, Verifier.VERSION
+											};
+
+public String _version(String args[]) {
+	verifyCommand(args, _versionHelp, null, 2, 3);
+
+	String mask = args[1];
+
+	Version version = null;
+	if (args.length &gt;= 3)
+		version = new Version(args[2]);
+
+	return version(version, mask);
+}
+
+String version(Version version, String mask) {
+	if (version == null) {
+		String v = domain.getProperty("@");
+		if (v == null) {
+			domain.error(
+					"No version specified for ${version} or ${range} and no implicit version ${@} either, mask=%s",
+					mask);
+			v = "0";
+		}
+		version = new Version(v);
+	}
+
+	StringBuilder sb = new StringBuilder();
+	String del = "";
+
+	for (int i = 0; i &lt; mask.length(); i++) {
+		char c = mask.charAt(i);
+		String result = null;
+		if (c != '~') {
+			if (i == 3) {
+				result = version.getQualifier();
+				if (c == 'S') {
+					// we have a request for a Maven snapshot
+					if ("SNAPSHOT".equals(result))
+						return sb.toString() + "-SNAPSHOT";
+				} else if (c == 's') {
+					// we have a request for a Maven snapshot
+					if ("SNAPSHOT".equals(result))
+						return sb.toString() + "-SNAPSHOT";
+					else
+						return sb.toString();
+				}
+			} else if (Character.isDigit(c)) {
+				// Handle masks like +00, =+0
+				result = String.valueOf(c);
+			} else {
+				int x = version.get(i);
+				switch (c) {
+					case '+' :
+						x++;
+						break;
+					case '-' :
+						x--;
+						break;
+					case '=' :
+						break;
+				}
+				result = Integer.toString(x);
+			}
+			if (result != null) {
+				sb.append(del);
+				del = ".";
+				sb.append(result);
+			}
+		}
+	}
+	return sb.toString();
+}
+</code></pre>
+
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

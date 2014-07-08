@@ -1,5 +1,5 @@
 ---
-title: Developing
+title: For Developers
 layout: default
 ---
 

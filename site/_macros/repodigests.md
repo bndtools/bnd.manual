@@ -1,9 +1,11 @@
 ---
+layout: default
 title: repodigests ( ';' NAME )*
 summary: Get the repository digests (describing their contents) for all or the specified names 
 class: Workspace
 layout: default
-----
+---
+layout: default-
 
 
 	public Object _repodigests(String[] args) throws Exception {

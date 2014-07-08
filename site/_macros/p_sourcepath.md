@@ -1,9 +1,9 @@
-___
-title: 	p_sourcepath
+---
+layout: default
 class: 	Project
+title: p_sourcepath
 summary: The path to the project's source directory.
-related: src
-----
+---
 
 	public String _p_sourcepath(String args[]) throws Exception {
 		return list(args, getSourcePath());

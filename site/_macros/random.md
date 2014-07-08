@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Processor
 title: random
 summary: Generate a random string, which is guaranteed to be a valid Java identifier
 ---
+layout: default
 
 	/**
 	 * Generate a random string, which is guaranteed to be a valid Java

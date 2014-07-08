@@ -1,8 +1,11 @@
-___
-title: 	p_allsourcepath
+---
+layout: default
 class: 	Project
-summary: This reads the source and target settings from the IDE
-----
+title: 	p_allsourcepath
+summary: Path to all sources
+---
+
+layout: default-
 
 	public String _p_allsourcepath(String args[]) throws Exception {
 		return list(args, getAllsourcepath());

@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Builder
 title: githead
 summary: Get the head commit number. Look for a .git/HEAD file, going up in the file hierarchy. Then get this file, and resolve any symbolic reference.
 ---
+layout: default
 
 
 	/**

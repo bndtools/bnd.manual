@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> -plugin* PARAMETERS</h1>
+				<pre><code>/**
+ * Return a list of plugins. Plugins are defined with the -plugin command.
+ * They are class names, optionally associated with attributes. Plugins can
+ * implement the Plugin interface to see these attributes. Any object can be
+ * a plugin.
+ * 
+ * @return
+ */
+public Set&lt;Object&gt; getPlugins() {
+	synchronized (this) {
+		if (this.plugins != null)
+			return this.plugins;
+
+		plugins = new LinkedHashSet&lt;Object&gt;();
+		missingCommand = new HashSet&lt;String&gt;();
+	}
+	// The owner of the plugin is always in there.
+	plugins.add(this);
+	setTypeSpecificPlugins(plugins);
+
+	if (parent != null)
+		plugins.addAll(parent.getPlugins());
+
+	// We only use plugins now when they are defined on our level
+	// and not if it is in our parent. We inherit from our parent
+	// through the previous block.
+
+	if (properties.containsKey(PLUGIN)) {
+		String spe = getProperty(PLUGIN);
+		if (spe.equals(NONE))
+			return new LinkedHashSet&lt;Object&gt;();
+
+		spe = mergeProperties(PLUGIN);
+		String pluginPath = mergeProperties(PLUGINPATH);
+		loadPlugins(plugins, spe, pluginPath);
+	}
+
+	addExtensions(plugins);
+
+	for (RegistryDonePlugin rdp : getPlugins(RegistryDonePlugin.class)) {
+		try {
+			rdp.done();
+		}
+		catch (Exception e) {
+			error("Calling done on %s, gives an exception %s", rdp, e);
+		}
+	}
+	return this.plugins;
+}
+
+
+/**
+ * Magic to load the plugins. This is quite tricky actually since we allow
+ * plugins to be downloaded (this is mainly intended for repositories since
+ * in general plugins should use extensions, however to bootstrap the
+ * extensions we need more). Since downloads might need plugins for
+ * passwords and protocols we need to first load the paths specified on the
+ * plugin clause, then check if there are any local plugins (starting with
+ * aQute.bnd and be able to load from our own class loader).
+ * &lt;p&gt;
+ * After that, we load the plugin paths, these can use the built in
+ * connectors.
+ * &lt;p&gt;
+ * Last but not least, we load the remaining plugins.
+ * 
+ * @param instances
+ * @param pluginString
+ */
+protected void loadPlugins(Set&lt;Object&gt; instances, String pluginString, String pluginPathString) {
+	Parameters plugins = new Parameters(pluginString);
+	CL loader = getLoader();
+
+	// First add the plugin-specific paths from their path: directives
+	for (Entry&lt;String,Attrs&gt; entry : plugins.entrySet()) {
+		String key = removeDuplicateMarker(entry.getKey());
+		String path = entry.getValue().get(PATH_DIRECTIVE);
+		if (path != null) {
+			String parts[] = path.split("\\s*,\\s*");
+			try {
+				for (String p : parts) {
+					File f = getFile(p).getAbsoluteFile();
+					loader.add(f.toURI().toURL());
+				}
+			}
+			catch (Exception e) {
+				error("Problem adding path %s to loader for plugin %s. Exception: (%s)", path, key, e);
+			}
+		}
+	}
+
+	//
+	// Try to load any plugins that are local
+	// these must start with aQute.bnd.* and
+	// and be possible to load. The main intention
+	// of this code is to load the URL connectors so that
+	// any access to remote plugins can use the connector
+	// model.
+	//
+
+	Set&lt;String&gt; loaded = new HashSet&lt;String&gt;();
+	for (Entry&lt;String,Attrs&gt; entry : plugins.entrySet()) {
+		String className = removeDuplicateMarker(entry.getKey());
+		Attrs attrs = entry.getValue();
+
+		trace("Trying pre-plugin %s", className);
+
+		Object plugin = loadPlugin(getClass().getClassLoader(), attrs, className, true);
+		if (plugin != null) {
+			// with the marker!!
+			loaded.add(entry.getKey());
+			instances.add(plugin);
+		}
+	}
+
+	//
+	// Make sure we load each plugin only once
+	// by removing the entries that were successfully loaded
+	//
+	plugins.keySet().removeAll(loaded);
+
+	loadPluginPath(instances, pluginPathString, loader);
+
+	//
+	// Load the remaining plugins
+	//
+
+	for (Entry&lt;String,Attrs&gt; entry : plugins.entrySet()) {
+		String className = removeDuplicateMarker(entry.getKey());
+		Attrs attrs = entry.getValue();
+
+		trace("Loading secondary plugin %s", className);
+
+		// We can defer the error if the plugin specifies
+		// a command name. In that case, we'll verify that
+		// a bnd file does not contain any references to a
+		// plugin
+		// command. The reason this feature was added was
+		// to compile plugin classes with the same build.
+		String commands = attrs.get(COMMAND_DIRECTIVE);
+
+		Object plugin = loadPlugin(loader, attrs, className, commands != null);
+		if (plugin != null)
+			instances.add(plugin);
+		else {
+			if (commands == null)
+				error("Cannot load the plugin %s", className);
+			else {
+				Collection&lt;String&gt; cs = split(commands);
+				missingCommand.addAll(cs);
+			}
+		}
+	}
+}
+</code></pre>
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

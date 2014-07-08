@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			<style>
+				 body {
+					counter-reset: h1 15;
+				}
+			</style>
+				
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> For Developers</h1>
+				<h2 id="api">API</h2>
+<p>It is quite easy to use bnd from Java, you only need to include biz.aQute.bndlib on your class path. This chapter shows you some samples of how to use bndlib.</p>
+
+<h2 id="creating-a-manifest">Creating a Manifest</h2>
+<p>By default, bnd creates a container with resources and then calculates the manifest. However, these phases are separated although they use the same instructions. The following snippet therefore shows how you can create a manifest from an existing file or directory.</p>
+
+<p>Analyzer analyzer = new Analyzer(); 
+  Jar bin = new Jar( new File(“bin”) );  // where our data is
+  analyzer.setJar( bin );                // give bnd the contents</p>
+
+<p>// You can provide additional class path entries to allow
+  // bnd to pickup export version from the packageinfo file,
+  // Version annotation, or their manifests.
+  analyzer.addClasspath( new File(“jar/spring.jar”) );</p>
+
+<p>analyzer.setProperty(“Bundle-SymbolicName”,”org.osgi.core”);
+  analyzer.setProperty(“Export-Package”, 
+                       “org.osgi.framework,org.osgi.service.event”);
+  analyzer.setProperty(“Bundle-Version”,”1.0”);</p>
+
+<p>// There are no good defaults so make sure you set the 
+  // Import-Package
+  analyzer.setProperty(“Import-Package”,”*”);</p>
+
+<p>// Calculate the manifest
+  Manifest manifest = analyzer.calcManifest();</p>
+
+<h2 id="plugins">Plugins</h2>
+<p>Plugins are objects that can extend the functionality of bnd. They are called from inside bnd when a certain action should take place. For example, bnd uses a repository and plugins provide the actual repository implementations. Or for example, the SpringComponent analyzes the Spring files and adds references found in that XML to the imports.</p>
+
+<p>A plugin is defined as:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>PLUGIN ::= FQN ( ‘;’ &lt;directive</td>
+      <td>attribute&gt; )*</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The following directive is defined for all plugin:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><code>path:</code></td>
+      <td> </td>
+      <td>A path to the jar file that contains the plugin. The directory/jar at that location is placed on your classpath for that plugin.</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>bnd current supports the following plugin types:</p>
+
+<p>/**
+   * An optional interface for plugins. If a plugin implements 
+   * this interface then it can receive the remaining attributes 
+   * and directives given in its clause as
+   * well as the reporter to use.
+   */
+  public interface Plugin {
+    /**
+     * Give the plugin the remaining properties.
+     * When a plugin is declared, the clause can contain 
+     * extra properties. All the properties and directives 
+     * are given to the plugin to use.
+     * @param map attributes and directives for this plugin’s clause
+     */
+    void setProperties(Map&lt;String,String&gt; map);</p>
+
+<pre><code>/**
+ * Set the current reporter. This is called at init time. 
+ * This plugin should report all errors and warnings 
+ * to this reporter.
+ * @param processor
+ */
+void setReporter(Reporter processor);  }
+</code></pre>
+
+<p>public interface AnalyzerPlugin {
+    /**
+     * This plugin is called after analysis. The plugin 
+     * is free to modify the jar and/or change the classpath 
+     * information (see referred, contained).
+     * This plugin is called after analysis of the JAR 
+     * but before manifest generation.
+     * 
+     * @param analyzer
+     * @return true if the classpace has been modified so that the bundle
+     *         classpath must be reanalyzed
+     * @throws Exception
+     */
+    boolean analyzeJar(Analyzer analyzer) throws Exception;
+  }</p>
+
+<p>public interface SignerPlugin {
+    /**
+     * Sign the current jar. The alias is the given certificate 
+     * keystore.
+     * 
+     * @param builder   The current builder that contains the 
+                        jar to sign
+     * @param alias     The keystore certificate alias
+     * @throws Exception When anything goes wrong
+     */
+    void sign(Builder builder, String alias) throws Exception;
+  }</p>
+
+<p>public interface RepositoryPlugin {
+    /**
+     * Return a URL to a matching version of the given bundle.
+     * 
+     * @param bsn
+     *            Bundle-SymbolicName of the searched bundle
+     * @param range
+     *            Version range for this bundle,”latest” 
+     *            if you only want the
+     *            latest, or null when you want all.
+     * @return    A list of URLs sorted on version, lowest version 
+     *            is at index 0.
+     *            null is returned when no files with the given 
+     *            bsn ould be found.
+     * @throws Exception
+     *             when anything goes wrong
+     */
+    File[] get(String bsn, String range) throws Exception;</p>
+
+<pre><code>/**
+ * Answer if this repository can be used to store files.
+ * 
+ * @return true if writable
+ */
+boolean canWrite();
+
+/**
+ * Put a JAR file in the repository.
+ * 
+ * @param jar
+ * @throws Exception
+ */
+File  put(Jar jar) throws Exception;
+
+/**
+ * Return a list of bsns that are present in the repository.
+ * 
+ * @param  regex if not null, match against the bsn and if 
+ *         matches, return otherwise skip
+ * @return A list of bsns that match the regex parameter 
+ *         or all if regex is null
+ */
+List&lt;String&gt; list(String regex);
+
+/**
+ * Return a list of versions.
+ */
+
+List&lt;Version&gt; versions(String bsn);   }
+</code></pre>
+
+<p>public interface MakePlugin {</p>
+
+<pre><code>/**
+ * This plugin is called when Include-Resource detects 
+ * a reference to a resource that it can not find in the 
+ * file system.
+ * 
+ * @param builder   The current builder
+ * @param source    The source string (i.e. the place 
+ *                  where bnd looked)
+ * @param arguments Any arguments on the clause in 
+ *                  Include-Resource
+ * @return          A resource or null if no resource 
+ *                  could be made
+ * @throws Exception
+ */
+Resource make(Builder builder, String source, 
+      Map&lt;String,String&gt; arguments) throws Exception;   }
+</code></pre>
+
+<p>[[#make]]
+###Make
+Make plugins kick in when the <code>Include-Resource</code> header tries to locate a resource but it cannot find that resource. The <code>-make</code> option defines a number of patterns that are mapped to a make instruction.</p>
+
+<p>For example, if you have</p>
+
+<p>Include-Resource:       com.acme.Abc.ann</p>
+
+<p>If no such resource is found, bnd will look in the -make instruction. This instruction associates a pattern with a plugin type. For example:</p>
+
+<pre><code>   -make:                  (*.jar); type=xyz; abc=3; def="$1"
+</code></pre>
+
+<p>The first name part of the clause is matched against the unfound resource. All plugins are called sequentially until one returns non-null. The arguments on the -make clause are given as parameters to the make plugin. Normally all Make Plugins should verify the type field.</p>
+
+<p>bnd has a bnd and a copy Make Plugin.</p>
+
+<h3 id="buildin-plugins">Buildin Plugins</h3>
+<p>Some plugins are provided by bnd itself.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>aQute.lib.spring.SpringComponent</td>
+      <td> </td>
+      <td>AnalyzerPlugin</td>
+      <td> </td>
+      <td>This component will analyze the Spring XML for Spring DM and will add any classes in these files to the referred set of classes.</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>aQute.bnd.make.MakeBnd</td>
+      <td> </td>
+      <td>MakePlugin</td>
+      <td> </td>
+      <td>If Include-Resource can’t find a referred resource it will use the make plugins to see if any of them can make the requested resource. The MakeBnd has type=bnd. This plugin can recursively call bnd to create embedded jars that are not created sequentially</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>aQute.bnd.make.MakeCopy</td>
+      <td> </td>
+      <td>MakePlugin</td>
+      <td> </td>
+      <td>Copies resources from other places in the file system</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>aQute.lib.deployer.FileRepo</td>
+      <td> </td>
+      <td>RepositoryPlugin</td>
+      <td> </td>
+      <td>Provides a file based repository.</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>aQute.bnd.maven.MavenRepository</td>
+      <td> </td>
+      <td>RepositoryPlugin</td>
+      <td> </td>
+      <td>Provides an interface to a the default maven repository in the user’s home directory. Can be used with aQute.bnd.maven.MavenGroup to support converting bundle symbolic names to group and artifact id.</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

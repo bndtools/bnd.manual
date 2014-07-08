@@ -4,14 +4,16 @@ collections:
     output: true
   macros:
     output: true
+  heads:
+    output: true
   instructions:
     output: true
-
-
+  xyz:
+    output: true
 defaults:
   -
     scope:
-      path: "" # empty string for all files
+      path: ""
     values:
       layout: default
 

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> Bundle-ClassPath ::= entry ( ',' entry )*</h1>
+				<p>Defines the internal bundle class path, is taken into accont by bnd. That is, classes will be analyzed according to this path. The files/directories on the Bundle-ClassPath must be present in the bundle. Use Include-Resource to include these jars/directories in your bundle. In general you should not use Bundle-ClassPath since it makes things more complicated than necessary. Use the @ option in the Include-Resource to unroll the jars into the JAR.</p>
+
+<pre><code>public void verifyBundleClasspath() {
+	Parameters bcp = main.getBundleClassPath();
+	if (bcp.isEmpty() || bcp.containsKey("."))
+		return;
+
+	for (String path : bcp.keySet()) {
+		if (path.endsWith("/"))
+			error("A " + Constants.BUNDLE_CLASSPATH + " entry must not end with '/': %s", path);
+
+		if (dot.getDirectories().containsKey(path))
+			// We assume that any classes are in a directory
+			// and therefore do not care when the bundle is included
+			return;
+	}
+
+	for (String path : dot.getResources().keySet()) {
+		if (path.endsWith(".class")) {
+			warning("The " + Constants.BUNDLE_CLASSPATH + " does not contain the actual bundle JAR (as specified with '.' in the " + Constants.BUNDLE_CLASSPATH + ") but the JAR does contain classes. Is this intentional?");
+			return;
+		}
+	}
+}
+
+
+
+
+	/**
+ * Check for unresolved imports. These are referrals that are not imported
+ * by the manifest and that are not part of our bundle class path. The are
+ * calculated by removing all the imported packages and contained from the
+ * referred packages.
+ * @throws Exception 
+ */
+private void verifyUnresolvedReferences() throws Exception {
+
+	//
+	// If we're being called from the builder then this should
+	// already have been done
+	//
+
+	if (isFrombuilder())
+		return;
+
+	Manifest m = analyzer.getJar().getManifest();
+	if (m == null) {
+		error("No manifest");
+	}
+
+	Domain domain = Domain.domain(m);
+	
+	Set&lt;PackageRef&gt; unresolvedReferences = new TreeSet&lt;PackageRef&gt;(analyzer.getReferred().keySet());
+	unresolvedReferences.removeAll(analyzer.getContained().keySet());
+	for ( String pname : domain.getImportPackage().keySet()) {
+		PackageRef pref = analyzer.getPackageRef(pname);
+		unresolvedReferences.remove(pref);
+	}
+
+	// Remove any java.** packages.
+	for (Iterator&lt;PackageRef&gt; p = unresolvedReferences.iterator(); p.hasNext();) {
+		PackageRef pack = p.next();
+		if (pack.isJava())
+			p.remove();
+		else {
+			// Remove any dynamic imports
+			if (isDynamicImport(pack))
+				p.remove();
+		}
+	}
+
+	//
+	// If there is a Require bundle, all bets are off and
+	// we cannot verify anything
+	//
+
+	if (domain.getRequireBundle().isEmpty() &amp;&amp; domain.get("ExtensionBundle-Activator") == null
+			&amp;&amp; (domain.getFragmentHost()== null || domain.getFragmentHost().getKey().equals("system.bundle"))) {
+
+		if (!unresolvedReferences.isEmpty()) {
+			// Now we want to know the
+			// classes that are the culprits
+			Set&lt;String&gt; culprits = new HashSet&lt;String&gt;();
+			for (Clazz clazz : analyzer.getClassspace().values()) {
+				if (hasOverlap(unresolvedReferences, clazz.getReferred()))
+					culprits.add(clazz.getAbsolutePath());
+			}
+
+			if (analyzer instanceof Builder)
+				warning("Unresolved references to %s by class(es) %s on the " + Constants.BUNDLE_CLASSPATH + ": %s",
+						unresolvedReferences, culprits, analyzer.getBundleClasspath().keySet());
+			else
+				error("Unresolved references to %s by class(es) %s on the " + Constants.BUNDLE_CLASSPATH + ": %s",
+						unresolvedReferences, culprits, analyzer.getBundleClasspath().keySet());
+			return;
+		}
+	} else if (isPedantic())
+		warning("Use of " + Constants.REQUIRE_BUNDLE + ", ExtensionBundle-Activator, or a system bundle fragment makes it impossible to verify unresolved references");
+}
+
+
+
+
+					if (dot.getDirectories().containsKey(path)) {
+					// if directories are used, we should not have dot as we
+					// would have the classes in these directories on the
+					// class path twice.
+					if (bcp.containsKey("."))
+						warning(Constants.BUNDLE_CLASSPATH
+								+ " uses a directory '%s' as well as '.'. This means bnd does not know if a directory is a package.",
+								path, path);
+					analyzeJar(dot, Processor.appendPath(path) + "/", true);
+				} else {
+					if (!"optional".equals(info.get(RESOLUTION_DIRECTIVE)))
+						warning("No sub JAR or directory " + path);
+				}
+
+
+			Parameters bcp = getBundleClasspath();
+		if (bcp.isEmpty() || (bcp.containsKey(".") &amp;&amp; bcp.size() == 1))
+			main.remove(BUNDLE_CLASSPATH);
+		else
+			main.putValue(BUNDLE_CLASSPATH, printClauses(bcp));
+
+		// ----- Require/Capabilities section
+</code></pre>
+
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

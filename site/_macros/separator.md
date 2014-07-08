@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: separator
 summary: The platform file separator 
 ---
+layout: default
 
 
 

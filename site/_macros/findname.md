@@ -1,8 +1,8 @@
-___
+---
+layout: default
+class: Project
 title:	findname ';' PATH ( ';' FILTER )
-class: 	Project
 summary: A list of filtered by name resource paths with optional replacement
-see: findpath
 ---
 
 	public String _findname(String args[]) {

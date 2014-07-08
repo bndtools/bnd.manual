@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> lsa ';' DIR (';' INSTRUCTION )</h1>
+				<p>layout: default</p>
+
+<pre><code>/**
+ * Wildcard a directory. The lists can contain Instruction that are matched
+ * against the given directory ${lsr;&lt;dir&gt;;&lt;list&gt;(;&lt;list&gt;)*}
+ * ${lsa;&lt;dir&gt;;&lt;list&gt;(;&lt;list&gt;)*}
+ * 
+ * @author aqute
+ */
+
+public String _lsr(String args[]) {
+	return ls(args, true);
+}
+
+public String _lsa(String args[]) {
+	return ls(args, false);
+}
+
+String ls(String args[], boolean relative) {
+	if (args.length &lt; 2)
+		throw new IllegalArgumentException("the ${ls} macro must at least have a directory as parameter");
+
+	File dir = domain.getFile(args[1]);
+	if (!dir.isAbsolute())
+		throw new IllegalArgumentException("the ${ls} macro directory parameter is not absolute: " + dir);
+
+	if (!dir.exists())
+		throw new IllegalArgumentException("the ${ls} macro directory parameter does not exist: " + dir);
+
+	if (!dir.isDirectory())
+		throw new IllegalArgumentException(
+				"the ${ls} macro directory parameter points to a file instead of a directory: " + dir);
+
+	Collection&lt;File&gt; files = new ArrayList&lt;File&gt;(new SortedList&lt;File&gt;(dir.listFiles()));
+
+	for (int i = 2; i &lt; args.length; i++) {
+		Instructions filters = new Instructions(args[i]);
+		files = filters.select(files, true);
+	}
+
+	List&lt;String&gt; result = new ArrayList&lt;String&gt;();
+	for (File file : files)
+		result.add(relative ? file.getName() : file.getAbsolutePath());
+
+	return Processor.join(result, ",");
+}
+</code></pre>
+
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

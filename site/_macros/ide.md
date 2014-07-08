@@ -2,7 +2,8 @@ ___
 title: 	ide ';' ( 'javac.target' | 'javac.source' )
 class: 	Project
 summary: This reads the source and target settings from the IDE
-----
+---
+layout: default-
 
 
 	public String _ide(String[] args) throws IOException {

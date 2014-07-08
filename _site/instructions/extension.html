@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> -extension</h1>
+				<pre><code>/**
+ * Add any extensions listed
+ * 
+ * @param list
+ * @param rri
+ */
+@Override
+protected void addExtensions(Set&lt;Object&gt; list) {
+	//
+	// &lt;bsn&gt;; version=&lt;range&gt;
+	//
+	Parameters extensions = new Parameters(getProperty(EXTENSION));
+	Map&lt;DownloadBlocker,Attrs&gt; blockers = new HashMap&lt;DownloadBlocker,Attrs&gt;();
+
+	for (Entry&lt;String,Attrs&gt; i : extensions.entrySet()) {
+		String bsn = removeDuplicateMarker(i.getKey());
+		String stringRange = i.getValue().get(VERSION_ATTRIBUTE);
+
+		trace("Adding extension %s-%s", bsn, stringRange);
+
+		if (stringRange == null)
+			stringRange = Version.LOWEST.toString();
+		else if (!VersionRange.isVersionRange(stringRange)) {
+			error("Invalid version range %s on extension %s", stringRange, bsn);
+			continue;
+		}
+		try {
+			SortedSet&lt;ResourceDescriptor&gt; matches = resourceRepositoryImpl.find(null, bsn, new VersionRange(
+					stringRange));
+			if (matches.isEmpty()) {
+				error("Extension %s;version=%s not found in base repo", bsn, stringRange);
+				continue;
+			}
+
+			DownloadBlocker blocker = new DownloadBlocker(this);
+			blockers.put(blocker, i.getValue());
+			resourceRepositoryImpl.getResource(matches.last().id, blocker);
+		}
+		catch (Exception e) {
+			error("Failed to load extension %s-%s, %s", bsn, stringRange, e);
+		}
+	}
+
+	trace("Found extensions %s", blockers);
+
+	for (Entry&lt;DownloadBlocker,Attrs&gt; blocker : blockers.entrySet()) {
+		try {
+			String reason = blocker.getKey().getReason();
+			if (reason != null) {
+				error("Extension load failed: %s", reason);
+				continue;
+			}
+
+			URLClassLoader cl = new URLClassLoader(new URL[] {
+				blocker.getKey().getFile().toURI().toURL()
+			}, getClass().getClassLoader());
+			Enumeration&lt;URL&gt; manifests = cl.getResources("META-INF/MANIFEST.MF");
+			while (manifests.hasMoreElements()) {
+				Manifest m = new Manifest(manifests.nextElement().openStream());
+				Parameters activators = new Parameters(m.getMainAttributes().getValue("Extension-Activator"));
+				for (Entry&lt;String,Attrs&gt; e : activators.entrySet()) {
+					try {
+						Class&lt; ? &gt; c = cl.loadClass(e.getKey());
+						ExtensionActivator extensionActivator = (ExtensionActivator) c.newInstance();
+						customize(extensionActivator, blocker.getValue());
+						List&lt; ? &gt; plugins = extensionActivator.activate(this, blocker.getValue());
+						list.add(extensionActivator);
+
+						if (plugins != null)
+							for (Object plugin : plugins) {
+								list.add(plugin);
+							}
+					}
+					catch (ClassNotFoundException cnfe) {
+						error("Loading extension %s, extension activator missing: %s (ignored)", blocker,
+								e.getKey());
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			error("failed to install extension %s due to %s", blocker, e);
+		}
+	}
+}
+</code></pre>
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

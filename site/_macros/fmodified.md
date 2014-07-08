@@ -1,4 +1,5 @@
 ---
+layout: default
 class: Macro
 title: fmodified ( ';' RESOURCE )+
 summary:  Latest modification date of a list of resources

@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: version ';' MASK (';' VERSION )
 summary: Modify a version to set a version policy. The policy is a mask that is mapped to a version.
 ---
+layout: default
 
 
 	/**

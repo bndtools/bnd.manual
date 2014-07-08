@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: osfile ';' DIR ';' NAME
 summary: Create a path to a file in OS dependent form.
 ---
+
 
 	public final static String	_fileHelp	= "${file;<base>;<paths>...}, create correct OS dependent path";
 

@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: lsr ';' DIR (';' INSTRUCTION )
 summary: A list of relative file paths from the given directory optionally filtered by a set of instructions.
 ---
+layout: default
 
 	/**
 	 * Wildcard a directory. The lists can contain Instruction that are matched

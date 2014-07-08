@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: nsort (';' LIST )+
 summary: Concatenate a set of lists and sort their contents nummerically
 ---
+layout: default
 
 	static String	_nsortHelp	= "${nsort;<list>...}";
 

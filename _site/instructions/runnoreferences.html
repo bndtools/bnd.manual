@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> -runnoreferences  BOOLEAN</h1>
+				<pre><code>private LauncherConstants getConstants(Collection&lt;String&gt; runbundles, boolean exported) throws Exception, FileNotFoundException,
+		IOException {
+	project.trace("preparing the aQute launcher plugin");
+
+	LauncherConstants lc = new LauncherConstants();
+	lc.noreferences = Processor.isTrue(project.getProperty(Constants.RUNNOREFERENCES));
+	lc.runProperties = getRunProperties();
+	lc.storageDir = getStorageDir();
+	lc.keep = isKeep();
+	lc.runbundles.addAll(runbundles);
+	lc.trace = getTrace();
+
+	
+		Bundle install(File f) throws Exception {
+	BundleContext context = systemBundle.getBundleContext();
+	try {
+		String reference;
+		if (isWindows() || parms.noreferences) {
+			trace("no reference: url %s", parms.noreferences);
+			reference = f.toURI().toURL().toExternalForm();
+		} else
+			reference = "reference:" + f.toURI().toURL().toExternalForm();
+
+		Bundle b = context.installBundle(reference);
+		if (b.getLastModified() &lt; f.lastModified()) {
+			b.update();
+		}
+		return b;
+	}
+	catch (BundleException e) {
+		trace("failed reference, will try to install %s with input stream", f.getAbsolutePath());
+		String reference = f.toURI().toURL().toExternalForm();
+		InputStream in = new FileInputStream(f);
+		try {
+			return context.installBundle(reference, in);
+		}
+		finally {
+			in.close();
+		}
+	}
+}
+</code></pre>
+
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

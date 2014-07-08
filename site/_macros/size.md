@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: size ( ';' LIST )*
 summary: Count the number of elements (of all collections combined) 
 ---
+layout: default
 
 
 	public final static String	_sizeHelp	= "${size;<collection>;...}, count the number of elements (of all collections combined)";

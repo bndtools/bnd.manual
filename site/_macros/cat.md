@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: cat ';' FILEPATH
 summary: The contents of a file
 ---
+layout: default
 
 
 

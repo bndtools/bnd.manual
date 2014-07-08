@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jpm">
+
+	<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" rel="stylesheet" />
+<title>bnd</title>
+
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+</head>
+
+
+<body>
+
+	
+<ul class="container12 menu-bar">
+	<li span=5><a class=menu-link href="/"><img
+			class=menu-logo src='/img/bnd-80x40-white.png'></a>
+			<a href="">A</a><a href="">B</a>
+	<li class=menu-link span=4>
+	<li class=menu-link span=3>
+</ul>
+
+
+					
+
+	<ul class=container12>
+		<li span=3>
+			<div>
+			<ul class="side-nav">
+	
+	<li><a href="/chapters/110-introduction.html">Introduction</a> 
+	<li><a href="/chapters/120-install.html">Where to find it</a> 
+	<li><a href="/chapters/130-concepts.html">Concepts</a> 
+	<li><a href="/chapters/140-best-practices.html">Best practices</a> 
+	<li><a href="/chapters/150-build.html">Build</a> 
+	<li><a href="/chapters/160-jars.html">Generating JARs</a> 
+	<li><a href="/chapters/170-versioning.html">Versioning</a> 
+	<li><a href="/chapters/200-components.html">Service Components</a> 
+	<li><a href="/chapters/210-metatype.html">Metatype</a> 
+	<li><a href="/chapters/220-contracts.html">Contracts</a> 
+	<li><a href="/chapters/300-launching.html">Launching</a> 
+	<li><a href="/chapters/310-testing.html">Testing</a> 
+	<li><a href="/chapters/320-packaging.html">Packaging Applications</a> 
+	<li><a href="/chapters/400-commandline.html">From the command line</a> 
+	<li><a href="/chapters/600-developer.html">For Developers</a> 
+	<li><a href="/chapters/700-tools.html">Tools bound to bnd</a> 
+	<li><a href="/chapters/790-format.html">File Format</a> 
+	<li><a href="/chapters/800-headers.html">Header Reference</a> 
+	<li><a href="/chapters/820-instructions.html">Instruction Reference</a> 
+	<li><a href="/chapters/850-macros.html">Macro Reference</a> 
+	<li><a href="/chapters/880-settings.html">Settings</a> 
+	<li><a href="/chapters/900-errors.html">Errors</a> 
+	<li><a href="/chapters/910-faq.html">Frequently Asked Questions</a> 
+</ul>
+
+			</div>
+			
+		<li span=9>
+			<div class=notes-margin>
+				<h1> -pom BOOLEAN</h1>
+				<pre><code>	if (getProperty(POM) != null)
+		dot.putResource("pom.xml", new PomResource(dot.getManifest()));
+
+
+	public class PomResource extends WriteResource {
+		final Manifest				manifest;
+		private Map&lt;String,String&gt;	scm;
+		final static Pattern		NAME_URL	= Pattern.compile("(.*)(http://.*)");
+	
+		public PomResource(Manifest manifest) {
+			this.manifest = manifest;
+		}
+	
+		@Override
+		public long lastModified() {
+			return 0;
+		}
+	
+		@Override
+		public void write(OutputStream out) throws IOException {
+			PrintWriter ps = IO.writer(out);
+	
+			String name = manifest.getMainAttributes().getValue(Analyzer.BUNDLE_NAME);
+	
+			String description = manifest.getMainAttributes().getValue(Constants.BUNDLE_DESCRIPTION);
+			String docUrl = manifest.getMainAttributes().getValue(Constants.BUNDLE_DOCURL);
+			String version = manifest.getMainAttributes().getValue(Constants.BUNDLE_VERSION);
+			String bundleVendor = manifest.getMainAttributes().getValue(Constants.BUNDLE_VENDOR);
+	
+			String bsn = manifest.getMainAttributes().getValue(Constants.BUNDLE_SYMBOLICNAME);
+			String licenses = manifest.getMainAttributes().getValue(Constants.BUNDLE_LICENSE);
+	
+			if (bsn == null) {
+				throw new RuntimeException("Cannot create POM unless bsn is set");
+			}
+	
+			bsn = bsn.trim();
+			int n = bsn.lastIndexOf('.');
+			if (n &lt;= 0)
+				throw new RuntimeException(
+						"Can not create POM unless " + Constants.BUNDLE_SYMBOLICNAME + " contains a . to separate group and  artifact id");
+	
+			if (version == null)
+				version = "0";
+	
+			String groupId = bsn.substring(0, n);
+			String artifactId = bsn.substring(n + 1);
+			n = artifactId.indexOf(';');
+			if (n &gt; 0)
+				artifactId = artifactId.substring(0, n).trim();
+	
+			Tag project = new Tag("project");
+			project.addAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
+			project.addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			project.addAttribute("xmlns:xsi", "");
+			project.addAttribute("xsi:schemaLocation",
+					"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd");
+	
+			project.addContent(new Tag("modelVersion").addContent("4.0.0"));
+			project.addContent(new Tag("groupId").addContent(groupId));
+			project.addContent(new Tag("artifactId").addContent(artifactId));
+			project.addContent(new Tag("version").addContent(version));
+	
+			if (description != null) {
+				new Tag(project, "description").addContent(description);
+			}
+			if (name != null) {
+				new Tag(project, "name").addContent(name);
+			}
+			if (docUrl != null) {
+				new Tag(project, "url").addContent(docUrl);
+			}
+	
+			if (scm != null) {
+				Tag scm = new Tag(project, "scm");
+				for (Map.Entry&lt;String,String&gt; e : this.scm.entrySet()) {
+					new Tag(scm, e.getKey()).addContent(e.getValue());
+				}
+			}
+	
+			if (bundleVendor != null) {
+				Matcher m = NAME_URL.matcher(bundleVendor);
+				String namePart = bundleVendor;
+				String urlPart = null;
+				if (m.matches()) {
+					namePart = m.group(1);
+					urlPart = m.group(2);
+				}
+				Tag organization = new Tag(project, "organization");
+				new Tag(organization, "name").addContent(namePart.trim());
+				if (urlPart != null) {
+					new Tag(organization, "url").addContent(urlPart.trim());
+				}
+			}
+			if (licenses != null) {
+				Tag ls = new Tag(project, "licenses");
+	
+				Parameters map = Processor.parseHeader(licenses, null);
+				for (Iterator&lt;Entry&lt;String,Attrs&gt;&gt; e = map.entrySet().iterator(); e.hasNext();) {
+	
+					// Bundle-License:
+					// http://www.opensource.org/licenses/apache2.0.php; \
+					// description="${Bundle-Copyright}"; \
+					// link=LICENSE
+					//
+					//  &lt;license&gt;
+					//    &lt;name&gt;This material is licensed under the Apache
+					// Software License, Version 2.0&lt;/name&gt;
+					//    &lt;url&gt;http://www.apache.org/licenses/LICENSE-2.0&lt;/url&gt;
+					//    &lt;distribution&gt;repo&lt;/distribution&gt;
+					//    &lt;/license&gt;
+	
+					Entry&lt;String,Attrs&gt; entry = e.next();
+					Tag l = new Tag(ls, "license");
+					Map&lt;String,String&gt; values = entry.getValue();
+					String url = entry.getKey();
+	
+					if (values.containsKey("description"))
+						tagFromMap(l, values, "description", "name", url);
+					else
+						tagFromMap(l, values, "name", "name", url);
+	
+					tagFromMap(l, values, "url", "url", url);
+					tagFromMap(l, values, "distribution", "distribution", "repo");
+				}
+			}
+			project.print(0, ps);
+			ps.flush();
+		}
+	
+		/**
+		 * Utility function to print a tag from a map
+		 * 
+		 * @param ps
+		 * @param values
+		 * @param string
+		 * @param tag
+		 * @param object
+		 */
+		private Tag tagFromMap(Tag parent, Map&lt;String,String&gt; values, String string, String tag, String object) {
+			String value = values.get(string);
+			if (value == null)
+				value = object;
+			if (value == null)
+				return parent;
+			new Tag(parent, tag).addContent(value.trim());
+			return parent;
+		}
+	
+		public void setProperties(Map&lt;String,String&gt; scm) {
+			this.scm = scm;
+		}
+	}
+</code></pre>
+
+			</div>
+	</ul>
+
+	
+<nav class=next-prev>
+	<a href=''></a> <a href=''></a>
+</nav>
+<footer class="container12" style="border-top: 1px solid black;padding:10px 0">
+	<ul span=12 row>
+		<li span=3>
+			<ul>
+				<li><a href="/contact.html">Contact</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">Developers</a>
+			</ul>
+		<li span=3>
+			<ul>
+				<li><a href="">More</a>
+			</ul>
+	</ul>
+</footer>
+
+
+</body>
+</html>

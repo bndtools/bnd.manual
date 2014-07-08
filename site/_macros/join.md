@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Macro
 title: join ( ';' LIST )+
 summary: Join a number of list/values into a single list
 ---
+layout: default
 
 
 

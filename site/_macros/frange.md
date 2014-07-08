@@ -1,8 +1,10 @@
 ---
+layout: default
 class: Analyzer
 title: frange ';' VERSION ( ';' BOOLEAN )?
 summary: a range expression for a filter from a version. By default this is based on consumer compatibility. You can specify a third argument (true) to get provider compatibility.
 ---
+layout: default
 
 	/**
 	 * Return 
