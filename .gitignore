@@ -1,4 +1,4 @@
 .sass-cache/*
 tmp/
 Gemfile.lock
-site
+_site
