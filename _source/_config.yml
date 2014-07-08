@@ -8,8 +8,7 @@ collections:
     output: true
   instructions:
     output: true
-  xyz:
-    output: true
+
 defaults:
   -
     scope:
