@@ -1,16 +1,11 @@
 language: ruby
 cache: bundler
-rvm:
-- 2.0.0
+rvm: 2.0.0
 branches:
   only:
   - master
-install:
-- bundle install
-script:
-- bundle exec jekyll build -s _source
-after_success:
-- ./script/after_success
+script: bundle exec jekyll build -s _source
+after_success: ./script/after_success
 env:
   global:
   - GIT_EMAIL="travisci@bndtools.org"
