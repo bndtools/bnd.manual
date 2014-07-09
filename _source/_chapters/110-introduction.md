@@ -19,76 +19,29 @@ What we discovered was that we could use the idea of interfaces in an object ori
 
 Originally devised as the Java modules, Java packages are heavily underappreciated in the Java world. Even highly expert users sometimes only appreciate the namescoping of the package, brushing over any accessibility issues arising out of the use of multiple classloaders. They are wrong, a package is a perfect module. That said, it is a perfect encapsulation to describe the contract that governs the collaboration between modules. An interface has a too small granularity for such a collaboration contract since it often requires additional interfaces like listeners and also helper classes. Packages, although they are too fine grained for deployment modules, are eminently suitable to define a contract to given the collaboration between deployment modules. 
 
-So we had come up with the surprisingly well fitting dependency model: 'Look Ma, No Coupling!' But then using it became quite painful because it required a lot of tedious house keeping, tracking which packages you were using, of what version. Just bluntly expression your dependency on an implementation sometimes felt as attractive as the next shot of heroin for a junkie. Now, housekeeping and chores in general are quite low on the list of reasons to give meaning to live for most software developers, and we were no exception. Not only are we in general horrible at chores, we tend to make an amazing amount of mistakes doing them. Which, in general is not good software engineering. Fortunately, we largely live in a virtual world where it is easy to let the computer do the chores. And this is the raison d'etre of bnd: take the chores out of OSGi.
+So we had come up with the surprisingly well fitting dependency model: 'Look Ma, No Coupling!' But then using it became quite painful because it required a lot of tedious house keeping, tracking which packages you were using, of what version. Just bluntly expression your dependency on an implementation sometimes felt as attractive as the next shot of heroin for a junkie. Now, housekeeping and chores in general are quite low on the list of reasons to give meaning to live for most software developers, and we were no exception. Not only are we in general horrible at chores, we tend to make an amazing amount of mistakes doing them. Which, in general is not good software engineering. Fortunately, we largely live in a virtual world where it is easy to let the computer do the chores. And this is the raison d'etre of bnd: take the chores out of OSGi and focus on the fun parts. And maybe even more important, 'Do Not Repeat Yourself'.
 
-The conception of bnd was at Ericsson, where it was used to automate 
+The early version of bnd was called btool and was incepted at Ericsson, where it was used to automate the generation of the manifest in the ebox project. Then, in 2001, btool was used to automate the build process of the specifications, the reference implementations, and the test suites at the OSGi Alliance. One day there was a bit of confusion about the pedigree of the btool and it btool was showing its age; it was time for a rewrite and bnd was born.
 
- 
+The name came from bundle, then removing he vowels, and cutting it to three characters to reduce the typing on the command line. The pronounciation, we actually have no clue, whatever your preference is. B AND D, bind, whatever. 
 
+Over the years bnd gained a lot of power because we needed a tool at the OSGi Alliance that could not just create good bundles, it also was heavily used in the test cases that required bad bundles. Of course this was an excellent test range for bnd and this synergy is still true today.  
 
- 
-bnd is the Swiss army knife of OSGi, it is used for creating and working with OSGi bundles. Its primary goal is take the pain out of developing bundles. With OSGi you are forced to provide additional metadata in the JAR's manifest to verify the consistency of your "class path". This metadata must be closely aligned with the class files in the bundle and the policies that a company has about versioning. Maintaining this metdata is an error prone chore because many aspects are redundant.
+In 2003 Eclipse decided to adopt the OSGi specifications and this generated some interesting discussions. To the OSGi crowd it was crystal clear that packages were the future, the Eclipse crowd, coming from a traditional transitive direct hard module dependency world, this future was more fuzzy. We lost, and Require-Bundle and Fragment-Host are the souvenirs of that battle. However, this was not the only disagreement, unfortunately we also quarrelled about how to develop bundles (sorry, plugins) and there we lost again with PDE and P2 the landmarks remembering us of this lost fight. Our experience with bnd had taught us that one should not try to maintain the manifest by hand, just like one should not try to write class files with a hex editor. The manifest is a readable format but it was never intended to be human writable except for emergencies. To simplify the runtime (important in an embedded world) we never made the manifest easy to write. For example, when you specify the packages you want to export it is very useful to use wildcards to include a number of sub-packages. However, in runtime this would force the framework to traverse all classes to make the list of total packages of which it could then select the packages based on the wildcards. There is also an inevitable duplication of information as well as derived information which makes it impossible to not create evil redundancy. 
 
-bnd's raison d'etre is therefore to remove the chores and use the redundancy to create the manifest from the class files instead of maintaining it by hand. The core task is therefore to analyze the class files and find any dependencies. These dependencies are then merged with ''instructions'' supplied by the user. For example, adding a version to all imported packages from a specific library can be specified as:
+Unfortunately, the PDE guys insisted on 'manifest first'. In their model, the manifest drives the building of the artifact instead of representing the output of a build process. That is, if you require a bundle in your manifest, then PDE will place this on the classpath of the bundle you're building. If you import a package in the manifest, PDE will find a bundle exporting that package and place it on the classpath (praying there is only one bundle that exports it in the target). 
 
-    Import-Package: com.library.*; version = 1.21
+Richard S. Hall, the primary author of Apache Felix, realized that bnd was useful and we worked together on creating the Apache Felix bundle plugin for maven which was fully based on bnd.
 
-The OSGi manifest must explicitly mention a package, bnd allows the use of wildcards. bnd contains many more such conveniences. bnd roots are about 10 years old and bnd has therefore a large number of functions that remove such chores. These range from simplifying the use of OSGi Declarative Services, working with Spring and Blueprint, WAR and WAB files, version analysis, project dependencies, and much more.
+Inside the OSGi Alliance we were in a bind (pun intended) because PDE was not suitable for our own build. We used bnd in ant (it was also an ant plugin) but we missed the joy of Eclipse. This caused bnd to develop a split personality. Originally it was a JAR generator based on a small recipe but for our build we needed project & workspace concepts. We toyed with the idea to split it into a bld and a bnd tool but in the end even we committed the sin against modularity of low cohesion and kept these two tools in one out of lazyness. 
 
-Over time bnd started to appear in many different incarnations. It is an an ant task, a command line utility, and a bundle for Eclipse. Other projects have used bndlib to create a maven plugin, bndtools and Sigil both Eclipse IDEs, and others. By keeping the core library small and uncoupled (bnd has no external connections except Java 5), it is easy to embed the functionality in other projects.
+Obviously we also developed PDE envy because Eclipse was actually awfully nice except for it. After toying with the idea of using the Eclipse metadata (.classpath) and finding out that this was only possible if we included the complete Eclipse IDE in an offline build, we embarked on developing an Eclipse plugin. Just not a good idea. So we reversed the model, and developed a library that had its own internal, uncoupled, model of a build. You see, the problem is that most build environments are quite pedantic and strongly optimized for their primary goal. Ant, maven, gradle, et. al. are just not easy to use inside an IDE because they are very stream driven: start, process, stop. In this model there is very little incentive to optimize incremental building and event notifications for important changes. An IDE is the reverse, it is start, build, build, build, ..., build, build, stop. For performance, it is crucial to optimize the building out of incremental changes to keep the IDE responsive. It is also crucial to send out events when important things happen. So we decided to pursue the middle ground: a model of projects and workspaces that was as uncoupled of the real world as possible but providing the hooks to use it in all popular build tools, either command line tools or IDEs. This is rather well captured in the expression: "The one tool that bnd's them all".
 
-## Workflow
-Traditionally, JAR files were made with the JDK jar tool, the jar ant task, or the Maven packager. All these tools share the same concept. The developer creates a directory image of the jar by copying files to a directory; this directory is then jarred. This model can be called the ''push'' model. Obviously this method works well.
+Then one day we heard that Neil Bartlett also had started a plugin called bndtools. He had used the open source library of bnd and started to work on creating a pleasant to use friendly environment. Interestingly, he had created a continuous builder for bnd so that every save operation automatically build the bundles, something we had considered in our plugin but had been too afraid to do out of performance fear. Neil, however, was developing a lot of stuff that was already in bnd, he only used the JAR packager and manifest generator. After beating him up, which even took a special trip to the UK where we worked for 8 hours in a hotel lounge, he surrendered and thus our long term fruitful collaboration was born.
 
-bnd works differently, it uses the ''pull'' model. Instructions in the bnd file describe the contents of the desired JAR file without writing this structure to disk. The contents from the output can come from the class path or from anywhere in the file system. For example, the following instruction includes the designated packages in the JAR:
+Currently bnd(tools) is managed through a Github organization called bndtools and has its home site at http://bndtools.org. It is split in a number of repositories: bndtools, bnd, bndtools.rt and a number of associated support repositories. Though the collaboration between bndtools and bnd is awfully close, we are fanatic about separating the projects, our goal is still to allow Jetbrains to use bnd in IntelliJ without forcing them to eat any Eclipsisms. And it is always fun when hear someone claiming to successfully integrate bndlib in a product or tool, raving how uncoupled it was. 
+   
+What you are now reading is the manual of bnd, which is a tremendous amount of work, and will be a work in progress for a long time to be. Though much of bnd's development was indirectly supported by the OSGi Alliance it is and always will be an open source project. This gave the authors the license to scratch their itches and not worry too much about documenting the nifty things they developed to scratch. Though the most important aspects were documented, it was sparse and not overly well organized. Though we always hoped someone with a gift for documeting would come along, fall in love with bnd, and write the perfect documentation, this somehow failed. After 16 years, we find it is time to take up this task ourselves, still praying that we will get support from bnd's surprisingly large (to some) group of users, don't hesitate. This is the reason this manual is a github repositories. Contributing is trivial, clone the bndtools/bnd.manual repo, edit the markdown text (you can even do this on the github web), save it, and create a pull request. Don't (always) ask what bnd can do for you, ask what you can do for bnd's users ...
 
-  Private-Package: com.example.*
- 
-bnd can create a JAR from packages the sources, directories or other JAR files. You never have to copy files around, the instructions that Bnd receives are sufficient to retrieve the files from their original location, preprocessing or filtering when required.
-
-The Jar is constructed from 3 different arguments:
-
-    Export-Package
-    Private-Package
-    Include-Resource
-
-Private-Package and Export-Package contain ''instructions''. Instructions are patterns + attributes and directives, looking like normal OSGi attributes and directives. For example:
-
-    Export-Package: com.acme.*;version=1.2
-
-Each instruction is applied to each package on the classpath in the definition order. That is, if an earlier instruction matches, the later instruction never gets a chance to do its work. If an instruction matches its attributes and properties are applied to the packages. The difference between the Private-Package argument and the Export-Package arguments is that the export version selects the packages for export. If the packages overlap between the two, the export wins.
-
-An instruction can also be negative when it starts with a '!'. In that case the package is excluded from the selection. For example:
-
-    Export-Package: !com.acme.impl, com.acme.*;version=1.2
-
-Note that the instructions are applied in order. If the ! instruction was at the end in the previous example, it would not have done its work because the com.acme.* would already have matched.
-
-The Include-Resource argument can be used to copy resources from the file system in the JAR. This is useful for licenses, images, etc. The instructions in the argument can be a directory, a file, or an inline JAR. The default JAR path is the the root for a directory or the filename for a file. The path can be overridden. Instructions that are enclosed in curly braces, like {license.txt}, are pre-processed, expanding any macros in the file.
-
-Once the JAR is created, the bnd program analyzes the classes and creates an import list with all the packages that are not contained in the jar but which are referred to. This import list is matched against the Import-Package instructions. Normally, the Import-Package argument is *; all referred packages will be imported. However, sometimes it is necessary to ignore an import or provide attributes on the import statement. For example, make the import optional or discard the import:
-
-    Import-Package: !com.acme.*, *;resolution:=optional
-
-The arguments to bnd are normal given as a set of properties. Properties that begin with an upper case are copied to the manifest (possibly after processing). Lower case properties are used for macro variables but are not set as headers in the manifest.
-
-After the JAR is created, the bnd program will verify the result. This will check the resulting manifest in painstaking detail.
-
-The bnd program works on a higher level then traditional jarring; this might take some getting used to. However, it is much more elegant to think in packages than that it is to think in files. The fact that bnd understand the semantics of a bundle allows it to detect many errors and allows bundles to be created with almost no special information. 
-
-bnd will not create an output file if none of the resources is newer than an existing output file.
-
-The program is available in several forms: command line, ant task, maven plugin, and an Eclipse plugin.
-
-##Tips
-There are some common pitfalls that can be prevented by following the tips:
-
-* Keep it simple. bnd's defaults are pretty good and not specifying is usually the best solution. KISS!
-* Think packages ... yes it feels redundant to specify the packages that are in your source directory but your artifact will get a life of its own over time. Many IDEs and build tools restricted us to one artifact per project but bnd allows many artifacts, allowing the choice of granularity to you. As OSGi's packages can be easily refactored you can design the contents of your artifacts depending on the deployment needs. Think packages!
-* Private is always better than export, only use export when you absolute need it.
-* Not versioning an exported package is at your own peril. Sorry, that is false, it is at the peril of your users.
-* Do not use the Bundle-ClassPath, if you need to include whole JARs, see the @ option at Include-Resource
-* If you do not understand a header, remove it
-* If you have a problem, make an example that is as small as possible and send it to [me][mailto:Peter.Kriens@aQute.biz|me].
-
+Not sure why we wrote such a long introduction, the facebook generation seems have an attention span of 5 lines, so we are probably among ourselves dear reader, congratulations on your stamina!
 
