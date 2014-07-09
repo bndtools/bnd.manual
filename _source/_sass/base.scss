@@ -345,3 +345,17 @@ button.icon {
 	@include rounded(3px);
 }
 
+dl.property-index {
+	dt {
+		font-family: $text-mono;
+		font-weight: normal;
+		margin-bottom: $text-separation;
+		border-top: 1px solid lightgrey;
+		padding-top: $text-separation;
+	}
+	dd {
+		margin-left: 20%;
+		margin-bottom: $text-separation;
+	}
+}
+

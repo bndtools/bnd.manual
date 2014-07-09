@@ -38,6 +38,12 @@ Keys can be wildcarded. For example, if you want to set -plugin from different p
 
 ## Reference
 
-{% for macro in site.macros %}| <code><a href="{{macro.url}}">{{macro.title}}</a></code> | {{macro.summary}}|
+<div>
+<dl class="property-index">
+
+{% for macro in site.macros %}<dt><a href="{{macro.url}}">{{macro.title}}</a></dt><dd>{{macro.summary}}</dd>
 {% endfor %}
+
+</dl>
+</div>
 
