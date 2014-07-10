@@ -1,11 +1,12 @@
 #!/bin/bash
-set -ev
 
 # Deploy key generated with:
-# $ ssh-keygen -t rsa -C "travisci@bndtools.org"
+# $ ssh-keygen -t rsa -C "${GIT_EMAIL}"
 # Private key encrypted with:
 # $ base64 --wrap=0 id_rsa | perl -pe 's/(.{100})/$1\n/g' | nl | perl -pe 's/\s*(\d+)\s*(.*)/id_rsa_$1="$2"/' | xargs -I % travis encrypt % --add
 # This generated 23 environment variables: id_rsa_1 .. id_rsa_23
+
+set -ev
 
 # If we are not the bndtools/bnd.manual Travis build, then we don't continue
 if [ -z "$id_rsa_1" ]; then
