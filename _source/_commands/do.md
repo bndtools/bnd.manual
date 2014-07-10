@@ -1,7 +1,7 @@
 ---
 layout: default
 title:      do [options] ... 
-summary: Execute a file based on its extension. Supported extensions are: bnd (build), bndrun (run), and jar (print) 
+summary: Execute a file based on its extension. Supported extensions are bnd (build), bndrun (run), and jar (print) 
 ---
 
 OPTIONS
