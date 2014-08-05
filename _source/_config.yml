@@ -6,6 +6,8 @@ collections:
     output: true
   heads:
     output: true
+  tools:
+    output: true
   commands:
     output: true
   instructions:

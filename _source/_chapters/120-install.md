@@ -1,40 +1,56 @@
 ---
 order: 120
-title: Where to find it
+title: How to install bnd
 layout: default
 ---
 
-TODO download/install instructions
+bnd is not a single product, it is a library (bndlib) used in many different software build environments. It runs inside Maven, ant, gradle, Eclipse, sbt, and maybe one day in Intellij. To install bnd, you will have to install these tools. 
 
-## Where bnd is Used
-bnd is already used by several different projects.
+<div>
+<ul class="property-index">
 
-* [Maven Bundle Plugin][2]
-* [Gradle][3]
-* [bndtools][1]
+{% for tool in site.tools %}<li><a href="{{tool.url}}">{{tool.title}}</a> {{tool.summary}}</li>
+{% endfor %}
 
-TODO update list of projects that use bnd
+</ul>
+</div>
 
-If you're a developer of a tool that needs to be listed here, do not hesitate to ask Peter.Kriens@aQute.biz.
+## Command Line
+That said, there is also a command line version of bnd, providing an easy way to try out its many features. You can install bnd through [jpm][1]. You first have to install jpm, fortunately, this is well documented at [jpm install][1]. Installing jpm has the other advantage that it provides some useful commands to work with a repository that has all of maven central. 
+
+With jpm installed, you can now install the latest version of bnd as follows:
+
+	$ sudo jpm install bnd@*
+	$ bnd version
+	2.4.0.201406271227
+	$
+
+## Libraries
+The binaries are available on [Cloudbees][4]. The latest version can be found at:
+
+	https://bndtools.ci.cloudbees.com/job/bnd.master/lastSuccessfulBuild/artifact/
+
+However, Cloudbees currently also contains the previously released libraries.
+	
+If you are a maven user, you can find many version in central. The coordinates are:
+
+		<dependency>
+			<groupId>biz.aQute.bnd</groupId>
+			<artifactId>bndlib</artifactId>
+			<version>....</version>
+		</dependency>
+
 
 ## Source Code
-bnd is maintained at [github][5]
+bnd is maintained at [github][3]. If you want to change the code, just clone it and modify it. In general we accept pull requests, and often even highly appreciate them.
 
-## Maven Central
-Maven Central may lag in its version but can be used with:
+## Manual
+The manual is also on [github][5]. If you see an improvement, do not hesitate to clone the repo and create a pull request. Improvements are bug corrections but we also like short articles about how to do do something with bnd.
 
-    <dependency>
-      <groupId>biz.aQute</groupId>
-      <artifactId>bndlib</artifactId>
-      <version>2.2.0</version>
-    </dependency>
 
-## Download Latest Version
-
-* [Master build][3]
-
-[1]: http://bndtools.org
-[2]: http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html
-[3]: http://www.gradleware.com/
-[4]: https://bndtools.ci.cloudbees.com/job/bnd.master/
-[5]: https://github.com/bndtools/bnd
+[1]: http://www.jpm4j.org
+[2]: http://jpm4j.org/#!/md/install
+[3]: https://github.com/bndtools/bnd
+[4]: https://bndtools.ci.cloudbees.com/job/bnd.master/lastSuccessfulBuild/artifact/
+[5]: https://github.com/bndtools/bnd.manual
+[6]: /instructions/conditionalpackage.html
