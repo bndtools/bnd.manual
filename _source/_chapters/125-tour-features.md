@@ -1,10 +1,20 @@
 ---
-title: Quick Start
+title: Guided Tour Workspace & Projects
 layout: default
 ---
 
-Since bnd is by design headless, the best way to get start is to use one of the IDEs like [bndtools][1]. They have tutorials and an IDE is a more pleasant place than a command line. that said, these tutorials tend to focus on the higher layers.
-Therefore, this section uses the command line bnd application to demonstrate much of the inner details of bndlib. bnd has lots of commands to try out aspects of bndlib. The [install section](120-install.md) shows how to install bnd.
+
+Since bnd is by design headless, the best way to get start is to use one of the IDEs like [bndtools][1]. They have tutorials and an IDE is a more pleasant place than a command line. So if you just want to learn OSGi, please go away, this chapter is not for you! bndlib relates to OSGi like the ASM byte code manipulation library relates to Java. Sometimes incredibly useful but in general something you do not want to touch, and obviously not the way to learn Java.
+
+Assuming we're now only left with the blue collar workers of our industry: people that need to maintain builds or that must do JAR engineering. First a word of warning, the fact that bndlib provides a function is in no way an advertisement to use that function. bndlib grew up together with the OSGi specifications and has been used to build the Reference Implementations (RI) and Test Compatibility Kits (TCK). Though this has a lot of benefits for you, the disadvantage is that it also has to support all the bad parts of the specifications, and even sometimes must be able to create erroneous situations so we could create test cases. And we also had to handle the situations caused by the mess of non-modular bundles out there.  
+
+So to make it crystal clear: the fact that a function is in bndlib does not mean it is intended to be used. This section contains a whole bunch of things you wish you never had to touch, and if you do OSGi properly, you will only see a tiny fraction of bndlib. That said, when the unprepared JARs hit the OSGi framework, it is nice to have bndlib as backup. 
+
+This tour uses the bnd command line bnd to demonstrate much of the inner details of bndlib. 
+
+bnd became the Swiss army knife to manipulate JARs and gained a lot of function you _should never attempt to use_. However, this chapter will give you an overview of what is in bnd.
+
+bnd has lots of commands to try out aspects of bndlib. The [install section](120-install.md) shows how to install bnd.
 
 ## Wrapping
 
