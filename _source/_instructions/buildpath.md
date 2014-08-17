@@ -5,6 +5,20 @@ title: -buildpath REPO-SPEC ( ',' REPO-SPEC ) *
 summary: Provides the class path for building the jar. The entries are references to the repository.
 ---
 
+The -buildpath instruction is the main mechanism to add build-time dependencies to a project. A dependency is either another project in the workspace, or a bundle in a repository. The -buildpath is only used compile time; it is not used to run projects. Import-Package header is also not directly influenced by the -buildpath. Instead, the Import-Package header is generated based on which packages are actually imported from the code. 
+
+Because -buildpath dependencies are only used compile time it's sufficient to add bundles containing only APIs; you don't need bundles containing (service) implementations.
+
+An example of the -buildpath could be the following, where three dependencies are defined: 
+
+```
+-buildpath: some.other.workspace.project,\
+   osgi.core,\
+   osgi.cmpn
+```
+
+
+
 					// We have two paths that consists of repo files, projects,
 					// or some other stuff. The doPath routine adds them to the
 					// path and extracts the projects so we can build them
