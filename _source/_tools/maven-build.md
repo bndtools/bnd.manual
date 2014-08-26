@@ -91,12 +91,12 @@ The computed symbolic name is also stored in the $[maven-symbolicname] property 
 
 ### Export Package
 
-<Export-Package> is now assumed to be the set of packages in your local Java sources, excluding the default package '.' and any packages containing 'impl' or 'internal'. (before version 2 of the bundleplugin it was based on the symbolic name)
+Export-Package is assumed to be the set of packages in your local Java sources, excluding the default package '.' and any packages containing 'impl' or 'internal'. (before version 2 of the bundleplugin it was based on the symbolic name)
 
 > From a bndlib perspective, this is the wrong default. An exported package is an expensive thing to have and the philosophy of bndlib is to make these expensive choices explicit, this is the reason the bndlib default is to make nothing exported, especially because good bundles should have no or very few exports.
 
 
-### Detailed "How To"
+## Detailed "How To"
 
 To use the maven-bundle-plugin, you first need to add the plugin and some appropriate plugin configuration to your bundle project's POM. Below is an example of a simple OSGi bundle POM for Maven2:
 
