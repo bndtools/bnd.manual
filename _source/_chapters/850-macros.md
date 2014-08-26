@@ -21,6 +21,16 @@ For example:
     Bundle-Version= ${version}
     Bundle-Description= This bundle has version ${version}
 
+## Macro patterns
+The default macro pattern is the `${...}` pattern, a dollar sign ('$') followed by a left curly bracket ('{') and closed by a right curly bracket ('}'). However, since bndlib is often used inside other systems it also supports alternative macro patterns:
+
+* `$(...)`, 
+* `$<...>`, 
+* `$[...]`, 
+* `$«..»` (pointing double angle quotation mark \u00AB abd \u00BB), and
+* `$‹...›` (single pointing angle quotation mark)
+
+
 ## Arguments
 @Since("2.3") Macros can contain arguments. These arguments are available in the expansion as ${0} to ${9}. ${0} is the name of the macro, so the actual arguments start at 1. The name is also available as ${@}. The arguments as an array (without the name of the macro) is available as ${#}. The more traditional * could not be used because it clashes with wildcard keys, it means ALL values. 
 
