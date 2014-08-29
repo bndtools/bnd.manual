@@ -23,9 +23,13 @@ In the Java world we learned rather slowly that interfaces are great but that yo
 
 Spring brought dependency injection to the masses that allowed the consumers and providers to stay away from each other but it then introduced a massive coupling in the XML that contained too many details about the provider implementations since it specified the provider class names. 
 
-The solution OSGi came up with in 1998 was to use a _service broker_. A broker makes sure that consumers and providers were bound together once they are available. This is the only true modular model that allows all implementation details to remain private inside the module. A the consequence of this model is that services, an implementation object implementing a Java interface from a specification package, cannot be assumed to be always there. Where Spring calculates the dependencies of its beans to initialize a system in the right order, a broker negotiates when a service is available since it does know any of its implementation details. One of those implementation details is when that service will be available. The broker is therefore dynamic, it can react to changing circumstances, another even more both maligned and misunderstood OSGi feature.
+The solution OSGi came up with in 1998 was to use a _service broker_. A broker makes sure that consumers and providers were bound together once they are available. This is the only true modular model that allows all implementation details to remain private inside the module. 
 
-The hardest part of OSGi is to look at it with a clean slate. The core model is surprisingly simple, elegant, and extremely powerful. The hard part is that it tends to show all the bad habits in existing code bases that grew up thinking class loaders were simple extension mechanisms.
+<embed class="illustration" src="/img/chapters/concepts-service.svg" />
+
+A the consequence of this model is that services, an implementation object implementing a Java interface from a specification package, cannot be assumed to be always there. Where Spring calculates the dependencies of its beans to initialize a system in the right order, a broker negotiates when a service is available since it does know any of its implementation details. One of those implementation details is when that service will be available. The broker is therefore dynamic, it can react to changing circumstances, another even more both maligned and misunderstood OSGi feature.
+
+The hardest part of OSGi is to look at it with a clean slate. The core model is surprisingly simple, elegant, and extremely powerful. The hard part is that it tends to conflict (as it should!) with all the bad habits in existing code bases that grew up thinking class loaders were simple extension mechanisms.
 
 ## Bundles
 
@@ -34,8 +38,6 @@ So to summarize, a bundle is a JAR that imports and exports a set of packages. T
 <embed class="illustration" src="/img/chapters/concepts-bundles.svg" />
 
 The symbols used are defined in the OSGi specifications. The rectangle with rounded corners is a bundle, the triangle is a service (it always points in the dependency direction, i.e. the Reporter bundle depends on the sensor service to be there. Input and output is depicted with the corresponding flow chart symbol.
-
-<embed class="illustration" src="/img/chapters/concepts-service.svg" />
 
 In a perfect OSGi world, packages are just a minor detail. Until then, we also need some way to show package imports and package exports. In the OSGi specification, we use an open rectangle for imported packages and and black rectangle for exported packages. Private packages are depicted with a grey rectangle, see:
 
