@@ -53,7 +53,9 @@ Since all elements become part of the bndlib properties you can actually also se
 
 ## Embed-Dependency
 
-The Apache Felix Maven plugin supports a special instruction <Embed-Dependency> that will automatically include maven transitive dependencies in the JAR and place these JARs on the Bundle-ClassPath. This feature is explained in [Embedding Dependencies][2]. This is a convenient feature that is not so wise to use since it makes the actual bundle depending on many aspects that are not under direct control. A bundle is a component and should reflect an implementation of a public API; this model requires that you think about what goes in there and what does not go in there. Adding transitive dependencies inside this bundle tends to create very complex systems that destroy the benefits of OSGi.
+The Apache Felix Maven plugin supports a special instruction <Embed-Dependency> that will automatically include maven transitive dependencies in the JAR and place these JARs on the Bundle-ClassPath. This feature is explained in [Embedding Dependencies][2]. 
+
+>  This is a convenient feature that is not so wise to use since it makes the actual bundle depending on many aspects that are not under direct control. A bundle is a component and should reflect an implementation of a public API; this model requires that you think about what goes in there and what does not go in there. Adding transitive dependencies inside this bundle tends to create very complex systems that destroy the benefits of OSGi.
 
 ## Defaults
 
@@ -93,7 +95,7 @@ The computed symbolic name is also stored in the $[maven-symbolicname] property 
 
 Export-Package is assumed to be the set of packages in your local Java sources, excluding the default package '.' and any packages containing 'impl' or 'internal'. (before version 2 of the bundleplugin it was based on the symbolic name)
 
-> From a bndlib perspective, this is the wrong default. An exported package is an expensive thing to have and the philosophy of bndlib is to make these expensive choices explicit, this is the reason the bndlib default is to make nothing exported, especially because good bundles should have no or very few exports.
+>  From a bndlib perspective, this is the wrong default. An exported package is an expensive thing to have and the philosophy of bndlib is to make these expensive choices explicit, this is the reason the bndlib default is to make nothing exported, especially because good bundles should have no or very few exports.
 
 
 ## Detailed "How To"
@@ -272,22 +274,22 @@ Though the Apache Felix Maven Bundle plugin is used in a 'maven first' model, it
 
 If you want to use this model, be aware that bnd has a strict disk layout for the workspace. A workspace is a directory with a `cnf` directory and project directory. It is not possible to create arbitrary layouts. For maven, the disk layout should be:
 
-	./com.acme.prime/					workspace
-		cnf/							configuration
-			ext/						extensions
-				maven.bnd				contains the maven plugin setup
-			build.bnd					your shared settings
-		pom.xml							maven modules
-		com.acme.prime.speaker.api/		project directory
-			pom.xml						
-			src/
-				main/
-					java/
-				test/
-					java
-			target/
-				classes/
-				test-classes/
+	  ./com.acme.prime/                workspace
+	    cnf/                           configuration
+	      ext/                         extensions
+	        maven.bnd                  contains the maven plugin setup
+	      build.bnd                    your shared settings
+	    pom.xml                        maven modules POM
+	    com.acme.prime.speaker.api/    project directory
+	      pom.xml                      your project POM
+	      src/                         maven source directory
+	        main/
+	          java/
+	        test/
+	          java/
+	      target/
+	        classes/                   output directory
+	        test-classes/              test output
 
 You can include files with the -include instruction:
 

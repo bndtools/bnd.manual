@@ -5,6 +5,12 @@ title: -pluginpath* PARAMETERS
 summary: Define JARs to be loaded in the local classloader for plugins. 
 ---
 
+Plugins not embedded in bndlib must load their classes from JARs or directories. Though these JARs can be specified on the `-plugin` instruction, it is also possible to specify them separate. The `-pluginpath` is a merged property so it is possible to specify clauses in multiple places, these will all be merged together.
+
+
+
+
+
 	/**
 	 * Add the @link {@link Constants#PLUGINPATH} entries (which are file names)
 	 * to the class loader. If this file does not exist, and there is a

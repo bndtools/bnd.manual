@@ -10,6 +10,8 @@ collections:
     output: true
   commands:
     output: true
+  plugins:
+    output: true
   instructions:
     output: true
 

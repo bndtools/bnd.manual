@@ -102,8 +102,6 @@ So how does this work? When the workspace is opened bndlib will first read all t
 
 As you can see, the `eclipse.bnd` file defines the property `-plugin.eclipse`. In most cases that a value should be settable in different places, bndlib uses _merged properties_. When bndlib loads the plugins, it actually gets the property `-plugin`, merged with any other property that has a key that starts with `-plugin.` (ordered alphabetically). This allows you to add to a merged property anywhere in the many places in bndlib where you can set properties.  
 
-You can add your own custom plugins as well. Since these are likely not embedded in bndlib you can actually specify a JAR to load them from. See ###
-
 So now we can try to build the workspace:
 
 	$ bnd build
@@ -122,6 +120,11 @@ An empty workspace is not so useful, let's add a project.
 	.classpath      bin             generated
 
 This classic layout defines separate source folders for the main code and the test code. The `generated` directory is a temporary directory, it contains the artifacts produced by this build. 
+
+## Setup
+
+
+
 
 ## Changing the Layout
 This is a classical Eclipse layout, with a separate `src` and `test` folder. However, this is not baked into bndlib, it is possible to, for example, use the maven layout with the `src/main/java`, `src/test/java`, and `target` directories. We can try this out with the maven plugin.

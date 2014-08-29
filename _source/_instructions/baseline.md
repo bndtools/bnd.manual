@@ -1,7 +1,7 @@
 ---
 layout: default
 class: Macro
-title: -baseline BSN-SPEC (',' BSN-SPEC )*
+title: -baseline symbolic (',' symbolic )*
 summary: Control what bundles are enabled for baselining
 ---
 

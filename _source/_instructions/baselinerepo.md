@@ -1,7 +1,7 @@
 ---
 layout: default
 class: Macro
-title: -baselinerep NAME
+title: -baselinerep qname
 summary: Define the repository to calculate baselining against
 ---
 
