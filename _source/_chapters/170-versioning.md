@@ -180,3 +180,23 @@ It is possible to baseline a project with the following instructions:
 In this example, the last version in the Released repository for the project's bsn is supposed to be the previous version. Make sure you do not always release snapshot versions to this repository since this will create false changes. During a development cycle, the baseline version must remain constant until the current development bundle is released, at which points it becomes the baseline of the next cycle.
 
 Since an error is raised when the baselining detects an semantic version violation it is possible to release a snapshot in a build only when there is a correctly baselined bundle built.
+
+
+## Why does bnd use only major and minor version component in import-package headers?
+
+The micro is left out because it generates a lot of unnecessary releases, this is similar to the maven release process. If you connect everything 100%, you cannot move anything unless all its dependencies are moved at the same time. We actually tried in the OSGi build to use micro version changes for default methods in Java 8 but found that it just creates an enormous ripple through effect in the build. Not depending on the micro version is a lubricant that does not kill any bundle out there that depends on you.
+
+This should not be a problem because a micro version is a deployment issue since the semantic versioning should be used for APIs and a micro change is not visible in the API. 
+
+That said, this is bnd so obviously you can override it. You can override the default version policy is:
+
+	-provider-policy = ${range;[==,=+)}
+	-consumer-policy = ${range;[==,+)}
+
+Just set '===' instead of '==' for the floor version in your pom.xml in the <configuration> section and you should be ok.
+
+	<configuration>
+		<_provider-policy>${range;[===,=+)}</_provider-policy>
+		<_consumer-policy>${range;[===,+)}</_consumer-policy>
+	</configuration>
+

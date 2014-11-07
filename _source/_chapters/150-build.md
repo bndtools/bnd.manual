@@ -62,9 +62,15 @@ For example, the Maven plugin that is built-in to bndlib has an extension file c
 	testbin=target/test-classes
 	target-dir=target
 
-We will not explain this plugin here (you can find it in the plugin sections), it only illustrates here how it is possible to setup the environment for a specific optional functionality.
+We will not explain this plugin here (you can find it in the plugin sections), it only illustrates here how it is possible to setup the environment for a specific optional functionality like a plugin.
 
- 
+If you create local extension files then you should use a prefix to identify this is your file, like:
+
+	com.acme-local.bnd
+
+It is possible to use file links to maintain these files in one place when you have many workspaces.
+
+### Local customizations
 
 
 After reading the extension files, bndlib reads the `cnf/build.bnd` file, this file is supposed to hold the organization specific properties. Out of the box, this file comes empty, ready to be filled by you.
