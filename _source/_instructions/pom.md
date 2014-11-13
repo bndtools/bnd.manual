@@ -21,18 +21,19 @@ The pom will also attempt to convert the following headers to their POM counterp
 * `Bundle-License`
 * `Bundle-Developer` – This is an unofficial header. The key must be the email. It consist of the following parameters:
 
-  	email                      Email address mandatory
-  	id                         A developer id (default address)
+	email                      Email address mandatory
+	id                         A developer id (default address)
 	name                       Name of the developer
 	organization               Name of the organization
 	organizationUrl            URL of the organization
 	roles                      Roles of the developer (comma separated)
 	timezone                   Three letter time zone
 	
-	Bundle-Developer: Peter.Kriens@aQute.biz; \
-	    name="Peter Kriens"; \
-	    organization=aQute; \
-	    roles="programmer,gopher"
+	  Bundle-Developer: 
+	    Peter.Kriens@aQute.biz;
+	      name="Peter Kriens";
+	      organization=aQute;
+	      roles="programmer,gopher"
 	 
 * `Bundle-SCM` – This is an unofficial header. The key must be the It consists of the following parameters:
 
@@ -40,10 +41,11 @@ The pom will also attempt to convert the following headers to their POM counterp
     developerConnection        Developer connection
     url                        The URL for a web front end to your SCM system.     
 
-	Bundle-SCM: url=http://github.com/bndtools, \
-	    connection=scm:git:https://github.com/bndtools/bnd, \
+	  Bundle-SCM: 
+	    url=http://github.com/bndtools,
+	    connection=scm:git:https://github.com/bndtools/bnd,
 	    developerConnection=scm:git:git@github.com/bndtools/bnd
-    
+
 ## Example
 
 The following example bnd file:
@@ -55,77 +57,58 @@ The following example bnd file:
 Generates the following pom in `pom.xml`:
 
 	<project 	xmlns="http://maven.apache.org/POM/4.0.0" 
-			xmlns:xsi="" 
-			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  		<modelVersion>4.0.0</modelVersion>
-  		<groupId>com.example</groupId>
-  		<artifactId>foo</artifactId>
-  		<version>1.2.3.qualifier</version>
-  		<name>com.example.foo</name>
+	  	xmlns:xsi="" 
+	  	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  	  <modelVersion>4.0.0</modelVersion>
+  	  <groupId>com.example</groupId>
+  	  <artifactId>foo</artifactId>
+  	  <version>1.2.3.qualifier</version>
+  	  <name>com.example.foo</name>
 	</project>
 
 You can override the different parts of the Maven coordinates:
 
-	Bundle-SymbolicName: com.example.foo
-	Bundle-Version: 1.2.3.qualifier
-	Bundle-Developer: Peter.Kriens@aQute.biz; \
-		name="Peter Kriens"; \
-		organization=aQute; \
-		roles="programmer,gopher"
-	Bundle-SCM: url=http://github.com/bndtools, \
-		connection=scm:git:https://github.com/bndtools/bnd, \
-		developerConnection=scm:git:git@github.com/bndtools/bnd
-	-pom: groupid=com.example, \
-		where=META-INF/maven/pom.xml, \
-		version=${version;==;${Bundle-Version}}
+	Bundle-SymbolicName:          com.example.foo
+	Bundle-Version:               1.2.3.qualifier
+	Bundle-Developer:             Peter.Kriens@aQute.biz;
+	  name="Peter Kriens";
+	  organization=aQute;
+	  roles="programmer,gopher"
+	Bundle-SCM: url=http://github.com/bndtools,
+	  connection=scm:git:https://github.com/bndtools/bnd,
+	  developerConnection=scm:git:git@github.com/bndtools/bnd
+	-pom: groupid=com.example,
+	  where=META-INF/maven/pom.xml,
+	  version=${version;==;${Bundle-Version}}
 	
 Generates the following pom in `META-INF/maven/pom.xml`:
 
 	<project 	
-		xmlns="http://maven.apache.org/POM/4.0.0" 
-		xmlns:xsi="" 
-		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-			http://maven.apache.org/maven-v4_0_0.xsd">
-  		<modelVersion>4.0.0</modelVersion>
-  		<groupId>com.example</groupId>
-  		<artifactId>com.example.foo</artifactId>
-  		<version>1.2</version>
-  		<name>com.example.foo</name>
-		<scm>
-	    	<url>
-	      		http://github.com/bndtools
-	    	</url>
-	    	<connection>
-	      		scm:git:https://github.com/bndtools/bnd
-	    	</connection>
-	    	<developerConnection>
-	      		scm:git:git@github.com/bndtools/bnd
-	    	</developerConnection>
-	  	</scm>
-	  	<developers>
-	    	<developer>
-	      		<id>
-	        		Peter.Kriens@aQute.biz
-	      		</id>
-	      		<name>
-	        		Peter Kriens
-	      		</name>
-	      		<organization>
-	        		aQute
-	      		</organization>
-	      		<roles>
-	        		<role>
-	          			programmer
-	        		</role>
-		        	<role>
-		          		gopher
-		        	</role>
-	      		</roles>
-	      		<email>
-	        		Peter.Kriens@aQute.biz
-	      		</email>
-	    	</developer>
-	  	</developers>
+	  xmlns="http://maven.apache.org/POM/4.0.0" 
+	  xmlns:xsi="" 
+	  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+	  	http://maven.apache.org/maven-v4_0_0.xsd">
+  	  <modelVersion>4.0.0</modelVersion>
+  	  <groupId>com.example</groupId>
+  	  <artifactId>com.example.foo</artifactId>
+  	  <version>1.2</version>
+  	  <name>com.example.foo</name>
+	  <scm>
+	    <url>http://github.com/bndtools</url>
+	    <connection>scm:git:https://github.com/bndtools/bnd</connection>
+	    <developerConnection>scm:git:git@github.com/bndtools/bnd</developerConnection>
+	  </scm>
+	  <developers>
+	    <developer>
+	      <id>Peter.Kriens@aQute.biz</id>
+	      <name>Peter Kriens</name>
+	      <organization>aQute</organization>
+	      <roles>
+	        <role>programmer</role>
+	        <role>gopher</role>
+	      </roles>
+	      <email>Peter.Kriens@aQute.biz</email>
+	    </developer>
+	  </developers>
 	</project>
-
 
