@@ -42,6 +42,24 @@ For example:
 Keys can be wildcarded. For example, if you want to set -plugin from different places, then you can set the `plugin.xxx` properties in different places and combine them with `-plugins= ${plugins.*}`.
 
 
+## Expansion of ./
+
+The `./` sequence is automatically expanded to the current filename when found in a macro source file. This generally what you want but unfortunately not always. The `./` prefix is only replaced when:
+
+* It is at the start of the expansion, or
+* Preceded by a whitespace.
+
+So, do you really require the `./` without expansion? If so, then there are the following solutions. The first one is to use another macro to break the sequence:
+
+	.=.
+	Some-Header: ${.}/conf/admin.xml
+
+Alternatively there are a couple of macros that return the given value when called appropriately, and thereby break the sequence:
+
+	Some-Header-1: ${def;.;.}/conf/jetty/admin.xml
+	Some-Header-2: ${uniq;.}/conf/jetty/admin.xml
+	Some-Header-3: ${unescape;.}/conf/jetty/admin.xml
+
 ## Types
 @TODO
 
