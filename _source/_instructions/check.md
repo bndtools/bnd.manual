@@ -1,7 +1,7 @@
 ---
 layout: default
 class: Analyzer
-title: -check ( ALL | IMPORTS )
+title: -check 'ALL' | ( 'IMPORTS' | 'EXPORTS' ) *
 summary: Enable additional checking
 ---
 
