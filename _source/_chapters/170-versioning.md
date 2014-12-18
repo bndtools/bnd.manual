@@ -89,6 +89,17 @@ If you export a a package from another bundle, bnd will also look in the manifes
 
 Using packageinfo (or the @Version annotation) is highly recommended.
 
+## When Package Version Differ
+
+The package version for package p can come from the following places (in order of increasing priority):
+
+* `p/packageinfo`
+* `p/package-info.java` with an annotation
+* Manifest of the source bundle
+* Manifest of the bundle under construction, i.e. the bnd.bnd file
+
+The bnd warning means that bnd finds multiple definitions of the version for p and they are not the same. So I assume you set the version in the manifest of the bundle under construction and in one of those other places. The best is to remove the version from your bnd.bnd file. The by far absolute best way is to only set the version of the package in the package directory (either `packageinfo` or `package-info.java` with an annotation).
+
 ## Import Version Policy
 If you import a package bnd will look at the exported version of that package. This version is not directly suitable for the import because it is usually too specific, it needs a policy to convert this export version to an import version.
 
