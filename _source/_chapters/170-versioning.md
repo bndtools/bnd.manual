@@ -7,7 +7,7 @@ requires: 1.15
 
 Versioning is probably the most painful part of developing real software. Where toys and prototypes can be developed ignoring evolution, real software requires a migration path to an unknown future.
 
-The OSGi has defined a versioning policy that is described in the [Semantic Versioning whitepaper][http://www.osgi.org/wiki/uploads/Links/SemanticVersioning.pdf]. bnd fully supports this model and provides many shortcuts. The goal of bnd is remove any manual work from versioning bundles as well as packages.
+The OSGi has defined a versioning policy that is described in the [Semantic Versioning whitepaper](http://www.osgi.org/wiki/uploads/Links/SemanticVersioning.pdf). bnd fully supports this model and provides many shortcuts. The goal of bnd is remove any manual work from versioning bundles as well as packages.
 
 The key concept to version in OSGi is the ''package''. Bundles are an ''aggregate'' and therefore must move as fast as the fastest moving exported packages they contain. For example, if a bundle contains two exported packages `foo` and `bar` and `foo` is not changed but `bar` has a major change, then the bundle version needs to also have a major change. This requires an unnecessary update for a bundle that only depended on `foo`. Aggregating dependencies increases the fan out of the transitive dependencies. The result is that systems can only evolve when everything is updated simultaneously. The result is that the system as a whole becomes brittle.
 
@@ -109,10 +109,10 @@ For example, a new method is added to an interface that is implemented by the pr
 
 This asymmetry creates the need for two version policies:
 
-  -provider-policy :    ${range;[==,=+)}
-  -consumer-policy :    ${range;[==,+)}
+  -provider-policy :    ${range;\[==,=+)}
+  -consumer-policy :    ${range;\[==,+)}
 
-The given values are the defaults. The value of the version policy will be used calculate the import based on the exported package. The [${range}][Macros#range] macro provides a convenient shortcut to do this using a version mask.
+The given values are the defaults. The value of the version policy will be used calculate the import based on the exported package. The ${range} macro provides a convenient shortcut to do this using a version mask.
 
 For example, a bundle that implements the OSGi Event Admin service can use the following bnd file:
 
@@ -122,7 +122,7 @@ For example, a bundle that implements the OSGi Event Admin service can use the f
 The resulting manifest would look like:
 
   Manifest:
-    Import-Package:  org.osgi.service.event; version="[1.1,2)", ...
+    Import-Package:  org.osgi.service.event; version="\[1.1,2)", ...
     ...
 
 How does bnd know if a bundle is a provider or a consumer of a specific package? Well, the default is the consumer policy but this can be overridden with the `provide:=true` directive that works on the `Import-Package` clauses as well as on the `Export-Package` clauses. 
@@ -139,7 +139,7 @@ The resulting manifest would look like:
 
   Manifest:
     Export-Package:  org.osgi.service.event; version=1.1
-    Import-Package:  org.osgi.service.event; version="[1.1,1.2)", ...
+    Import-Package:  org.osgi.service.event; version="\[1.1,1.2)", ...
     ...
 
 If for some reason it is not desirable to export the API package in the implementation bundle, then the `provide:` directive can also be applied on the `Import-Package` header:
@@ -168,30 +168,6 @@ If a package is imported it will use the version as defined by the version polic
 ## Versioning Bundles
 Versioning bundles usually requires bumping the version every time it is placed in a repository. When package versioning is used, the bundle version is only important for tracking an artifact.
 
-! Baselining
-
-Requires 2.2.0
-
-Baselining compares the public API of a bundle with the public API of another bundle. It can be run from the command line (see `bnd help baseline`) or always after a project is build. For a project, the previous version of a bundle is found in the ''baseline repository'', this is called the ''baseline''.
-
-APIs are compared for backward compatibility using the semantic versioning rules defined in this chapter. Baselining is aware of the @ConsumerType and @ProviderType rules. Proper versions are calculated and suggested.
-
-It is possible to baseline a project with the following instructions:
-
-||`-baseline`||PARAMETERS||The parameters specify glob patterns matched agains the bsns. The version attribute can indicate a version. A project  is only baselined if the name of the parameter matches and an appropriate version can be found in the baseline repo or the the release repo||
-||`-baselinerepo`||Repo name||The repository that must be used for baselining||
-||`-releaserepo`||Repo name||Repository to use when no `-baselinerepo` is specified.||
-
-###Example baselining Project Instructions
-
-      Bundle-Version: 1.0.2
-      -baseline: *
-      -baselinerepository: Released
-
-In this example, the last version in the Released repository for the project's bsn is supposed to be the previous version. Make sure you do not always release snapshot versions to this repository since this will create false changes. During a development cycle, the baseline version must remain constant until the current development bundle is released, at which points it becomes the baseline of the next cycle.
-
-Since an error is raised when the baselining detects an semantic version violation it is possible to release a snapshot in a build only when there is a correctly baselined bundle built.
-
 
 ## Why does bnd use only major and minor version component in import-package headers?
 
@@ -201,13 +177,14 @@ This should not be a problem because a micro version is a deployment issue since
 
 That said, this is bnd so obviously you can override it. You can override the default version policy is:
 
-	-provider-policy = ${range;[==,=+)}
-	-consumer-policy = ${range;[==,+)}
+	-provider-policy = ${range;\[==,=+)}
+	-consumer-policy = ${range;\[==,+)}
 
 Just set '===' instead of '==' for the floor version in your pom.xml in the <configuration> section and you should be ok.
 
 	<configuration>
-		<_provider-policy>${range;[===,=+)}</_provider-policy>
-		<_consumer-policy>${range;[===,+)}</_consumer-policy>
+		<_provider-policy>${range;\[===,=+)}</_provider-policy>
+		<_consumer-policy>${range;\[===,+)}</_consumer-policy>
 	</configuration>
 
+[range]: range
