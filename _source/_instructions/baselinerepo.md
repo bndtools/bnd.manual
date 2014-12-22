@@ -1,20 +1,12 @@
 ---
 layout: default
-class: Macro
+class: Workspace
 title: -baselinerep qname
 summary: Define the repository to calculate baselining against
 ---
 
-	private RepositoryPlugin getBaselineRepo() {
-		String repoName = getProperty(Constants.BASELINEREPO);
-		if (repoName == null)
-			return getReleaseRepo();
+The default repository for [baselining](/chapters/180-baselining.html) is the [release repository](/instructions/releaserepo.html). However, this instruction can be set in the workspace to define an alternate repository. The reference `qname` is the name of the repository.
 
-		List<RepositoryPlugin> repos = getPlugins(RepositoryPlugin.class);
-		for (RepositoryPlugin r : repos) {
-			if (r.getName().equals(repoName))
-				return r;
-		}
-		error("Could not find -baselinerepo %s", repoName);
-		return null;
-	}
+	-baselinerepo: Baseline
+	
+See [baselining](/chapters/180-baselining.html) for more information.

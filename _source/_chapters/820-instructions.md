@@ -44,6 +44,7 @@ The following terminals are pre-defined:
 	parameter        ::= directive | attribute
 	directive        ::= extended ':=' argument
 	attribute        ::= extended '=' argument
+	parameters       ::= parameter ( ',' parameter ) *
 	unique-name      ::= identifier ( '.' identifier )*
 	symbolic-name    ::= token('.'token)* 
 	package-name     ::= unique-name
@@ -91,7 +92,7 @@ As an example, lets set the `-buildpath` instruction:
 
 This will result in a buildpath of (when debug is not false) of: `com.example.foo;version=1.2, com.example.foo.debug;version=1.2`.
 
-## Selectors
+## SELECTOR
 
 If a value in an instrucion has a _scope_ then you will be able to use a _selector_. A scope is a well defined, finite, set. For example, if you use the '-exportcontents' instruction you can specify the packages that can be exported. Since you can only export the packages that are inside your bundle, the scope is the set of package names that were collected so far.
 
@@ -133,7 +134,7 @@ In this example, the first selector will remove any match and ignore it, the sec
 
 Selectors are used in virtually any place where there is a reasonable scope. It is a very powerful feature. However, it is also easy to go overboard. If you find you need to use this feature excessively then you are likely overdoing it.
 
-## Files
+## FILE
 
 One of the most painful thing in making bndlib run anywhere is handling of files. Even though Java has a decent abstraction of the file system, problems with spaces in file names and backslashes in the wrong place have caused an uneven amount of bugs. Ok, this partially because most bndlib developers tend to use Macs, still no excuse and quite embarrassing.
 
@@ -152,6 +153,24 @@ You can use the '..' operator for a segment in the file path to indicate a paren
 * `${p}`, `${project} – The directory of the current project
 * `${workspace}` – The directory of the current workspace
 * `${build} – The directory of the `cnf` directory.
+
+## PATH
+
+A PATH is a _repository specification_. It is a specification for a number of JARs and/or bundles from a repository (well, most of the time). A PATH has the following syntax:
+
+	PATH              ::= target ( ',' target ) *
+	target            ::= ( entry | FILE ';' 'version' '=' 'file' ) ( ';' PARAMETERS ) *
+	entry             ::= symbolic-name ( ';' version ) ? 
+	version	          ::= 'version' '=' ( RANGE | 'latest' | 'project' | 'snapshot' )
+
+A PATH defines a number of bundles with its _entries_. Each entry is either a FILE or a symbolic-name. If only a symbolic name is specified, the default will be the import range from 0.0.0. This selects the whole repository for the given symbolic name. Outside the default, the repository entry can be specified in the following ways:
+
+* RANGE – A version range limits the entries selected from the active repositories.
+* `latest` – 
+* `project` –
+* `snapshot` –
+
+
 
 ## Reference
 
