@@ -2,7 +2,7 @@
 layout: default
 class: Macro
 title: env ';' KEY
-summary: The given environment variable
+summary: The given environment variable or an empty string "" if not found
 ---
 layout: default
 
@@ -10,9 +10,10 @@ layout: default
 		verifyCommand(args, "${env;<name>}, get the environmet variable", null, 2, 2);
 
 		try {
-			return System.getenv(args[1]);
+			String ret = System.getenv(args[1]);
+			return ret != null ? ret : "";
 		}
 		catch (Throwable t) {
-			return null;
+			return "";
 		}
 	}
