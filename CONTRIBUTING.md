@@ -11,6 +11,24 @@ on GitHub please include the version of bnd.manual you are using.
 Please include the steps required to reproduce the problem if possible and applicable.
 This information will help us review and fix your issue faster.
 
+## Building
+
+The site uses [GitHub Pages](https://help.github.com/articles/what-are-github-pages/) with
+the site content in the `gh-pages` branch. To build the site locally, you will need to
+[install Ruby, Bundler and Jekyll](https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll).
+
+Run jekyll in the root directory to build:
+
+	$ bundle exec jekyll build
+
+You can also run a local server to test the site:
+
+	$ bundle exec jekyll serve
+
+Then go to [http://localhost:4000](http://localhost:4000). The pages are automatically updated when you edit a markdown file, though you do have to refresh the browser to see these changes. Eclipse later revisions have a decent markdown editor build in.
+
+We use [Travis CI](https://travis-ci.org/bndtools/bnd.manual) to test build any pull requests.
+
 ## Workflow
 
 We use [git triangular workflow](https://www.sociomantic.com/blog/2014/05/git-triangular-workflow/).

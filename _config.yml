@@ -22,8 +22,14 @@ defaults:
     values:
       layout: default
 
-      
-      
-      
-      
-      
+exclude:
+  - 'Gemfile'
+  - 'Gemfile.lock'
+  - 'README.md'
+  - 'CONTRIBUTING.md'
+  - 'LICENSE'
+  - 'build'
+  - '.project'
+  - '.travis.yml'
+  - '/examples'
+  - '/vendor'
