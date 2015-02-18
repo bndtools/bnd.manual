@@ -20,7 +20,7 @@ So how do those contracts work? Well, the bundle that provides the API for the c
 	     osgi.contract;
 	      osgi.contract=Servlet;
 	      uses:="javax.servlet,javax.servlet.http";
-	      version="3.0"
+	      version:Version="3.0"
 	  Export-Package: javax.servlet, javax.servlet.http
 
 This contract defines two properties, the contract name (by convention this is the namespace name as property key) and the version. A bundle that wants to rely on this API can add the following requirement to its manifest: 
@@ -35,11 +35,11 @@ Experienced OSGi users should have cringed at these versionless packages, cringi
 Obviously bnd has support for this (well, since today, i.e. version osgi:biz.aQute.bndlib@2.2.0.20130806-071947 or later). First bnd can make it easier to create the Provide Capability header since the involved packages are in the Export-Package as well as in the Provide-Capability headers. The do-no-repeat-yourself mantra dictated am ${exports} macro. The ${exports} macro is replaced by the exported packages of the bundle, for example: 
 Bundle P:
 
-	  Provide-Capability: 
-	    osgi.contract;
-	      osgi.contract=Servlet;
-	      uses:="${exports}";
-	      version="3.0"
+	  Provide-Capability: \
+	    osgi.contract;\
+	      osgi.contract=Servlet;\
+	      uses:="${exports}";\
+	      version:Version="3.0"
 	  Export-Package: javax.servlet, javax.servlet.http
 
 That said, the most extensive help you get from bnd is for requiring contracts. Providing a contract is not so cumbersome, after all you're the provider so you have all the knowledge and the interest in providing metadata. Consuming a contract is less interesting and it is much harder to get the metadata right. In a similar vein, bnd analyzes your classes to find out the dependencies to create the Import-Package statement, doing this by hand is really hard (as other OSGi developing environments can testify!). 
