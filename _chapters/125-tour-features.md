@@ -216,14 +216,14 @@ Maven Central is quickly moving towards a million revisions organized in 200.000
  
 	v:               1.1.1
 
-	-classpath:		 jar/javax.activation-1.1.1.jar
+	-classpath:		 jar/javax.activation-${v}.jar
 	-output:		 bundle
 	
 	Bundle-Description: \
 		An wrapped version of javax.activation ${v} JAR from Oracle. \
 		This bundle is downloaded from maven and wrapped by bnd.
-	Bundle-Version:	 1.1.1.${tstamp}
-	Export-Package:  javax.activation;version=1.1.1
+	Bundle-Version:	 ${v}.${tstamp}
+	Export-Package:  javax.activation;version=${v}
 	Private-Package: com.sun.activation.*
 
 For longer descriptions you can continue on the next line with a backslash ('\') followed by a newline. Unlike the manifest, it does not has to start with a space though indenting the text for the next lines is usually a good practice. You cannot use newlines or other markup in the Bundle-Description.
