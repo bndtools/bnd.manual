@@ -113,7 +113,7 @@ Which makes some sense ...
 
 An empty workspace is not so useful, let's add a project. 
 
-	$ bnd create project com.acme.prime.hello
+	$ bnd add project com.acme.prime.hello
 	$ ls -a com.acme.prime.hello/
 	.               .gitignore      bin_test        src
 	..              .project        bnd.bnd         test
