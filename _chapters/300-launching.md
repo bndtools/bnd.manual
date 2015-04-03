@@ -36,7 +36,7 @@ The default launcher in bnd. It creates a new VM with the given options, creates
 ### Example bndrun file
 
 	JPM-Command: xray
-	-runfw: 				org.apache.felix.framework;version='[4,5)'
+	-runfw:                     org.apache.felix.framework;version='[4,5)'
 	-runbundles: \
 		org.apache.felix.shell,\
 		org.apache.felix.shell.tui,\
@@ -54,7 +54,7 @@ The default launcher in bnd. It creates a new VM with the given options, creates
 		com.springsource.org.apache.commons.io;version=1.4.0,\
 		com.springsource.org.json;version=1.0.0
 	
-	#-runproperties: 		org.osgi.service.http.port=8080
+	#-runproperties:            org.osgi.service.http.port=8080
 	
 	-runrequire:\
 		bundle:(symbolicname=org.apache.felix.shell),\
@@ -129,16 +129,16 @@ An example remote bndrun file:
 
 	local		=	\
 		local; \
-		shell	=	4003; \
-		jdb		=	1044; \
-		host	=	localhost
+		shell   =   4003; \
+		jdb     =   1044; \
+		host    =   localhost
 	
-	-runremote: 	${local}	
-	-runfw: 		org.apache.felix.framework;version='[4,5)'
-	-runee: 		JavaSE-1.7
+	-runremote:     ${local}	
+	-runfw:         org.apache.felix.framework;version='[4,5)'
+	-runee:         JavaSE-1.7
 	-runproperties: gosh.args=--noshutdown, osgi.shell.telnet.port=4003
 	
-	-runpath: 		biz.aQute.remote.launcher;version=latest
+	-runpath:       biz.aQute.remote.launcher;version=latest
 	-runrequires:\
 		osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)',\
 		osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)'
