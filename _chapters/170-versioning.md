@@ -37,8 +37,8 @@ To survive versioning, one must have a ''version policy''. A version policy puts
 
 In OSGi, the decision was taken to have a single export version. The import statement allows a version range to be set. For example:
 
-  Export-Package: com.acme.foo; version=1.0.2
-  Import-Package: com.acme.bar; version="[1,2)"
+    Export-Package: com.acme.foo; version=1.0.2
+    Import-Package: com.acme.bar; version="[1,2)"
 
 The semantic versioning white paper introduces two terms that are orthogonal to the imports and exports as well as implementing or delegating:
 
@@ -61,29 +61,29 @@ For this reason, bnd provides a way to store the version of the package together
 
 The @Version annotation is placed on the package. Since Java 5 it is possible to create a package-info.java file that can be used to annotate packages:
 
-  package-info.java:
-    @Version("1.2.0.${build}")
-    package com.example;
+    package-info.java:
+        @Version("1.2.0.${build}")
+        package com.example;
 
-    import aQute.bnd.annotation.Version;
+        import aQute.bnd.annotation.Version;
 
 A non-annotation based alternative is the `packageinfo` file. When bnd scans the Java archives it will look in each package for this packageinfo file. The format of this file is very simple:
 
-  packageinfo:
-    version 1.2.0.v${build}
+    packageinfo:
+        version 1.2.0.v${build}
 
 In either case, the value for the version may contain macros.
 
 If you now export the package (from any bundle that has the package on its class path), it will be properly versioned.
 
-  bnd.bnd:
-    build = ${tstamp}
-    Export-Package: com.example.*
+    bnd.bnd:
+        build = ${tstamp}
+        Export-Package: com.example.*
 
 The resulting manifest will look like:
 
-  Manifest:
-    Export-Package: com.example; version=1.2.0.v201010101010
+    Manifest:
+        Export-Package: com.example; version=1.2.0.v201010101010
 
 If you export a a package from another bundle, bnd will also look in the manifest of that other bundle for a version.
 
@@ -109,21 +109,21 @@ For example, a new method is added to an interface that is implemented by the pr
 
 This asymmetry creates the need for two version policies:
 
-  -provider-policy :    ${range;\[==,=+)}
-  -consumer-policy :    ${range;\[==,+)}
+    -provider-policy :    ${range;\[==,=+)}
+    -consumer-policy :    ${range;\[==,+)}
 
-The given values are the defaults. The value of the version policy will be used calculate the import based on the exported package. The ${range} macro provides a convenient shortcut to do this using a version mask.
+The given values are the defaults. The value of the version policy will be used calculate the import based on the exported package. The `${range}` macro provides a convenient shortcut to do this using a version mask.
 
 For example, a bundle that implements the OSGi Event Admin service can use the following bnd file:
 
-  bnd.bnd:
-    Private-Package: com.example.impl.event
+    bnd.bnd:
+        Private-Package: com.example.impl.event
 
 The resulting manifest would look like:
 
-  Manifest:
-    Import-Package:  org.osgi.service.event; version="\[1.1,2)", ...
-    ...
+    Manifest:
+        Import-Package:  org.osgi.service.event; version="\[1.1,2)", ...
+        ...
 
 How does bnd know if a bundle is a provider or a consumer of a specific package? Well, the default is the consumer policy but this can be overridden with the `provide:=true` directive that works on the `Import-Package` clauses as well as on the `Export-Package` clauses. 
 
@@ -131,28 +131,28 @@ The `provide:` directive indicates to bnd that the given package contains API th
 
 For example, an implementation of the OSGi Event Admin specification could use the following bnd file:
 
-  bnd.bnd:
-    Export-Package:  org.osgi.service.event; provide:=true
-    Private-Package: com.example.impl.event
+    bnd.bnd:
+        Export-Package:  org.osgi.service.event; provide:=true
+        Private-Package: com.example.impl.event
 
 The resulting manifest would look like:
 
-  Manifest:
-    Export-Package:  org.osgi.service.event; version=1.1
-    Import-Package:  org.osgi.service.event; version="\[1.1,1.2)", ...
-    ...
+    Manifest:
+        Export-Package:  org.osgi.service.event; version=1.1
+        Import-Package:  org.osgi.service.event; version="[1.1,1.2)", ...
+        ...
 
 If for some reason it is not desirable to export the API package in the implementation bundle, then the `provide:` directive can also be applied on the `Import-Package` header:
 
-  bnd.bnd
-    Import-Package: org.osgi.service.event; provide:=true, *
-    Private-Package: com.example.impl.event
+    bnd.bnd
+        Import-Package: org.osgi.service.event; provide:=true, *
+        Private-Package: com.example.impl.event
 
 The resulting manifest would look like:
 
-  Manifest:
-    Import-Package:  org.osgi.service.event; version="[1.1,1.2)", ...
-    ...
+    Manifest:
+        Import-Package:  org.osgi.service.event; version="[1.1,1.2)", ...
+        ...
 
 ## Substitution
 A key aspect of OSGi is that a package can be both imported and exported. The reason is that this feature allows a framework more leeway during resolving without creating multiple unconnected class spaces.

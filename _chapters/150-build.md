@@ -158,18 +158,18 @@ Launching is needed when the project's `run` action or `test` action is executed
 
 And example of a launcher set is:
 
-  -runvm:   -Xmn100M, -Xms500M, -Xmx500M
-  -runpath: \
-	org.apache.felix.framework; version=3.0, \   
-	junit.osgi;export="junit.framework;version=3.8"
-  -runtrace: true
-  -runproperties: launch=42, trace.xyz=true
-  -runbundles: org.apache.felix.configadmin,\  
-	org.apache.felix.log,\  
-	org.apache.felix.scr,\  
-	org.apache.felix.http.jetty,\   
-	org.apache.felix.metatype,\  
-	org.apache.felix.webconsole
+	-runvm:   -Xmn100M, -Xms500M, -Xmx500M
+	-runpath: \
+		org.apache.felix.framework; version=3.0, \   
+		junit.osgi;export="junit.framework;version=3.8"
+	-runtrace: true
+	-runproperties: launch=42, trace.xyz=true
+	-runbundles: org.apache.felix.configadmin,\  
+		org.apache.felix.log,\  
+		org.apache.felix.scr,\  
+		org.apache.felix.http.jetty,\   
+		org.apache.felix.metatype,\  
+		org.apache.felix.webconsole
 
 Debugging launching is greatly simplified with the -runtrace property set to true. This provides a lot of feedback what the launcher is doing.
 
@@ -188,14 +188,14 @@ The launcher will timeout after an hour. There is currently no way to override t
 ###Mini Framework
 The bnd launcher contains a mini framework that implements the bare bones of an OSGi framework. The purpose of this mini framework is to allow tests and runs that want to launch their own framework. A launch that wants to take advantage of this can launch with the following property:
 
-  -runframework: none
+	-runframework: none
 
 ###Ant
 In ant, the following task provides the run facility.
 	
-  <target name="run" depends="compile">
-    <bnd command="run" exceptions="true" basedir="${project}" />
-  </target>
+	<target name="run" depends="compile">
+		<bnd command="run" exceptions="true" basedir="${project}" />
+	</target>
 
 These targets provide commands for `ant run`.
 
@@ -204,7 +204,7 @@ Testing is in principle the same as launching, it actually uses the launcher. Te
 
 The basic model of the default Project Tester plugin is to look for bundles that have a `Test-Cases` manifest header after launching. The value of this header is a comma separated list of JUnit test case class names. For example:
 
-  Test-Cases: test.LaunchTest, test.OtherTest
+	Test-Cases: test.LaunchTest, test.OtherTest
 
 Maintaining this list can be cumbersome and for that reason the `${classes}` macro can be used to calculate its contents:
 
@@ -213,9 +213,10 @@ Maintaining this list can be cumbersome and for that reason the `${classes}` mac
 See [classes macro][Macros#classes] for more information.
 
 ###Ant
-  <target name="test" depends="compile">
-    <bnd command="test" exceptions="true" basedir="${project}" />
-  </target>
+
+	<target name="test" depends="compile">
+		<bnd command="test" exceptions="true" basedir="${project}" />
+	</target>
 
 ## Overriding the plugins
 Both the Project launcher and Project Tester are plugins. Defaults are provided by bnd itself (bnd carries a mini cache repo that is expanded in the cnf director), it is possible to add new launchers and testers as needed.
