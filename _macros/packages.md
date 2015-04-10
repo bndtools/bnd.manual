@@ -27,20 +27,29 @@ More examples:
 The following table specifies the available query options:
 
 <table>
-'''Query'''
-<td>'''Parameter'''</td>
-<td>'''Description'''</td>
+<thead>
+  <tr>
+    <th>Query</th>
+    <th>Parameter</th>
+    <th>Description</th>
+  </tr>
+</thead>
 
-NAMED
-<td>PATTERN</td>
-<td>The package FQN must match the given pattern.</td>
+<tr>
+  <td>ANY</td>
+  <td></td>
+  <td>Matches any package</td>
+</tr>
 
-ANY
-<td></td>
-<td>Matches any package</td>
+<tr>
+  <td>ANNOTATED</td>
+  <td>PATTERN</td>
+  <td>The package must have an annotation that matches the pattern. The annotation must be either CLASS or RUNTIME retained, and placed on the `package-info.class` for the package.</td>
+</tr>
 
-ANNOTATED
-<td>PATTERN</td>
-<td>The package must have an annotation that matches the pattern. The annotation must be either CLASS or RUNTIME retained, and placed on the `package-info.class` for the package.</td>
-(:tableend:)
-
+<tr>
+  <td>NAMED</td>
+  <td>PATTERN</td>
+  <td>The package FQN must match the given pattern.</td>
+</tr>
+</table>
