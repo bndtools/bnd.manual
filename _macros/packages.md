@@ -9,7 +9,9 @@ summary: A list of package names filtered by a query language
 The `packages` macro provides a query function over the contained packages of a bundle. A simple query language is used to query the packages and filter them.
 For example if you want to export all packages that are annotated with the `@org.example.Export` annotation:
 
-    Export-Package: ${packages;ANNOTATED;org.example.Export}
+    -exportcontents: ${packages;ANNOTATED;org.example.Export}
+
+(NB. using the macro inside `Export-Package`/`Private-Package` is an error, because they define the content of the bundle. The `packages` macro can only be used in the final manifest calculation.).
 
 All pattern matching is based on fully qualified name and uses the globbing model.
 
@@ -21,8 +23,8 @@ More examples:
     # List all packages, alternative syntax
     All-Packages: ${packages;ANY}
 
-    # List packages containing the substring 'export'
-    Exports: ${packages;NAMED;*export*}
+    # Export packages containing the substring 'export'
+    -exportcontents: ${packages;NAMED;*export*}
 
 The following table specifies the available query options:
 
