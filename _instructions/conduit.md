@@ -2,65 +2,13 @@
 layout: default
 class: Project
 title: -conduit 
-summary: This project is a front to one or more JARs 
+summary: This project is a front to one or more JARs in the file system
 ---
 
-	public Jar build() throws Exception {
-		trace("build");
-		init();
-		if (isTrue(getProperty(NOBUNDLES)))
-			return null;
+The `-conduit` instruction allows a Project to act as a conduit to one or more actual JARs on the file system. That is, when the Project is build it will not build those JARs, it just returns them as the result of the project. This can be useful when a Project is moved elsewhere but must still be part of the build because, for example, it needs to be part of the release process.
 
-		if (getProperty(CONDUIT) != null)
-			error("Specified " + CONDUIT + " but calls build() instead of builds() (might be a programmer error");
+	-conduit: jar/foo.jar
+	
+Notice that you can use the `${lsa}` macro to get the contents of a directory:
 
-
-
-	/**
-	 * Build Multiple jars. If the -sub command is set, we filter the file with
-	 * the given patterns.
-	 *
-	 * @return
-	 * @throws Exception
-	 */
-	public Jar[] builds() throws Exception {
-		begin();
-
-		// Are we acting as a conduit for another JAR?
-		String conduit = getProperty(CONDUIT);
-		if (conduit != null) {
-			Parameters map = parseHeader(conduit);
-			Jar[] result = new Jar[map.size()];
-			int n = 0;
-			for (String file : map.keySet()) {
-				Jar c = new Jar(getFile(file));
-				addClose(c);
-				String name = map.get(file).get("name");
-				if (name != null)
-					c.setName(name);
-
-				result[n++] = c;
-			}
-			return result;
-		}
-
-		List<Jar> result = new ArrayList<Jar>();
-		List<Builder> builders;
-
-		builders = getSubBuilders();
-
-		for (Builder builder : builders) {
-			try {
-				Jar jar = builder.build();
-				jar.setName(builder.getBsn());
-				result.add(jar);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				error("Sub Building " + builder.getBsn(), e);
-			}
-			if (builder != this)
-				getInfo(builder, builder.getBsn() + ": ");
-		}
-		return result.toArray(new Jar[result.size()]);
-	}
+	-conduit: ${lsa;jar/*.jar}
