@@ -1,7 +1,7 @@
 ---
 layout: default
 class: Workspace
-title: gestalt ( ';' NAME )?
+title: driver ( ';' NAME )?
 summary: the driver of the environment (e.g. gradle, eclipse, intellij)
 ---
 
