@@ -1,7 +1,7 @@
 ---
 layout: default
 class: Macro
-title: isEmpty ( ';' STRING )* 
+title: isempty ( ';' STRING )* 
 summary: True if all given strings are empty
 ---
 
