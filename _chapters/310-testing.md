@@ -2,6 +2,7 @@
 order: 310
 title: Testing
 layout: default
+version: 3.0
 ---
 
 This section describes how bnd implements a pluggable testing framework. With most tools that use bnd this information is hidden behind a pleasant GUI (sometimes). However, in certain cases it is necessary to understand how bnd handles testing. 
@@ -20,7 +21,7 @@ The default tester can run in ''one shot'' mode or in ''automatic'' mode. The on
 In automatic mode, the default tester creates a list of available bundles with test cases and executes all of them. Automatic mode can then end or it can run in continuous mode. Every time a bundle is started it will run the tests again. Continuous mode is intended for developing test bundles. You just run a framework and edit your test bundle's code. Any changes are saved and deployed, triggering the tests.
 
 ## Framework Properties for the Default Tester
-The default tester uses the project information to parametrize the tester's runtime component. However, it is also possible to set these runtime parameters explicitly with framework properties when you want to run the framework in automatic mode. The default tester obeys the following framework properties:
+The default tester uses the project information to parameterize the tester's runtime component. However, it is also possible to set these runtime parameters explicitly with framework properties when you want to run the framework in automatic mode. The default tester obeys the following framework properties:
 
 |!Property|!Default|!Description|
 |`tester.port`|-|The port to send the JUnit information to in a format defined by Eclipse. If this property is not set, no information is send but tests are still run.|
@@ -55,13 +56,25 @@ To setup an environment to test continuously, the following launcher can be used
 
 The example setup creates a bundle containing the org.example.tests package and sets the `Test-Cases` header to all testcases in that package. If you run this setup, it runs the project bundle with the biz.aQute.junit bundle. This tester bundle is parametrized with the `tester.*` properties to have trace on, test continuous, and put the test reports in `./testdir`.
 
-You can find a bndtools project that shows this at [Github][https://github.com/bnd/aQute/tree/master/aQute.testing].
+You can find a bndtools project that shows this at [Github](https://github.com/bnd/aQute/tree/master/aQute.testing).
 
 ## Other Tester Frameworks
-The biz.aQute.junit is a normal bundle that gets started from the launcher framework. However, before bnd chooses the default tester, it scans the classpath of the launcher (set with `-runpath`) for JARs that have the following header set:
+The biz.aQute.tester is a normal bundle that gets started from the launcher framework. However, before bnd chooses the default tester, it scans the classpath of the launcher (set with `-runpath`) for JARs that have the following header set:
 
   Tester-Plugin ::= fqn
+
+If not such tester is found on the `-runpath` it will look in the `-tester` instruction and loads that bundle. If it still can find it, it will use `biz.aQute.tester`.
 
 The `Tester-Plugin` header points to a class that must extend the `aQute.bnd.build.ProjectTester` class. This class is loaded in the bnd environment and not in the target environment. This ProjectTester plugin then gets a chance to configure the launcher as it sees fit. It can get properties from the project and set these in the Project Launcher so they can be picked up in the target environment.
 
 As this is a quite specific area the rest of the documentation is found in the source code.
+
+## Older Versions
+
+For a long time bnd had `biz.aQute.launcher` as the launcher, today it is `biz.aQute.tester`. This launcher added itself to the `-runpath` and then executed the tests from there. Unfortunately this required that the tester actually exported the JUnit packages. This caused constraints between JUnit and bnd that was not good because JUnit itself is not directly a shining example of software engineering :-(
+
+If you want to be backward compatible with the older model, set:
+
+	-tester: biz.aQute.launcher
+
+
