@@ -60,6 +60,21 @@ Alternatively there are a couple of macros that return the given value when call
 	Some-Header-2: ${uniq;.}/conf/jetty/admin.xml
 	Some-Header-3: ${unescape;.}/conf/jetty/admin.xml
 
+## Booleans
+
+In many places a header is used to indicate false or true. In those cases we use some heuristics. The header/macro or whatever is false when:
+
+*	not set
+*   empty string
+*	'false'
+*	'!'
+*	'off'
+*	'not'
+
+If the value starts with `!` and text follows, the `!` is removed and the remaining text is interpreted as a boolean and then negated.
+
+In other cases, the value is considered `true`.
+
 ## Types
 @TODO
 
