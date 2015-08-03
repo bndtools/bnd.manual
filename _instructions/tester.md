@@ -11,12 +11,8 @@ By default the, `-tester` is the bundle `biz.aQute.tester`. This bundle will ins
 
 ## Older Versions
 
-For a long time bnd had biz.aQute.launcher as the launcher. This launcher added itself to the `-runpath` and then executed the tests from there. Unfortunately this required that the tester actually exported the JUnit packages. This caused constraints between JUnit and bnd that was not good because JUnit itself is not directly a shining example of software engineering :-(
+For a long time bnd had biz.aQute.junit as the tester. This launcher added itself to the `-runpath` and then executed the tests from there. Unfortunately this required that the tester actually exported the JUnit packages. This caused constraints between JUnit and bnd that was not good because JUnit itself is not directly a shining example of software engineering :-(
 
 If you want to be backward compatible with the older model, set:
 
-	-tester: biz.aQute.launcher
-
-
-
-  
+	-tester: biz.aQute.junit

@@ -59,11 +59,13 @@ The example setup creates a bundle containing the org.example.tests package and 
 You can find a bndtools project that shows this at [Github](https://github.com/bnd/aQute/tree/master/aQute.testing).
 
 ## Other Tester Frameworks
-The biz.aQute.tester is a normal bundle that gets started from the launcher framework. However, before bnd chooses the default tester, it scans the classpath of the launcher (set with `-runpath`) for JARs that have the following header set:
+The biz.aQute.tester is a normal bundle that gets started from the launcher framework. However, before bnd chooses the default tester, it scans the classpath for a tester (set with `-runpath`) for JARs that have the following header set:
 
-  Tester-Plugin ::= fqn
+  	Tester-Plugin ::= fqn
 
-If not such tester is found on the `-runpath` it will look in the `-tester` instruction and loads that bundle. If it still can find it, it will use `biz.aQute.tester`.
+If not such tester is found on the `-runpath` it will look in the `-tester` instruction and loads that bundle. If it still can find it, it will use `biz.aQute.tester`. If you set:
+
+	-tester				biz.aQute.junit
 
 The `Tester-Plugin` header points to a class that must extend the `aQute.bnd.build.ProjectTester` class. This class is loaded in the bnd environment and not in the target environment. This ProjectTester plugin then gets a chance to configure the launcher as it sees fit. It can get properties from the project and set these in the Project Launcher so they can be picked up in the target environment.
 
@@ -71,10 +73,8 @@ As this is a quite specific area the rest of the documentation is found in the s
 
 ## Older Versions
 
-For a long time bnd had `biz.aQute.launcher` as the launcher, today it is `biz.aQute.tester`. This launcher added itself to the `-runpath` and then executed the tests from there. Unfortunately this required that the tester actually exported the JUnit packages. This caused constraints between JUnit and bnd that was not good because JUnit itself is not directly a shining example of software engineering :-(
+For a long time bnd had `biz.aQute.junit` as the launcher, today it is `biz.aQute.tester`. This launcher added itself to the `-runpath` and then executed the tests from there. Unfortunately this required that the tester actually exported the JUnit packages. This caused constraints between JUnit and bnd that was not good because JUnit itself is not directly a shining example of software engineering :-(
 
 If you want to be backward compatible with the older model, set:
 
-	-tester: biz.aQute.launcher
-
-
+	-tester: biz.aQute.junit
