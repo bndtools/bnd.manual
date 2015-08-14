@@ -1,10 +1,7 @@
 ---
-order: 900
-title: Errors
+title: Warnings
 layout: default
 ---
-
-# Warning Messages
 
 ## Java source version inconsistency: bnd has '1.5' while Eclipse has '1.8'. Set the bnd 'javac.source' property or change the Eclipse project setup.
 
