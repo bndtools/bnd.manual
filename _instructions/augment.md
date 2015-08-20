@@ -9,9 +9,9 @@ The `-augment` instruction can be used to _augment_ resources in the repositorie
 
 The key of the `PARAMETER` is for the bundle symbolic name. It can contain the '*' wildcard character to match multiple bundles. The bundle symbolic name must be allowed as a value in a filter it is therefore not a globbing expression. 
 
-The following directives are architected:
+The following directives and attribute are architected:
 
-* `range:` – A version range. If a single version is given it will be used as `[<version>,∞)`. The version range can be prefixed with an '@' for a consumer range (to the next major) or a provider range (to the next minor) when the '@' is a suffix of the version. The range can restrict the augmentation to a limited set of bundles. 
+* `version` – A version range. If a single version is given it will be used as `[<version>,∞)`. The version range can be prefixed with an '@' for a consumer range (to the next major) or a provider range (to the next minor) when the '@' is a suffix of the version. The range can restrict the augmentation to a limited set of bundles. 
 * `capability:` – The `capability:` directive specifies a `Provide-Capability` instruction, this will therefore likely have to be quoted. Any number of clauses can be specified.
 * `requirement:` – The `requirement:` directive specifies a `Require-Capability` instruction.
   
@@ -21,7 +21,9 @@ For example, we need to provide an extender capability to a bundle with the bund
 
 	-augment.prime = \
 		com.example.prime; \
-			capability:='osgi.extender;osgi.extender=osgi.component;version=1.2'
+			capability:='osgi.extender; \
+				osgi.extender=osgi.component; \
+				version:Version=1.2'
 
 The `capability:` and `requirement:` directives follow all the rules of the Provide-Capability and Require-Capability headers respectively. For the resolver, it is as if these headers were specified in their manifests. There is one exception, the `cap:` and `req:` directives also support capabilities from the `osgi.wiring.*` name spaces.
 
