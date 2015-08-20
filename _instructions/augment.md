@@ -12,18 +12,18 @@ The key of the `PARAMETER` is for the bundle symbolic name. It can contain the '
 The following directives are architected:
 
 * `range:` – A version range. If a single version is given it will be used as `[<version>,∞)`. The version range can be prefixed with an '@' for a consumer range (to the next major) or a provider range (to the next minor) when the '@' is a suffix of the version. The range can restrict the augmentation to a limited set of bundles. 
-* `cap:` – The `cap:` directive specifies a `Provide-Capability` instruction, this will therefore likely have to be quoted. Any number of clauses can be specified.
-* `req:` – The `req:` directive specifies a `Require-Capability` instruction.
+* `capability:` – The `capability:` directive specifies a `Provide-Capability` instruction, this will therefore likely have to be quoted. Any number of clauses can be specified.
+* `requirement:` – The `requirement:` directive specifies a `Require-Capability` instruction.
   
-To augment the repositories during a resolve, bnd will find all bundles that match the bundle symbolic name and fall within the defined range. If no range is given, only the bundle symbolic name will constrain the search. Each found bundle will then be decorated with the capabilities and requirements defined in the `cap:` and `req:` directive.
+To augment the repositories during a resolve, bnd will find all bundles that match the bundle symbolic name and fall within the defined range. If no range is given, only the bundle symbolic name will constrain the search. Each found bundle will then be decorated with the capabilities and requirements defined in the `capability:` and `requirement:` directive.
 
 For example, we need to provide an extender capability to a bundle with the bundle symbolic name `com.example.prime`.
 
 	-augment.prime = \
 		com.example.prime; \
-			cap:='osgi.extender;osgi.extender=osgi.component;version=1.2'
+			capability:='osgi.extender;osgi.extender=osgi.component;version=1.2'
 
-The `cap:` and `req:` directives follow all the rules of the Provide-Capability and Require-Capability headers respectively. For the resolver, it is as if these headers were specified in their manifests. There is one exception, the `cap:` and `req:` directives also support capabilities from the `osgi.wiring.*` name spaces.
+The `capability:` and `requirement:` directives follow all the rules of the Provide-Capability and Require-Capability headers respectively. For the resolver, it is as if these headers were specified in their manifests. There is one exception, the `cap:` and `req:` directives also support capabilities from the `osgi.wiring.*` name spaces.
 
 ## Caveats
 
