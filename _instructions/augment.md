@@ -5,9 +5,9 @@ title: -augment PARAMETER ( ',' PARAMETER ) *
 summary: Add requirements and capabilities to the resources during resolving.
 ---
 
-The `-augment` instruction can be used to _augment_ resources in the repositories. When bnd resolves a project or bndrun file then, it will read this variable (it is a merge property so you can also use `-augment.xyz`) and use it to decorate the entries.
+The `-augment` instruction can be used to _augment_ resources in the repositories. Augmenting is adding additional capabilities and requirements. When bnd resolves a project or bndrun file then, it will read this variable (it is a merge property so you can also use additional keys like `-augment.xyz`) and use it to _decorate_ the repository entries.
 
-The key of the `PARAMETER` is for the bundle symbolic name. It can contain the '*' wildcard character to match multiple bundles. The bundle symbolic name must be allowed as a value in a filter it is therefore not a globbing expression. 
+The key of the `PARAMETER` is for the bundle symbolic name. It can contain the * wildcard character to match multiple bundles. The bundle symbolic name must be allowed as a value in a filter it is therefore **not** a globbing expression. 
 
 The following directives and attribute are architected:
 

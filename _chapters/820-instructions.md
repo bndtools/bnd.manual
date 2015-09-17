@@ -1,5 +1,5 @@
 ---
-title: Instruction Reference
+title: Instruction
 layout: default
 ---
 A bnd instruction is a property that starts with a minus sign ('-'). An instruction instructs bndlib to do something, in general providing parameters to the code. All instructions in bndlib are listed later in this page.
@@ -158,27 +158,15 @@ You can use the '..' operator for a segment in the file path to indicate a paren
 
 A PATH is a _repository specification_. It is a specification for a number of JARs and/or bundles from a repository (well, most of the time). A PATH has the following syntax:
 
-	PATH              ::= target ( ',' target ) *
-	target            ::= ( entry | FILE ';' 'version' '=' 'file' ) ( ';' PARAMETERS ) *
-	entry             ::= symbolic-name ( ';' version ) ? 
-	version	          ::= 'version' '=' ( RANGE | 'latest' | 'project' | 'snapshot' )
+	PATH      ::= target ( ',' target ) *
+	target    ::= ( entry | FILE ';' 'version' '=' 'file' )
+                  ( ';' PARAMETERS ) *
+	entry     ::= symbolic-name ( ';' version ) ? 
+	version	  ::= 'version' '=' 
+                  ( RANGE | 'latest' | 'project')
 
 A PATH defines a number of bundles with its _entries_. Each entry is either a FILE or a symbolic-name. If only a symbolic name is specified, the default will be the import range from 0.0.0. This selects the whole repository for the given symbolic name. Outside the default, the repository entry can be specified in the following ways:
 
 * RANGE – A version range limits the entries selected from the active repositories.
-* `latest` – 
-* `project` –
-* `snapshot` –
-
-
-
-## Reference
-
-<div>
-<dl class="property-index">
-
-{% for instruction in site.instructions %}<dt><a href="{{instruction.url}}">{{instruction.title}}</a></dt><dd>{{instruction.summary}}</dd>
-{% endfor %}
-
-</dl>
-</div>
+* `latest` – Use the project's output or, if the project does not exists, get the bundle with the highest version from the repositories.
+* `project` – Mandate the use of the project's output
