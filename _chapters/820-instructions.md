@@ -154,6 +154,22 @@ You can use the '..' operator for a segment in the file path to indicate a paren
 * `${workspace}` – The directory of the current workspace
 * `${build} – The directory of the `cnf` directory.
 
+## FILESPEC
+
+A `FILESPEC` defines a set of files relative to a starting point. It can be identical to a FILE for a single file but it has some special syntax to recurse directories. For example, the FILESPEC `foo/bar/**/spec/*.ts` finds all files that end in `spec/*.ts` somewhere below the `foo/bar` directory.
+
+The syntax is as follows:
+
+	FILESPEC  ::= filespec ( ',' filespec )*
+	filespec  ::= ( segment '/' ) filematch
+	segment   ::= '**' | GLOB
+	filematch ::= '**' | '**' GLOB | GLOB
+
+If a segment is `**` then it will match any directory to any depth. Otherwise it must be a GLOB expression, which can also be a literal. The last segment is the `filematch`. This is a GLOB expression on a file name. As a convenience, if it is `**`, any file will match in any directory and if it starts with something like `**.ts` then it will also recurse and match on `*.ts`. That is, the following rules apply to the `filematch`:
+
+	prefix/**              prefix/**/*              
+	prefix/**.ts           prefix/**/*.ts              	 
+
 ## PATH
 
 A PATH is a _repository specification_. It is a specification for a number of JARs and/or bundles from a repository (well, most of the time). A PATH has the following syntax:
@@ -170,3 +186,28 @@ A PATH defines a number of bundles with its _entries_. Each entry is either a FI
 * RANGE – A version range limits the entries selected from the active repositories.
 * `latest` – Use the project's output or, if the project does not exists, get the bundle with the highest version from the repositories.
 * `project` – Mandate the use of the project's output
+
+
+## GLOB
+
+A _globbing_ expression is a simplified form of a regular expression. It was made popular in the Unix shells for file name matching. 
+
+The syntax is as follows:
+
+	GLOB      ::=  ( wildcard | question | subexpr | character )*
+	wildcard  ::= '*'
+	question  ::= '?'
+	subexpr   ::= '{' GLOB ( ',' GLOB )* '}'
+	character ::= <unicode>
+
+A `wildcard` matches any number of characters in the input. A `question` matches a single character. A `subexpr` matches the comma separated set of alternatives. Anything else is matched directly,
+
+To match a literal character that is in `[*?{},]`, prefix it with a backslash ('\');
+
+Some examples:
+
+    abc.ts                   abc.ts
+	*.ts                     abc.ts, def.ts
+	foo*****bar              foobar, fooXbar, fooXXXXbar
+	foo{A,B,C}bar            fooAbar, fooBbar,fooCbar
+    foo\{\}bar               foo{}bar
