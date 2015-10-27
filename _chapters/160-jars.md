@@ -26,7 +26,7 @@ For example, you want to wrap the WebSocket server from https://github.com/TooTa
     # websocket does not define a version yet :-(
     Bundle-Version: 1.0.2
 
-    Include-Resource: @jar/WebSocket.jar, OSGI-OPT/=@jar/WebSocket-src.zip
+    -includeresource: @jar/WebSocket.jar, OSGI-OPT/src=@jar/WebSocket-src.zip
     -exportcontents: org.java_websocket
 
 
