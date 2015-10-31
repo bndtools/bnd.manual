@@ -36,7 +36,7 @@ If you are a maven user, you can find many version in central. The coordinates a
 
 		<dependency>
 			<groupId>biz.aQute.bnd</groupId>
-			<artifactId>bndlib</artifactId>
+			<artifactId>biz.aQute.bndlib</artifactId>
 			<version>....</version>
 		</dependency>
 

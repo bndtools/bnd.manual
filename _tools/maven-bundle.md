@@ -1,15 +1,15 @@
 ---
 title: Maven Build Plugin
 layout: default
-summary: The maven plugin to build with bnd workspaces.
+summary: The bnd maven plugin.
 ---
 
-This is the Apache Felix maven plugin 
+This is the bnd maven plugin 
 
     <dependency>
-      <groupId>biz.aQute</groupId>
-      <artifactId>bndlib</artifactId>
-      <version>2.2.0</version>
+      <groupId>biz.aQute.bnd</groupId>
+      <artifactId>bnd-maven-plugin</artifactId>
+      <version>3.0.0</version>
     </dependency>
 
 ## Links

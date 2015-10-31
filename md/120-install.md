@@ -22,9 +22,9 @@ bnd is maintained at [github][5]
 Maven Central may lag in its version but can be used with:
 
     <dependency>
-      <groupId>biz.aQute</groupId>
-      <artifactId>bndlib</artifactId>
-      <version>2.2.0</version>
+      <groupId>biz.aQute.bnd</groupId>
+      <artifactId>biz.aQute.bndlib</artifactId>
+      <version>3.0.0</version>
     </dependency>
 
 ## Download Latest Version
