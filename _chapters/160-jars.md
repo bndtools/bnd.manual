@@ -65,7 +65,7 @@ Applying this recipe gives the following manifest in a JAR named `org.websocket.
     Bundle-Version: 1.0.2
     Created-By: 1.6.0_27 (Apple Inc.)
     Export-Package: org.java_websocket;version="1.0.2"
-    Include-Resource: @jar/WebSocket.jar, OSGI-OPT/=@jar/WebSocket-src.zip
+    Include-Resource: @jar/WebSocket.jar, OSGI-OPT/src=@jar/WebSocket-src.zip
     Private-Package: org.java_websocket.handshake,org.java_websocket.drafts,
      org.java_websocket.exceptions,org.java_websocket.util,org.java_websocke
      t.framing
