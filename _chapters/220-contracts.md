@@ -18,7 +18,7 @@ So how do those contracts work? Well, the bundle that provides the API for the c
 	Bundle P:
 	  Provide-Capability: 
 	     osgi.contract;
-	      osgi.contract=Servlet;
+	      osgi.contract=JavaServlet;
 	      uses:="javax.servlet,javax.servlet.http";
 	      version:Version="3.0"
 	  Export-Package: javax.servlet, javax.servlet.http
@@ -27,7 +27,7 @@ This contract defines two properties, the contract name (by convention this is t
 Bundle R:
 
 	  Require-Capability: osgi.contract;
-	    filter:="(&(osgi.contract=Servlet)(version=3.0))"
+	    filter:="(&(osgi.contract=JavaServlet)(version=3.0))"
 	  Import-Package: javax.servlet, javax.servlet.http
 
 Experienced OSGi users should have cringed at these versionless packages, cringing becomes a gut-reaction at the sight of versionless packages. However, in this case it actually cannot harm. The previous example will ensure that Bundle P will be the class loader for the Bundle R for packages javax.servlet, javax.servlet.http. The magic is in the uses: directive, if the Require-Capability in bundle R is resolved to the Provide-Capability in bundle P then bundle R must import these packages from bundle P.
@@ -37,7 +37,7 @@ Bundle P:
 
 	  Provide-Capability: \
 	    osgi.contract;\
-	      osgi.contract=Servlet;\
+	      osgi.contract=JavaServlet;\
 	      uses:="${exports}";\
 	      version:Version="3.0"
 	  Export-Package: javax.servlet, javax.servlet.http
@@ -50,9 +50,9 @@ So to activate the use of contracts, add the -contract instruction:
 	  -contract: *
 
 This instruction will give bnd permission to scan the build path for contracts, i.e. Provide-Capability clauses in the osgi.contract namespace. These declared contracts cause a corresponding requirement in the bundle when the bundle imports packages listed in the uses clause. In the example with Bundle R, bnd will automatically insert the Require-Capability header and remove any versions on the imported packages. 
-Sometimes the wildcard for the -contract instruction can be used to limit the contracts that are considered. Sometimes you want a specific contract but not others. Other times you want to skip a specific contract. The following example skips the 'Servlet' contract: 
+Sometimes the wildcard for the -contract instruction can be used to limit the contracts that are considered. Sometimes you want a specific contract but not others. Other times you want to skip a specific contract. The following example skips the 'JavaServlet' contract: 
 bnd.bnd:
 
-	  -contract: !Servlet,*
+	  -contract: !JavaServlet,*
 
-The tests provide some examples for people that want to have a deeper understanding: https://github.com/bndtools/bnd/blob/next/biz.aQute.bndlib.tests/src/test/ContractTest.java Contracts will be part of the bnd(tools) 2.2 release (hopefully) at the end of this summer, until then they are experimental. Enjoy. Peter Kriens @pkriens Update: Last example to skip the 'Servlet' contract was reversed, updated the text to show a reverse example (anything BUT Servlet).
+The tests provide some examples for people that want to have a deeper understanding: https://github.com/bndtools/bnd/blob/next/biz.aQute.bndlib.tests/src/test/ContractTest.java Contracts will be part of the bnd(tools) 2.2 release (hopefully) at the end of this summer, until then they are experimental. Enjoy. Peter Kriens @pkriens Update: Last example to skip the 'JavaServlet' contract was reversed, updated the text to show a reverse example (anything BUT JavaServlet).
