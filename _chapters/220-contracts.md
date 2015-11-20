@@ -4,12 +4,13 @@ title: Contracts
 layout: default
 ---
 
-The OSGi has a very elegant package version model there are still many that think this is too much work. They do not want to be bothered by the niceties of semantic versions and just want to use, let's say, Servlet 3.0. For those people (seemingly not interested in minimizing dependencies) the OSGi Alliance came up with contracts in OSGi Core, Release 5.0.0. A contract allows you to: 
+The OSGi has a very elegant package version model there are still many that think this is too much work. They do not want to be bothered by the niceties of semantic versions and just want to use, let's say, Servlet 3.0. For those people (seemingly not interested in minimizing dependencies) the OSGi Alliance came up with Portable Java Contracts (https://www.osgi.org/portable-java-contract-definitions). A contract allows you to: 
 
 * Declare that a bundle provides the API of the given specification
 * Require that the API comes from a bundle that made the declaration
 
 This very common pattern is called the Capability/Requirement (C/R) model in OSGi, it underlies all of its dependency concepts like Import/Export package and others; it forms the foundation of the OSGi Bundle Repository. If you ever want to know what is happening deep down inside a framework than look at the Wiring API and you see the requirements and capabilities in their most fundamental form. 
+You can find more information about the Portable Contracts in this blogpost: http://blog.osgi.org/2014/09/portable-java-contracts-for-javax.html
 
 Capabilities declare a set of properties that describe something that a bundle can provide. A Requirement in a bundle has a filter that must match a capability before this bundle can be resolved. To prevent requirements matching completely unrelated capabilities they must both be defined in the same namespace,, where the namespace then defines the semantics of the properties. Using the C/R model we were able to describe most of the OSGi dependencies with surprisingly few additional concepts. For a modern OSGi resolver there is very little difference between the Import-Package and Require-Bundle headers. 
 
