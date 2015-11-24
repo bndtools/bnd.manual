@@ -7,7 +7,7 @@ Plugins are objects that can extend the functionality of bnd. They are called fr
 
 A plugin is defined as:
 
-  PLUGIN ::= FQN ( ';' <directive|attribute> )*
+  PLUGIN ::= FQN ( ';' \<directive|attribute\> )*
 
 The following directive is defined for all plugin:
 
@@ -15,31 +15,8 @@ The following directive is defined for all plugin:
 
 bnd current supports the following plugin types:
 
-  /**
-   * An optional interface for plugins. If a plugin implements 
-   * this interface then it can receive the remaining attributes 
-   * and directives given in its clause as
-   * well as the reporter to use.
-   */
-  public interface Plugin {
-    /**
-     * Give the plugin the remaining properties.
-     * When a plugin is declared, the clause can contain 
-     * extra properties. All the properties and directives 
-     * are given to the plugin to use.
-     * @param map attributes and directives for this plugin's clause
-     */
-    void setProperties(Map<String,String> map);
-    
-    /**
-     * Set the current reporter. This is called at init time. 
-     * This plugin should report all errors and warnings 
-     * to this reporter.
-     * @param processor
-     */
-    void setReporter(Reporter processor);
- }
-
+### aQute.bnd.service.AnalyzerPlugin
+```java
   public interface AnalyzerPlugin {
     /**
      * This plugin is called after analysis. The plugin 
@@ -55,7 +32,9 @@ bnd current supports the following plugin types:
      */
     boolean analyzeJar(Analyzer analyzer) throws Exception;
   }
-
+```
+### aQute.bnd.service.SignerPlugin
+```java
   public interface SignerPlugin {
     /**
      * Sign the current jar. The alias is the given certificate 
@@ -68,7 +47,9 @@ bnd current supports the following plugin types:
      */
     void sign(Builder builder, String alias) throws Exception;
   }
-
+```
+### aQute.bnd.service.RepositoryPlugin
+```java
   public interface RepositoryPlugin {
     /**
      * Return a URL to a matching version of the given bundle.
@@ -116,7 +97,49 @@ bnd current supports the following plugin types:
     /**
      * Return a list of versions.
      */
-    
     List<Version> versions(String bsn);
   }
+```
 
+### aQute.bnd.service.verifier.VerifierPlugin
+```java
+public interface VerifierPlugin {
+	/**
+	 * This plugin is called after the manifest generation and after the jar is
+	 * fully populated with resources. The plugin is intended to verify details
+	 * of the jar and manifest.
+	 *
+	 * @param analyzer
+	 * @throws Exception
+	 */
+	void verify(Analyzer analyzer) throws Exception;
+}
+```
+
+### aQute.bnd.service.Plugin
+```java
+  /**
+   * An optional interface for plugins. If a plugin implements 
+   * this interface then it can receive the remaining attributes 
+   * and directives given in its clause as
+   * well as the reporter to use.
+   */
+  public interface Plugin {
+    /**
+     * Give the plugin the remaining properties.
+     * When a plugin is declared, the clause can contain 
+     * extra properties. All the properties and directives 
+     * are given to the plugin to use.
+     * @param map attributes and directives for this plugin's clause
+     */
+    void setProperties(Map<String,String> map);
+    
+    /**
+     * Set the current reporter. This is called at init time. 
+     * This plugin should report all errors and warnings 
+     * to this reporter.
+     * @param processor
+     */
+    void setReporter(Reporter processor);
+ }
+```
