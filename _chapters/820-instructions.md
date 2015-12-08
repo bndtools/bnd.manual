@@ -138,7 +138,7 @@ Selectors are used in virtually any place where there is a reasonable scope. It 
 
 One of the most painful thing in making bndlib run anywhere is handling of files. Even though Java has a decent abstraction of the file system, problems with spaces in file names and backslashes in the wrong place have caused an uneven amount of bugs. Ok, this partially because most bndlib developers tend to use Macs, still no excuse and quite embarrassing.
 
-Since bnd files need to be portable across environments we've chosen to use the Unix file separator, the slash (or solidus '/') for more reasons than I can reasonable be sum up here (what was Bill smoking when he picked the reverse solidus for file separator!). In bndlib, all file paths (ok, should) always go through a single method that actually parses it and turns it into a Java File object. This allows us to support a number of features in a portable way. The syntax of a file path is therefore:
+Since bnd files need to be portable across environments we've chosen to use the Unix file separator, the slash (or solidus '/') for more reasons than I can reasonably sum up here (what was Bill smoking when he picked the reverse solidus for file separator!). In bndlib, all file paths (ok, should) always go through a single method that actually parses it and turns it into a Java File object. This allows us to support a number of features in a portable way. The syntax of a file path is therefore:
 
 	file      ::=  ( '~/' | '/' )?  (  ~['/']+ '/' ) * ~['/'] *   
 
