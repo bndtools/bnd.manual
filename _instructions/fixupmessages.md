@@ -62,5 +62,14 @@ The `-fixupmessages` instruction is a _merged property_. This means that you can
 	# Wildcards
 	-fixupmessages \
 	  "prefix*suffix"
-	
+
+	# Turn properties parser messages into warnings
+	-fixupmessages.parser: \
+	  "Invalid character in properties"; \
+	  "No value specified for key"; \
+	  "Invalid property key"; \
+	  "Invalid unicode string"; \
+	  "Found \\<whitespace>";
+	    is:=warning
+	    
 [1]: http://bnd.bndtools.org/chapters/820-instructions.html#selector
