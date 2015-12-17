@@ -1,7 +1,7 @@
 ---
 layout: default
 class: Project
-title: -fixupmessages SELECTOR ( ';' ( is | replace | restrict )* ... 
+title: -fixupmessages SELECTOR ( ';' ( is | replace | restrict ) )* ... 
 summary: Fixup errors and warnings. 
 ---
 
