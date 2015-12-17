@@ -28,9 +28,11 @@ The basic format of `-fixupmessages` is:
 	replace        ::= 'replace:=' <<text>> 
 
 
-The value of a fixup clause is a globbing expression. The following directives are supported:
+The value of a fixup clause is a globbing expression.
 
 ## Directives
+
+The following directives are supported:
 
 * `restrict:` – By default, the fixup clause is applied to all errors and warnings. You can restrict its application to either errors or warnings specifying either `restrict:=error` or `restrict:=warning`.
 * `is:` – By default an error remains an error and a warning remains a warning. However, if you specify the `is:` directive you can force an error to become a warning or vice versa. This can be very useful if you build fails with an error that you do not consider a failure.
