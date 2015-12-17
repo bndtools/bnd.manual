@@ -1,72 +1,64 @@
 ---
 layout: default
 class: Project
-title: -fixupmessages MATCHER ( ';' directive )* 
+title: -fixupmessages SELECTOR ( ';' ( is | replace | restrict )* ... 
 summary: Fixup errors and warnings. 
 ---
 
+The `-fixupmessages` instruction is intended to _fixup_ the errors and warnings. It allows you to remove errors and/or warnings, turn errors into warnings, and turn warnings into errors. With this instruction you can fail a build based on a warning or succeed a build that runs into errors.
 
-	/**
-	 * Move errors and warnings to their proper place by scanning the fixup
-	 * messages property.
-	 */
-	private void fixupMessages() {
-		if (fixupMessages)
-			return;
-		fixupMessages = true;
-		Parameters fixup = new Parameters(getProperty(Constants.FIXUPMESSAGES));
-		if (fixup.isEmpty())
-			return;
+The default of this instruction is to list a number of patterns. Any error or warning that matches this pattern is then removed. The following example will remove any  error/warning that matches `'some error'`, `'another error'`, or `'and yet another error'`.
 
-		Instructions instrs = new Instructions(fixup);
+	-fixupmessages:  \
+		some error, 
+		another error, 
+		and yet another error
 
-		doFixup(instrs, errors, warnings, FIXUPMESSAGES_IS_ERROR);
-		doFixup(instrs, warnings, errors, FIXUPMESSAGES_IS_WARNING);
-	}
+The pattern is a [SELECTOR][1], which makes it possible to do case insensitive matches, wildcards, literals, etc.
 
-	private void doFixup(Instructions instrs, List<String> messages, List<String> other, String type) {
-		for (int i = 0; i < messages.size(); i++) {
-			String message = messages.get(i);
-			Instruction matcher = instrs.finder(message);
-			if (matcher == null || matcher.isNegated())
-				continue;
+## Syntax
 
-			Attrs attrs = instrs.get(matcher);
+The basic format of `-fixupmessages` is:
 
-			//
-			// Default the pattern applies to the errors and warnings
-			// but we can restrict it: e.g. restrict:=error
-			//
+	-fixupmessages ::= fixup ( ',' fixup ) *
+	fixup          ::= SELECTOR directive *
+	directive      ::= ';' ( restrict | is | replace )
+	restrict       ::= 'restrict:=' ( 'error' | 'warning' )
+	is             ::= 'is:=' ( 'ignore' | 'error' | 'warning' )
+	replace        ::= 'replace:=' <<text>> 
 
-			String restrict = attrs.get(FIXUPMESSAGES_RESTRICT_DIRECTIVE);
-			if (restrict != null && !FIXUPMESSAGES_IS_ERROR.equals(restrict))
-				continue;
 
-			//
-			// We can optionally replace the message with another text. E.g.
-			// replace:"hello world". This can use macro expansion, the ${@}
-			// macro is set to the old message.
-			//
-			String replace = attrs.get(FIXUPMESSAGES_REPLACE_DIRECTIVE);
-			if (replace != null) {
-				trace("replacing %s with %s", message, replace);
-				setProperty("@", message);
-				message = getReplacer().process(replace);
-				messages.set(i, message);
-				unsetProperty("@");
-			}
+The value of a fixup clause is a globbing expression. The following directives are supported:
 
-			//
-			//
-			String is = attrs.get(FIXUPMESSAGES_IS_DIRECTIVE);
+## Directives
 
-			if (attrs.isEmpty() || FIXUPMESSAGES_IS_IGNORE.equals(is)) {
-				messages.remove(i--);
-			} else {
-				if (is != null && !type.equals(is)) {
-					messages.remove(i--);
-					other.add(message);
-				}
-			}
-		}
-	}
+* `restrict:` – By default, the fixup clause is applied to all errors and warnings. You can restrict its application to either errors or warnings specifying either `restrict:=error` or `restrict:=warning`.
+* `is:` – By default an error remains an error and a warning remains a warning. However, if you specify the `is:` directive you can force an error to become a warning or vice versa. This can be very useful if you build fails with an error that you do not consider a failure.
+* `replace:` – Replace the message with a new message. The replacement will be processed by the macro processor, the `${@}` macro will contain the current message.
+
+The `-fixupmessages` instruction is a _merged property_. This means that you can define it in many different places like for example in a file in `cnf/ext`. Just put an extension on the instruction. For example:
+
+	-fixupmessages.one: 'Some error'
+	-fixupmessages.two: 'Another error'
+
+## Examples
+
+	# Turn an error into a warning
+	-fixupmessages
+	  "Invalid character'; \
+	    restrict:=error;
+	    is:=warning
+  
+	# Replace a message
+	-fixupmessages \
+	  "split";replace:=broken
+	  
+	# Ignore case by appending :i
+	-fixupmessages \
+	  "case insensitive:i"
+	
+	# Wildcards
+	-fixupmessages \
+	  "prefix*suffix"
+	
+[1]: http://bnd.bndtools.org/chapters/820-instructions.html#selector
