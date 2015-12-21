@@ -1,19 +1,10 @@
 ---
-title: Maven Build Plugin
+title: Maven Plugins
 layout: default
-summary: The bnd maven plugin.
+summary: The Maven Plugins for Bnd.
 ---
 
-This is the bnd maven plugin 
+See the [documentation on GitHub][1] for details on how to configure and
+use the Maven plugins for Bnd.
 
-    <dependency>
-      <groupId>biz.aQute.bnd</groupId>
-      <artifactId>bnd-maven-plugin</artifactId>
-      <version>3.0.0</version>
-    </dependency>
-
-## Links
-
-* [bndtools maven tool chain][4] – A description of using maven and bndtools  
-
-[4]: http://wiki.osgi.org/wiki/BndtoolsMavenEclipseToolchain
+[1]: https://github.com/bndtools/bnd/blob/master/maven/README.md
