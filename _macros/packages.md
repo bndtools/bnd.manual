@@ -27,7 +27,7 @@ More examples:
     -exportcontents: ${packages;NAMED;*export*}
     
     # Export packages that contain a version. Useful when wrapping existing bundles while keeping exports intact
-    -exportcontents: ${packages;EXPORTED}
+    -exportcontents: ${packages;VERSIONED}
 
 The following table specifies the available query options:
 
@@ -59,8 +59,8 @@ The following table specifies the available query options:
 </tr>
 
 <tr>
-  <td>EXPORTED</td>
+  <td>VERSIONED</td>
   <td></td>
-  <td>Packages that are versioned. Usually this means all exported packages.</td>
+  <td>Packages that are versioned. Usually this means exported packages.</td>
 </tr>
 </table>
