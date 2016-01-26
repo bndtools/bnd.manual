@@ -57,4 +57,10 @@ The following table specifies the available query options:
   <td>PATTERN</td>
   <td>The package FQN must match the given pattern.</td>
 </tr>
+
+<tr>
+  <td>EXPORTED</td>
+  <td></td>
+  <td>Packages that are versioned. Usually this means all exported packages.</td>
+</tr>
 </table>
