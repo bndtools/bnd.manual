@@ -25,6 +25,9 @@ More examples:
 
     # Export packages containing the substring 'export'
     -exportcontents: ${packages;NAMED;*export*}
+    
+    # Export packages that contain a version. Useful when wrapping existing bundles while keeping exports intact
+    -exportcontents: ${packages;EXPORTED}
 
 The following table specifies the available query options:
 
