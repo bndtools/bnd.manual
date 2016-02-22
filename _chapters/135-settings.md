@@ -23,6 +23,14 @@ Only the `proxy` and `server` elements are looked at and only the in here define
 
 We provide a number of additional features over the maven syntax.
 
+## Logging out
+
+You can create a log file specific for the connections by specifying:
+
+	-connection-log: somefile.txt
+
+This file will contain the detailed trace output
+
 ## Syntax
 
 The settings files have the following structure:
