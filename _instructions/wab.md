@@ -10,34 +10,41 @@ However, the OSGi supports the Bundle-Classpath header. This header allows the o
 
 The `-wab` instruction instructs bnd to move the root of the created archive to WEB-INF/classes. That is, you build your bundle in the normal way,not using the `Bundle-ClassPath`. The `-wab` command then moves the root of the archive so the complete class path for the bundle is no inside the WEB-INF/classes directory. It then adjusts the `Bundle-ClassPath` header to reflect this new location of the classes and resources.
 
-The new root now only contains WEB-INF. In the Servlet specification, the root of the archive is mapped to the server's context URL. It is therefore often necessary to place static files in the root. For this reason, the `-wab` instruction has the same form as [Include-Resource][#include-resource] header, and performs the same function. However, it performs this function of copying resources from the file system after the classes and resources of the original bundle have been moved to WEB-INF.
+The new root now only contains WEB-INF. In the Servlet specification, the root of the archive is mapped to the server's context URL. It is therefore often necessary to place static files in the root. For this reason, the `-wab` instruction has the same form as [Include-Resource](includeresource.html) header, and performs the same function. However, it performs this function of copying resources from the file system after the classes and resources of the original bundle have been moved to WEB-INF.
 
 For example, the following code creates a simple WAB/WAR:
 
+```
   Private-Package:   com.example.impl.*
   Export-Package:    com.example.service.myapi
   Include-Resource:  resources/
   -wab:              static-pages/
-  
+```
+
 The layout of the resulting archive is:
 
+```
   WEB-INF/classes/com/example/impl/
   WEB-INF/classes/com/example/service/myapi/
   WEB-INF/classes/resources/
   index.html // from static-pages
+```
 
 The `Bundle-ClassPath` is `WEB-INF/classes`.
 
-WARs can carry a WEB-INF/lib directory. Any archive in this directory is mapped to the class path of the WAR. The OSGi specifications do not recognize directories with archives it is therefore necessary to list these archives also on the `Bundle-ClassPath` header. This is cumbersome to do by hand so the `-wablib` command will take a list of paths. 
+WARs can carry a `WEB-INF/lib` directory. Any archive in this directory is mapped to the class path of the WAR. The OSGi specifications do not recognize directories with archives it is therefore necessary to list these archives also on the `Bundle-ClassPath` header. This is cumbersome to do by hand so the `-wablib` command will take a list of paths. 
 
+```
   Private-Package:   com.example.impl.*
   Export-Package:    com.example.service.myapi
   Include-Resource:  resources/
   -wab:              static-pages/
   -wablib:			 lib/a.jar, lib/b.jar
-  
+```
+
 This results in a layout of:
 
+```
   WEB-INF/classes/com/example/impl/
   WEB-INF/classes/com/example/service/myapi/
   WEB-INF/classes/resources/
@@ -45,11 +52,11 @@ This results in a layout of:
     a.jar
     b.jar
   index.html ( from static-pages)
-  
+```
+
 The `Bundle-ClassPath` is now set to `WEB-INF/classes,WEB-INF/lib/a.jar,WEB-INF/lib/a.jar`
 
-
-
+```java
 	/**
 	 * Turn this normal bundle in a web and add any resources.
 	 *
@@ -81,5 +88,4 @@ The `Bundle-ClassPath` is now set to `WEB-INF/classes,WEB-INF/lib/a.jar,WEB-INF/
 		doIncludeResource(dot, wab);
 		return dot;
 	}
-
-
+```
