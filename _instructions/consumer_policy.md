@@ -15,14 +15,13 @@ In theory, bnd could have hard coded these policies but there are always cases w
 
 	-consumer-policy $\{range;\[==,\+\)\} 
 	-provider-policy $\{range;\[==,=\+\)\}
-<foo ]>
 	
 The [range][3] macro works very much like the [version][4] macro. It uses a template to define a change the range/version.
 
 The provider and consumer policy are global and this is not very convenient if you want to make an exception just for a specific bundle. For example, a bundle coming from [Gavin King's Ceylon][2]. For this reason, you can also specify a policy on an import:
 
 	Import-Package com.gavinking.*;version="$\{range;\[--,\+\+)\}", * 	
-<foo ]>
+
 
 The counterpart of the `-consumer-policy` is of course the [-provider-policy][5].
 
