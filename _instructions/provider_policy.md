@@ -28,4 +28,4 @@ The counterpart of the `-provider-policy` is of course the [-consumer-policy][5]
 [2]: https://twitter.com/1ovthafew/status/705011392861114368
 [3]: /macros/range.html
 [4]: /macros/version.html
-[5]: /instructions/provider_policy.html
+[5]: /instructions/consumer_policy.html
