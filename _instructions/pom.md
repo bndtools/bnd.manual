@@ -5,13 +5,20 @@ title: -pom BOOLEAN | PROPERTIES
 summary: Generate a maven pom in the JAR
 ---
 
-The `-pom` instruction can generate a pom derived from the manifest and store it in the bundle. The default will be splitting up the Bundle Symbolic name in a `groupid` (everything until the last '.') and a `artifactid` (everything from the last '.' to the end. However, it is also specify overrides in properties. The following properties are supported:
+The `-pom` instruction can generate a pom derived from the manifest and store it in the
+bundle. The groupId can be specified by the `groupid` key which defaults to the value of
+the `-groupid` instruction. If neither the `groupid` key or the `-groupid` instruction
+are specified, the groupId will be derived from the Bundle Symbolic Name by using
+everything until the last '.' (bsn prefix) and the artifactId will be everything from the
+last '.' to the end (bsn suffix).
+
+The following properties are supported:
 
 |Key              |Default          |Description                         |
-|`groupid`        |bsn prefix       |The group id used                   |
-|`artifactid`     |bsn suffix       |The artifact id to use. If `groupid` is set, the default is the Bundle Symbolic Name|
+|`groupid`        |`-groupid`       |The groupId to use. Will default to bsn prefix if no groupid is set.|
+|`artifactid`     |bundle symbolic name|The artifactId to use. Will default to bsn suffix if no groupid is set.|
 |`version`        |bundle version   |The version to use.                 |
-|`where`          |`pom.xml`        |The location of the pom.xml file.   |
+|`where`          |`META-INF/maven/${groupid}/${artifactid}/pom.xml`|The location of the pom.xml file. Will default to `pom.xml` if no groupid is set.|
 
 The pom will also attempt to convert the following headers to their POM counterpart:
 
