@@ -18,9 +18,12 @@ The following properties are supported:
 |`groupid`        |`-groupid`       |The groupId to use. Will default to bsn prefix if no groupid is set.|
 |`artifactid`     |bundle symbolic name|The artifactId to use. Will default to bsn suffix if no groupid is set.|
 |`version`        |bundle version   |The version to use.                 |
-|`where`          |`META-INF/maven/${groupid}/${artifactid}/pom.xml`|The location of the pom.xml file. Will default to `pom.xml` if no groupid is set.|
+|`where`          |`META-INF/maven/<groupid>/<artifactid>/pom.xml`|The location of the pom.xml file. Will default to `pom.xml` if no groupid is set.|
 
-The pom will also attempt to convert the following headers to their POM counterpart:
+The `-pom` instruction can use any macro but the `${@bsn}` and `${@version}` macros
+refer to the current JAR being built. 
+
+The `-pom` instruction will also attempt to convert the following headers to their POM counterpart:
 
 * `Bundle-Description`
 * `Bundle-DocUrl`
