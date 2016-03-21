@@ -487,7 +487,7 @@ The arguments to bnd are normal given as a set of properties. Properties that be
 
 After the JAR is created, the bnd program will verify the result. This will check the resulting manifest in painstaking detail.
 
-The bnd program works on a higher level then traditional jarring; this might take some getting used to. However, it is much more elegant to think in packages than that it is to think in files. The fact that bnd understand the semantics of a bundle allows it to detect many errors and allows bundles to be created with almost no special information. 
+The bnd program works on a higher level than the traditional jarring; this might take some getting used to. However, it is much more elegant to think in packages than that it is to think in files. The fact that the bnd understands the semantics of a bundle, allows it to detect many errors and also allows bundles to be created with almost no special information. 
 
 bnd will not create an output file if none of the resources is newer than an existing output file.
 
