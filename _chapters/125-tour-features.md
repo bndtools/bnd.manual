@@ -220,7 +220,7 @@ Maven Central is quickly moving towards a million revisions organized in 200.000
 	-output:		 bundle
 	
 	Bundle-Description: \
-		An wrapped version of javax.activation ${v} JAR from Oracle. \
+		A wrapped version of javax.activation ${v} JAR from Oracle. \
 		This bundle is downloaded from maven and wrapped by bnd.
 	Bundle-Version:	 ${v}.${tstamp}
 	Export-Package:  javax.activation;version=${v}
@@ -405,7 +405,7 @@ We can now build the jars with a simple command:
 
 The basic model of bnd is to collect packages from the classpath and assemble them in a bundle. This pull model is quite different from the more common push model in builds where it is harder to include packages from other projects. However, bnd's model makes it quite easy to create a bundle out of multiple JARs. So lets add a new bnd file that merges javax activation and mail.
 
-Actually, javax.activation and javax.mail are really bad citizens in an OSGi world. The use class loading hacks all over the place that make a mockery out of modularity. Part of the problem is that they really require certain private directories to be available from the client's class loader. In those cases it is sometimes necessary to make sure the layout of the bundles is exactly the same as the source bundles. 
+Actually, javax.activation and javax.mail are really bad citizens in an OSGi world. They use class loading hacks all over the place that make a mockery out of modularity. Part of the problem is that they really require certain private directories to be available from the client's class loader. In those cases it is sometimes necessary to make sure the layout of the bundles is exactly the same as the source bundles. 
 
 The best way to achieve this is to _unroll_ the source bundles in the target bundle. You can unroll a JAR by prefixing it with a commercial at sign ('@') in an include resource operation. Lets get started on a javax.mail.all.bnd file:
 
