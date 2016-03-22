@@ -220,7 +220,7 @@ Maven Central is quickly moving towards a million revisions organized in 200.000
 	-output:		 bundle
 	
 	Bundle-Description: \
-		An wrapped version of javax.activation ${v} JAR from Oracle. \
+		A wrapped version of javax.activation ${v} JAR from Oracle. \
 		This bundle is downloaded from maven and wrapped by bnd.
 	Bundle-Version:	 ${v}.${tstamp}
 	Export-Package:  javax.activation;version=${v}
@@ -405,7 +405,7 @@ We can now build the jars with a simple command:
 
 The basic model of bnd is to collect packages from the classpath and assemble them in a bundle. This pull model is quite different from the more common push model in builds where it is harder to include packages from other projects. However, bnd's model makes it quite easy to create a bundle out of multiple JARs. So lets add a new bnd file that merges javax activation and mail.
 
-Actually, javax.activation and javax.mail are really bad citizens in an OSGi world. The use class loading hacks all over the place that make a mockery out of modularity. Part of the problem is that they really require certain private directories to be available from the client's class loader. In those cases it is sometimes necessary to make sure the layout of the bundles is exactly the same as the source bundles. 
+Actually, javax.activation and javax.mail are really bad citizens in an OSGi world. They use class loading hacks all over the place that make a mockery out of modularity. Part of the problem is that they really require certain private directories to be available from the client's class loader. In those cases it is sometimes necessary to make sure the layout of the bundles is exactly the same as the source bundles. 
 
 The best way to achieve this is to _unroll_ the source bundles in the target bundle. You can unroll a JAR by prefixing it with a commercial at sign ('@') in an include resource operation. Lets get started on a javax.mail.all.bnd file:
 
@@ -487,7 +487,7 @@ The arguments to bnd are normal given as a set of properties. Properties that be
 
 After the JAR is created, the bnd program will verify the result. This will check the resulting manifest in painstaking detail.
 
-The bnd program works on a higher level then traditional jarring; this might take some getting used to. However, it is much more elegant to think in packages than that it is to think in files. The fact that bnd understand the semantics of a bundle allows it to detect many errors and allows bundles to be created with almost no special information. 
+The bnd program works on a higher level than the traditional jarring; this might take some getting used to. However, it is much more elegant to think in packages than that it is to think in files. The fact that the bnd understands the semantics of a bundle, allows it to detect many errors and also allows bundles to be created with almost no special information. 
 
 bnd will not create an output file if none of the resources is newer than an existing output file.
 
