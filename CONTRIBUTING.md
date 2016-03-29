@@ -6,7 +6,7 @@ feels wrong or incomplete.
 
 ## Reporting Issues
 
-When reporting [issues](https://github.com/bndtools/bnd.manual/issues) 
+When reporting [issues](https://github.com/bndtools/bnd.manual/issues)
 on GitHub please include the version of bnd.manual you are using.
 Please include the steps required to reproduce the problem if possible and applicable.
 This information will help us review and fix your issue faster.
@@ -34,7 +34,7 @@ We use [Travis CI](https://travis-ci.org/bndtools/bnd.manual) to test build any 
 We use [git triangular workflow](https://www.sociomantic.com/blog/2014/05/git-triangular-workflow/).
 This means that no one, not even the bnd.manual maintainers, push contributions directly into the [main bnd.manual
 repo](https://github.com/bndtools/bnd.manual). All contribution come in through pull requests.
-So each contribtor will need to [fork the main bnd.manual repo](https://github.com/bndtools/bnd.manual/fork)
+So each contributor will need to [fork the main bnd.manual repo](https://github.com/bndtools/bnd.manual/fork)
 on GitHub. All contributions are made as commits to your fork. Then you submit a
 pull request to have them considered for merging into the main bnd.manual repo.
 
@@ -66,7 +66,7 @@ Finally, the third side of the triangle is pull requests from your fork repo to 
 main repo.
 
 Make sure to set up [Travis CI](https://travis-ci.org) for your fork repo to test your commits
-when they are pushed to your fork repo. Travis CI will also build any [pull requests you 
+when they are pushed to your fork repo. Travis CI will also build any [pull requests you
 submit](https://travis-ci.org/bndtools/bnd.manual/pull_requests).
 
 ## Contribution guidelines
@@ -213,4 +213,3 @@ the main repo.
 Don't forget: being a maintainer is a time investment. Make sure you will have time
 to make yourself available. You don't have to be a maintainer to make a difference
 on the project!
-
