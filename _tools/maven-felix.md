@@ -1,15 +1,15 @@
 ---
-title: Maven Build Plugin
+title: Maven Bundle Plugin
 layout: default
-summary: The Apache Felix Maven plugin
+summary: The Apache Felix Maven Bundle Plugin (BND)
 version: 2.4
 ---
 
-One set of developers comes from the Maven world and is generally happy with the “Maven Way”; they do not want it to change significantly. We feel that these users are already well served by the Felix Bundle Plugin, m2eclipse and even other IDEs such as NetBeans.  We call the above a “Maven first” approach. bndlib supports this approach with the Apache Felix Maven Bundle plugin. This plugin is maintained by the Apache Felix project the plugin is [well documented there][1]. This document shamelessly copies some of this information.
+One set of developers comes from the Maven world and is generally happy with the “Maven Way”; they do not want it to change significantly. We feel that these users are already well served by the Apache Felix Maven Bundle Plugin, m2eclipse and even other IDEs such as NetBeans.  We call the above a “Maven first” approach. bndlib supports this approach with the Apache Felix Maven Bundle plugin. This plugin is maintained by the Apache Felix project the plugin is [well documented there][1]. This document shamelessly copies some of this information.
 
 The Apache Felix Maven Bundle plugin uses bndlib only to create a manifest; it does not support the bndlib's workspace and project model. This means that not all instructions and macros are relevant. 
 
-The Apache Felix Maven plugin maps the bndlib instructions to XML elements in the POM in the configuration part of the plugin, bndlib is then called to create the manifest for the JAR. Before the Apache Felix Bundle Plugin calls bndlib, it sets up the class path and provides a number of defaults that differ from the standard bndlib defaults. These changes will be discussed later.
+The Apache Felix Maven Bundle plugin maps the bndlib instructions to XML elements in the POM in the configuration part of the plugin, bndlib is then called to create the manifest for the JAR. Before the Apache Felix Bundle Plugin calls bndlib, it sets up the class path and provides a number of defaults that differ from the standard bndlib defaults. These changes will be discussed later.
 
 ## Simple Example
 
