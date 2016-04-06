@@ -1,15 +1,15 @@
 ---
-title: Maven Build Plugin
+title: Apache Felix Maven Bundle Plugin
 layout: default
-summary: The Apache Felix Maven plugin
+summary: The Apache Felix Maven Bundle Plugin.
 version: 2.4
 ---
 
-One set of developers comes from the Maven world and is generally happy with the “Maven Way”; they do not want it to change significantly. We feel that these users are already well served by the Felix Bundle Plugin, m2eclipse and even other IDEs such as NetBeans.  We call the above a “Maven first” approach. bndlib supports this approach with the Apache Felix Maven Bundle plugin. This plugin is maintained by the Apache Felix project the plugin is [well documented there][1]. This document shamelessly copies some of this information.
+One set of developers comes from the Maven world and is generally happy with the “Maven Way”; they do not want it to change significantly. We feel that these users are already well served by the Apache Felix Maven Bundle Plugin, m2eclipse and even other IDEs such as NetBeans.  We call the above a “Maven first” approach. bndlib supports this approach with the Apache Felix Maven Bundle plugin. This plugin is maintained by the Apache Felix project the plugin is [well documented there][1]. This document shamelessly copies some of this information.
 
 The Apache Felix Maven Bundle plugin uses bndlib only to create a manifest; it does not support the bndlib's workspace and project model. This means that not all instructions and macros are relevant. 
 
-The Apache Felix Maven plugin maps the bndlib instructions to XML elements in the POM in the configuration part of the plugin, bndlib is then called to create the manifest for the JAR. Before the Apache Felix Bundle Plugin calls bndlib, it sets up the class path and provides a number of defaults that differ from the standard bndlib defaults. These changes will be discussed later.
+The Apache Felix Maven Bundle plugin maps the bndlib instructions to XML elements in the POM in the configuration part of the plugin, bndlib is then called to create the manifest for the JAR. Before the Apache Felix Maven Bundle Plugin calls bndlib, it sets up the class path and provides a number of defaults that differ from the standard bndlib defaults. These changes will be discussed later.
 
 ## Simple Example
 
@@ -53,7 +53,7 @@ Since all elements become part of the bndlib properties you can actually also se
 
 ## Embed-Dependency
 
-The Apache Felix Maven plugin supports a special instruction <Embed-Dependency> that will automatically include maven transitive dependencies in the JAR and place these JARs on the Bundle-ClassPath. This feature is explained in [Embedding Dependencies][2]. 
+The Apache Felix Maven Bundle plugin supports a special instruction <Embed-Dependency> that will automatically include maven transitive dependencies in the JAR and place these JARs on the Bundle-ClassPath. This feature is explained in [Embedding Dependencies][2]. 
 
 >  This is a convenient feature that is not so wise to use since it makes the actual bundle depending on many aspects that are not under direct control. A bundle is a component and should reflect an implementation of a public API; this model requires that you think about what goes in there and what does not go in there. Adding transitive dependencies inside this bundle tends to create very complex systems that destroy the benefits of OSGi.
 
@@ -333,7 +333,7 @@ The maven bnd plugin also changes the file layout to match the default maven fil
 
 ## Links
 
-* [Secrets of the Felix Bundle Plugin Revealed][2] – Interesting blog about using the bndlib macros inside the plugin to handle semantic versioning
+* [Secrets of the Apache Felix Bundle Plugin Revealed][2] – Interesting blog about using the bndlib macros inside the plugin to handle semantic versioning
 
 [1]: http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html
 [2]: http://davidvaleri.wordpress.com/2011/04/07/secrets-of-the-felix-bundle-plug-in-macros-revealed/

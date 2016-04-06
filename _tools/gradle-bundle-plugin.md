@@ -1,8 +1,8 @@
 ---
 title: Gradle Bundle Plugin
 layout: default
-summary: An alternative for the Gradle OSGI Plugin.
----------------------------------------------------
+summary: A Gradle Plugin from Artyom Dmitriev.
+---
 
 See the [Gradle Bundle Plugin page][1] for details.
 

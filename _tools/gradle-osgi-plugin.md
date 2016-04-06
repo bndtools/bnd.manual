@@ -1,7 +1,7 @@
 ---
 title: Gradle OSGi Plugin
 layout: default
-summary: The Gradle OSGi Plugin.
+summary: The Gradle OSGi Plugin that comes with Gradle.
 ---
 
 See the [Gradle User Guide page][1] for details.
