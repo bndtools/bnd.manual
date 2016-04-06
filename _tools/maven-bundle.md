@@ -1,7 +1,7 @@
 ---
 title: Bnd Maven Plugins
 layout: default
-summary: Bnd Maven Plugins
+summary: The Bnd Maven Plugins.
 ---
 
 See the [documentation on GitHub][1] for details on how to configure and
