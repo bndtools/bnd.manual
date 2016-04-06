@@ -47,6 +47,9 @@ bnd is maintained at [github][3]. If you want to change the code, just clone it 
 ## Manual
 The manual is also on [github][5]. If you see an improvement, do not hesitate to clone the repo and create a pull request. Improvements are bug corrections but we also like short articles about how to do do something with bnd.
 
+## Communication Settings
+
+If you're behind a firewall that requires proxies or you use repositories that require authentication see [-connection-settings].
 
 [1]: http://www.jpm4j.org
 [2]: http://jpm4j.org/#!/md/install
@@ -54,3 +57,4 @@ The manual is also on [github][5]. If you see an improvement, do not hesitate to
 [4]: https://bndtools.ci.cloudbees.com/job/bnd.master/lastSuccessfulBuild/artifact/
 [5]: https://github.com/bndtools/bnd.manual
 [6]: /instructions/conditionalpackage.html
+[-connection-settings]: /instructions/connection-settings

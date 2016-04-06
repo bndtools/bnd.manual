@@ -1,7 +1,7 @@
 ---
-order: 135
-title: Settings
+title: -connection-settings
 layout: default
+summary: Setting up the communications for bnd
 ---
 
 This chapter discusses the communication settings of bnd that you will need when a server requires a proxy, password, or other communication settings. These settings can obviously not be part of the workspace since they are unique to the actual user of the workspace.
