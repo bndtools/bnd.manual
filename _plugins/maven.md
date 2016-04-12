@@ -4,21 +4,67 @@ layout: default
 summary: A plugin to use and release to Maven repositories 
 ---
 
-The Maven Bnd Repository plugin provides a full interface to the Maven local repository in `~/.m2/repository` and remote repositories like [Nexus] or [Artifactory]. It implements the standard bnd Repository Plugin and can provide an OSGi Repository for resolving. A typical configuration looks like:
+The Maven Bnd Repository plugin provides a full interface to the Maven local repository in `~/.m2/repository` and remote repositories like [Nexus] or [Artifactory]. And it provides of course full access to Maven Central. It implements the standard bnd Repository Plugin and can provide an OSGi Repository for resolving. 
+
+## Use Cases
+
+### Maven Central
+
+To access Maven Central use the following configuration:
 
 	-plugin.central = \
 		aQute.bnd.repository.maven.provider.MavenBndRepository; \
 			releaseUrl=https://repo.maven.apache.org/maven2/; \
 			index=${.}/central.maven; \
 			name="Central"
+
+## Required Wrapper
+
+To be able to resolve, it is necessary to have a _wrapper_ plugin defined. This plugin turns the artifacts in the repository into actual OSGi resources. There should only be one wrapper defined.
 		
 	-plugin.wrapper = \
 	        aQute.bnd.deployer.repository.wrapper.Plugin; \
 	            location            =	"${build}/cache/wrapper"; \
 	            reindex				=	true
 
-	-connection-settings: ${.}/settings.txt
+### Local Repository
+
+To use your local Maven repository (`~/.m2/repository`) you can define the following plugin:
+
+	-plugin.local = \
+		aQute.bnd.repository.maven.provider.MavenBndRepository; \
+			index=${.}/local.maven; \
+			name="Local"
  
+### Artifactory or Nexus Repository
+
+To use a remote release repository based on Nexus or Artifactory you can define the following plugin:
+
+	-plugin.release = \
+		aQute.bnd.repository.maven.provider.MavenBndRepository; \
+			releaseUrl=http://localhost:8081/nexus/content/repositories/releases/    ; \
+			releaseUrl=http://localhost:8081/nexus/content/repositories/snapshots/   ; \
+			index=${.}/release.maven; \
+			name="Release"
+
+If you use a remote repository then you must configure the credentials. This is described in [-connection-settings]. Placing the following XML in  `~/.bnd/settings.xml` will provide you with the default Nexus credentials:
+
+	<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+	                          http://maven.apache.org/xsd/settings-1.0.0.xsd">
+		<servers>
+			<server>
+				<id>http://localhost:8081</id>
+				<username>admin</username>
+				<password>admin123</password>
+			</server>
+		</servers>
+	</settings>
+
+Notice that the id must match the scheme, the host, and the port if not the default port for the scheme.
+
+## Plugin Configuration
 
 The class name of the plugin is `aQute.bnd.repository.maven.provider.MavenBndRepository`. It can take the following configuration properties:
 
@@ -54,7 +100,19 @@ Valid coordinates are:
 	org.osgi:org.osgi.core:6.0.0
 	org.osgi:osgi.annotation:6.0.1
 
+## Local Repository
+
+Maven supports a local repository in `~/.m2/repository`. All repositories will install through a local repository. The default is the same repository as Maven but this can be overridden with the `local` configuration property.
+
+It is possible to define a Maven Bnd Repository without a `releaseUrl` or `snapshotUrl`. In that case only access to the local repository is provided. Trying to release remotely will be an error for such a repository.
+
+The [-buildrepo] instruction can be pointed to such a local repository; it will then store a JAR in the local repository after every build. This can be useful if there are Maven projects that consume the output of a bnd workspace. 
+
 ## Releasing
+
+In bnd, releasing is done by moving the JARs into a special release repository after they've been approved. That is, the location of a JAR defines if it is released, there is no need to reflect the release status in the version. 
+
+In Maven, the release status is modeled in the version. To support the  staging model, versions can end in `-SNAPSHOT`. Snapshots are treated very differently in the release process. The most important difference is that snapshot versions can overwrite previous versions.
 
 In the release cycle, a JAR is `put` to  _release_ repository. The project of the released JAR is provided as _context_, this means it can inherit from the project and workspace. This plugin will read the [-maven-release] instruction from the context. This can result in generating source and javadoc jars. By default, a local only release only installs the actual binary. 
 
@@ -85,3 +143,4 @@ You can add new entries by:
 [-snapshot]: /instructions/snapshot
 [-pom]: /instructions/pom
 [-connection-settings]: /instructions/connection-settings
+[-buildrepo]: /instructions/buildrepo
