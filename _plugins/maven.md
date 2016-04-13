@@ -43,7 +43,7 @@ To use a remote release repository based on Nexus or Artifactory you can define 
 	-plugin.release = \
 		aQute.bnd.repository.maven.provider.MavenBndRepository; \
 			releaseUrl=http://localhost:8081/nexus/content/repositories/releases/    ; \
-			releaseUrl=http://localhost:8081/nexus/content/repositories/snapshots/   ; \
+			snapshotUrl=http://localhost:8081/nexus/content/repositories/snapshots/   ; \
 			index=${.}/release.maven; \
 			name="Release"
 
