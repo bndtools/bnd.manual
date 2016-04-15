@@ -49,6 +49,12 @@ Provide and consume is orthogonal to implementing an interface and delegating. F
 
 The reason for the providers and consumer terms is that version policies are different. A change in an API almost always affects the provider but with careful API design it is often possible to make a change backward compatible for consumers.
 
+In bnd, whenever you have to provide an import range, you can use modifiers to create a range out of a single version:
+
+* `@1.2.3` – Creates an import up to the next major version: `[1.2,2)`.
+* `1.2.3@` – Creates an import up to the next major version: `[1.2,1.3)`.
+* `=1.2.3` – Creates a range that only accepts that version: `[1.2,1.2)`.
+
 ## Versioning Packages
 If you have a package that is containing implementation code that is supposed to be directly used by the consumers then this is a ''library''.
 A library package is not an API that can be implemented by other bundles, it is the implementation. Then the versioning of library packages is relatively straightforward: Any change that breaks a consumer of that package must increment the major version number. For example, if the popular ASM library would add a method to the `MethodVisitor` class then it must increment the major version number of the `org.objectweb.asm` package because all existing consumers of this library would then be broken.
