@@ -41,7 +41,7 @@ If you are a maven user, you can find many version in central. The coordinates a
 		</dependency>
 
 
-## Source Code
+## Source Codex
 bnd is maintained at [github][3]. If you want to change the code, just clone it and modify it. In general we accept pull requests, and often even highly appreciate them.
 
 ## Manual
