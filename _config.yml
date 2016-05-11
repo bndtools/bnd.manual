@@ -1,3 +1,5 @@
+gems:
+  - jekyll-seo-tag
 markdown: kramdown
 collections:
   chapters:
