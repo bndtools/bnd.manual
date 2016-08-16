@@ -18,9 +18,9 @@ The packages that are copied cannot be exported, they must be private. This make
 
 For example:
 
-	-conditionalpackage: aQute.lib*
+	-conditionalpackage: aQute.lib.*
 
-This instruction will slurp any packages that have a name that matches `aQute.lib*` and are referred to by the current JAR's contents.  
+This instruction will copy the package `aQute.lib` and its sub-packages into the bundle in case they are referred to by the current JAR's contents.  
 
 ## Utility Libraries
 
