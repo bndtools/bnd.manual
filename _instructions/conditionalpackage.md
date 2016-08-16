@@ -16,11 +16,19 @@ The purpose therefore of the `-conditionalpackage` instruction is to pick cohesi
 
 The packages that are copied cannot be exported, they must be private. This makes it possible to rely on the exact version that the bundle is compiled against. It also ensures that no information is leaked between bundles when statics are used. 
 
+The given `PACKAGE-SPEC` follows the format outlined in [Selector](../820-instructions.html#selector).
+
 For example:
 
-	-conditionalpackage: aQute.lib.*
+	-conditionalpackage: aQute.lib*
 
-This instruction will copy the package `aQute.lib` and its sub-packages into the bundle in case they are referred to by the current JAR's contents.  
+will slurp any packages that have a name that matches `aQute.lib*` (e.g. both `aQute.lib` and `aQute.libg`) and are referred to by the current JAR's contents.
+
+On the other hand the example:
+
+    -conditionalpackage: mypackage.example.*
+    
+will copy the package `mypackage.example` and all its sub-packages into the bundle in case they are referred to by the current JAR's contents.  
 
 ## Utility Libraries
 
