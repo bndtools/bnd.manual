@@ -52,8 +52,8 @@ The reason for the providers and consumer terms is that version policies are dif
 In bnd, whenever you have to provide an import range, you can use modifiers to create a range out of a single version:
 
 * `@1.2.3` – Creates an import up to the next major version: `[1.2,2)`.
-* `1.2.3@` – Creates an import up to the next major version: `[1.2,1.3)`.
-* `=1.2.3` – Creates a range that only accepts that version: `[1.2,1.2)`.
+* `1.2.3@` – Creates an import up to the next minor version: `[1.2,1.3)`.
+* `=1.2.3` – Creates a range that only accepts that version: `[1.2.3,1.2.3]`.
 
 ## Versioning Packages
 If you have a package that is containing implementation code that is supposed to be directly used by the consumers then this is a ''library''.
